@@ -6,7 +6,9 @@
 ;;
 ;; Set global custom variables
 ;;
+
 (setq inhibit-splash-screen t)
+(setq diary-file "~/.emacs.d/diary")
 
 (require 'package)
 (add-to-list 'package-archives
@@ -16,8 +18,6 @@
   (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
 (package-initialize)
 
-(require 'use-package)
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -25,13 +25,14 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("05c3bc4eb1219953a4f182e10de1f7466d28987f48d647c01f1f0037ff35ab9a" default)))
+    ("ef5f1b745d16d9fbdbf55d624e0a38b8f7f15bc8f87887f1ebaf9d949e3778f2" "05c3bc4eb1219953a4f182e10de1f7466d28987f48d647c01f1f0037ff35ab9a" default)))
+ '(flycheck-c/c++-gcc-executable "gcc-4.8")
  '(org-agenda-files
    (quote
-    ("~/homework/CSSE132.org" "~/homework/CSSE220.org" "~/homework/CLSK100.org" "~/homework/MA212.org" "~/homework/PH113.org" "~/planner.org")))
+    ("~/schedules/Y1/Q1.org" "~/homework/CSSE132.org" "~/homework/CSSE220.org" "~/homework/CLSK100.org" "~/homework/MA212.org" "~/homework/PH113.org" "~/planner.org")))
  '(package-selected-packages
    (quote
-    (yasnippet monokai-theme zenburn-theme color-theme auctex use-package multi-term cdlatex))))
+    (evil-org evil-leader arduino-mode cmake-ide package-build shut-up epl git commander f dash s gnuplot flycheck powerline-evil powerline evil yasnippet monokai-theme auctex use-package multi-term cdlatex))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -42,6 +43,9 @@
 ;;
 ;; load external files
 ;;
+
+(add-to-list 'load-path "~/.emacs.d/plugins/yasnippet")
+(add-to-list 'load-path "~/.emacs.d/plugins/evil-org-mode")
 (add-to-list 'load-path "~/.emacs.d/elisp")
 (load-library "packages")
 (load-library "functions")
@@ -51,12 +55,14 @@
 ;;
 ;; bootup commands
 ;;
+
 (load-theme 'monokai)
 (show-paren-mode)
 (split-window-right)
 (org-agenda-list)
 (other-window 1)
-
+(yas-global-mode 1)
+(powerline-evil-center-color-theme)
 
 (provide 'init)
 

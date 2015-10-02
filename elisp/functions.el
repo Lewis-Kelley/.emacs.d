@@ -1,6 +1,11 @@
-;;
-;; Interactive functions to be loaded by init.el.
-;;
+;;; package --- Summary:
+;;; The definitions for all custom functions created in init.el.
+;;; Commentary:
+
+;;; Code:
+
+(defvar homework-class)
+(defvar notes-class)
 
 (defun view-notes (class)
   "Generate and view the summary page for the CLASS."
@@ -107,12 +112,15 @@
       (message (format "The class %s does not exist." class))))
 
 (defun my-desktop-save ()
-  "Saves the current window to ~/.emacs.d/."
+  "Save the current window to ~/.emacs.d/."
   (interactive)
   (desktop-save "~/.emacs.d/"))
 
 (defun desktop-save-and-close ()
-  "Saves the current window configuration then quits."
+  "Save the current window configuration then quits."
   (interactive)
   (desktop-save "~/.emacs.d/")
   (save-buffers-kill-terminal))
+
+(provide 'functions)
+;;; functions.el ends here
