@@ -1,6 +1,7 @@
-;;
-;; The global keybindings for init.el
-;;
+;;; package --- Summary:
+;;; Commentary:
+
+;;; Code:
 
 (global-set-key (kbd "s-h") 'homework)
 (global-set-key (kbd "s-e") 'event)
@@ -14,9 +15,14 @@
 (global-set-key (kbd "C-c d") 'my-desktop-save)
 (global-set-key (kbd "C-c r") 'desktop-read)
 (global-set-key (kbd "C-x c") 'desktop-save-and-close)
+(global-set-key (kbd "C-x g") 'magit-status)
 
 ;; keys for dealing with other frames
 (global-set-key (kbd "C-c o") 'other-frame)
 (global-set-key (kbd "C-c 2") 'make-frame-command)
 (global-set-key (kbd "C-c 0") 'delete-frame)
 (global-set-key (kbd "C-c 1") 'delete-other-frames)
+
+(provide 'keys)
+
+;;; keys.el ends here

@@ -53,5 +53,23 @@
 (use-package arduino-mode
   :ensure t)
 
+(use-package function-args
+  :ensure t
+  :init
+  (fa-config-default))
+
+(use-package monokai-theme
+  :ensure t
+  :init
+  (load-theme 'monokai))
+
+(use-package powerline-evil
+  :ensure t
+  :init
+  (powerline-evil-center-color-theme))
+
+(use-package magit
+  :ensure t)
+
 (provide 'packages)
 ;;; packages.el ends here
