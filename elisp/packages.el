@@ -4,6 +4,11 @@
 ;;; Code:
 (require 'use-package)
 
+(use-package company
+  :ensure t
+  :init
+  (global-company-mode))
+
 (use-package evil
   :ensure t)
 
@@ -67,6 +72,10 @@
   :ensure t
   :init
   (powerline-evil-center-color-theme))
+
+(use-package seethru
+  :ensure t
+  :init (seethru 90))
 
 (use-package magit
   :ensure t
