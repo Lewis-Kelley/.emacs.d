@@ -69,7 +69,11 @@
   (powerline-evil-center-color-theme))
 
 (use-package magit
-  :ensure t)
+  :ensure t
+  :init
+  (setq magit-restore-window-configuration t)
+  (global-magit-file-mode))
+
 
 (provide 'packages)
 ;;; packages.el ends here
