@@ -5,19 +5,12 @@
 (require 'use-package)
 
 (use-package evil
-  :ensure t
-  :init
-  (setq evil-replace-state-cursor '("red" box)))
-
-(use-package evil-leader
-  :ensure t)
-
-(use-package evil-org
   :ensure t)
 
 (use-package emacs-lisp
   :init
-  (add-hook 'emacs-lisp-mode-hook 'flycheck-mode))
+  (add-hook 'emacs-lisp-mode-hook 'flycheck-mode)
+  (add-hook 'emacs-lisp-mode-hook #'yas-minor-mode))
 
 (use-package flycheck
   :ensure t
@@ -25,9 +18,6 @@
   (setq flycheck-gcc-args "-std=c99"))
 
 (use-package flyspell)
-
-(use-package auctex ;; currently not working
-  :disabled t)
 
 (use-package cdlatex
   :ensure t)
@@ -45,6 +35,7 @@
 (use-package c-mode
   :init
   (add-hook 'c-mode-hook 'flycheck-mode)
+  (add-hook 'c-mode-hook #'yas-minor-mode)
   (setq-default c-basic-offset 4))
   
 

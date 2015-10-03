@@ -32,7 +32,7 @@
     ("~/schedules/Y1/Q1.org" "~/homework/CSSE132.org" "~/homework/CSSE220.org" "~/homework/CLSK100.org" "~/homework/MA212.org" "~/homework/PH113.org" "~/planner.org")))
  '(package-selected-packages
    (quote
-    (evil-org evil-leader arduino-mode cmake-ide package-build shut-up epl git commander f dash s gnuplot flycheck powerline-evil powerline evil yasnippet monokai-theme auctex use-package multi-term cdlatex))))
+    (arduino-mode cmake-ide package-build shut-up epl git commander f dash s gnuplot flycheck powerline-evil powerline evil yasnippet monokai-theme auctex use-package multi-term cdlatex))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -58,11 +58,12 @@
 
 (load-theme 'monokai)
 (show-paren-mode)
+(powerline-evil-center-color-theme)
+(yas-reload-all)
+
 (split-window-right)
 (org-agenda-list)
 (other-window 1)
-(yas-global-mode 1)
-(powerline-evil-center-color-theme)
 
 (provide 'init)
 
