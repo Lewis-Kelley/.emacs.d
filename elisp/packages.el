@@ -69,6 +69,15 @@
   :ensure t
   :init
   (setq multi-term-program "/bin/bash"))
+(use-package org-mode
+   :init
+   (setq org-startup-indented t)
+   (setq org-agenda-include-diary t)
+   (setq org-agenda-start-on-weekday nil)
+   (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
+   (add-hook 'org-mode-hook 'org-preview-latex-fragment)
+   (add-hook 'org-mode-hook
+ 	    (lambda () (local-set-key (kbd "C-c C-x M-l") (kbd "C-u C-u C-c C-x C-l")))))
 
 (use-package powerline-evil
   :ensure t
