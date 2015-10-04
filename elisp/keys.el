@@ -24,6 +24,7 @@
 ;; dealing with other frames
 (global-set-key (kbd "C-c o") 'other-frame)
 (global-set-key (kbd "C-c 2") 'make-frame-command)
+(global-set-key (kbd "C-c 3") 'setup-new-frame)
 (global-set-key (kbd "C-c 0") 'delete-frame)
 (global-set-key (kbd "C-c 1") 'delete-other-frames)
 

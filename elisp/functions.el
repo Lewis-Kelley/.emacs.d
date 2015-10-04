@@ -6,6 +6,9 @@
 
 (defvar homework-class)
 (defvar notes-class)
+(defvar class-list)
+
+(setq class-list (list "PH113" "MA212" "CSSE132" "CSSE220" "CLSK100"))
 
 (defun view-notes (class)
   "Generate and view the summary page for the CLASS."
@@ -53,6 +56,7 @@
 (defun quit-notes ()
   "Quits out of the notes buffer and deletes the today.org file."
   (interactive)
+  (save-buffer)
   (kill-buffer "today.org")
   (shell-command (format "rm ~/notes/%s/today.org*" notes-class))
   (setq notes-class nil)
@@ -121,6 +125,12 @@
   (interactive)
   (desktop-save "~/.emacs.d/")
   (save-buffers-kill-terminal))
+
+(defun setup-new-frame ()
+  "Open a new maximized frame and set the transparency to 90."
+  (interactive)
+  (toggle-frame-fullscreen)
+  (seethru 90))
 
 (provide 'functions)
 ;;; functions.el ends here
