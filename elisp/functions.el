@@ -87,6 +87,7 @@
 (defun quit-homework ()
   "Quits out of the homework buffer and deletes the homework.org file."
   (interactive)
+  (save-buffer)
   (kill-buffer "homework.org")
   (delete-window)
   (shell-command "rm ~/homework/homework.org")
