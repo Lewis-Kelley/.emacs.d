@@ -1,4 +1,4 @@
-;;; package --- Summary:
+;;; functions.el --- A list of custom functions.
 ;;; The definitions for all custom functions created in init.el.
 ;;; Commentary:
 

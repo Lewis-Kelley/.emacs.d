@@ -7,6 +7,17 @@
 (use-package arduino-mode
   :ensure t)
 
+(use-package autotetris-mode
+  :ensure t)
+
+(use-package buffer-move
+  :ensure t
+  :init
+  (global-set-key (kbd "C-S-j") 'buf-move-down)
+  (global-set-key (kbd "C-S-h") 'buf-move-left)
+  (global-set-key (kbd "C-S-k") 'buf-move-up)
+  (global-set-key (kbd "C-S-l") 'buf-move-right))
+
 (use-package c-mode
   :init
   (add-hook 'c-mode-hook 'flycheck-mode)
@@ -18,21 +29,36 @@
   :init
   (global-set-key (kbd "s-c") 'calc))
 
-(use-package cdlatex
+(use-package centered-window-mode
   :ensure t)
+
+(use-package cdlatex
+  :ensure t
+  :init
+  (add-hook 'cdlatex-mode-hook '(lambda () (diminish 'cdlatex-mode))))
 
 (use-package company
   :ensure t
   :init
-  (global-company-mode))
+  (global-company-mode)
+  (add-hook 'company-mode-hook '(lambda () (diminish 'company-mode))))
 
 (use-package company-c-headers
+  :ensure t)
+
+(use-package diminish
   :ensure t)
 
 (use-package evil
   :ensure t
   :init
-  (evil-mode))
+  (evil-mode)
+  (define-key evil-normal-state-map (kbd "C-k") (lambda ()
+						  (interactive)
+						  (evil-scroll-up nil)))
+  (define-key evil-normal-state-map (kbd "C-j") (lambda ()
+						  (interactive)
+						  (evil-scroll-down nil))))
 
 (use-package emacs-lisp
   :init
@@ -53,7 +79,8 @@
 (use-package flycheck
   :ensure t
   :init
-  (setq flycheck-gcc-args "-std=c99"))
+  (setq flycheck-gcc-args "-std=c99")
+  (add-hook 'flycheck-mode-hook '(lambda () (diminish 'flycheck-mode))))
 
 (use-package flyspell)
 
@@ -67,25 +94,15 @@
   (setq gdb-many-windows t)
   (setq gdb-show-main t))
 
-(use-package ggtags
+(use-package gnuplot
   :ensure t
   :init
-  (add-hook 'c-mode-common-hook
-	    (lambda ()
-	      (when (derived-mode-p 'c-mode 'c++-mode 'java-mode 'asm-mode)
-		(ggtags-mode 1))))
+  (autoload 'gnuplot-mode "gnuplot" t)
+  (autoload 'gnuplot-make-buffer "gnuplot" t))
 
-  (define-key ggtags-mode-map (kbd "C-c g s") 'ggtags-find-other-symbol)
-  (define-key ggtags-mode-map (kbd "C-c g h") 'ggtags-view-tag-history)
-  (define-key ggtags-mode-map (kbd "C-c g r") 'ggtags-find-reference)
-  (define-key ggtags-mode-map (kbd "C-c g f") 'ggtags-find-file)
-  (define-key ggtags-mode-map (kbd "C-c g c") 'ggtags-create-tags)
-  (define-key ggtags-mode-map (kbd "C-c g u") 'ggtags-update-tags)
-
-  (define-key ggtags-mode-map (kbd "M-,") 'pop-tag-mark))
-
-(use-package gnuplot
-  :ensure t)
+(use-package gnus
+  :init
+  (global-set-key (kbd "s-g") 'gnus))
 
 (use-package ido
   :init
@@ -109,6 +126,7 @@
   (load-theme 'monokai))
 
 (use-package multicolumn
+  :disabled t
   :ensure t
   :init
   (multicolumn-global-mode 1))
@@ -131,6 +149,8 @@
    (setq org-agenda-start-on-weekday nil)
    (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
    (add-hook 'org-mode-hook 'org-preview-latex-fragment)
+   (add-hook 'org-cdlatex-mode-hook (lambda () (diminish 'org-cdlatex-mode)))
+   (add-hook 'org-indent-mode-hook (lambda () (diminish 'org-indent-mode)))
    (global-set-key (kbd "C-c a") 'org-agenda)
    (add-hook 'org-mode-hook
 	     (lambda () (local-set-key (kbd "C-c C-x M-l") (kbd "C-u C-u C-c C-x C-l")))))
@@ -144,15 +164,33 @@
   :ensure t
   :init
   (projectile-global-mode)
-  (setq projectile-enable-caching t))
+  (setq projectile-enable-caching t)
+  (add-hook 'projectile-mode-hook '(lambda () (diminish 'projectile-mode))))
 
 (use-package seethru
   :ensure t
   :init
   (seethru 90))
 
-(use-package yasnippet
+(use-package speed-type
   :ensure t)
+
+(use-package undo-tree
+  :ensure t
+  :init
+  (add-hook 'undo-tree-mode-hook '(lambda () (diminish 'undo-tree-mode))))
+
+(use-package wsd-mode
+  :ensure t)
+
+(use-package xkcd
+  :disabled t
+  :ensure t)
+
+(use-package yasnippet
+  :ensure t
+  :init
+  (add-hook 'yas-minor-mode-hook '(lambda () (diminish 'yas-minor-mode))))
 
 (provide 'packages)
 ;;; packages.el ends here
