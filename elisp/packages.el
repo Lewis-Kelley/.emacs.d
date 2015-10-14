@@ -180,9 +180,6 @@
   :init
   (add-hook 'undo-tree-mode-hook '(lambda () (diminish 'undo-tree-mode))))
 
-(use-package wsd-mode
-  :ensure t)
-
 (use-package xkcd
   :disabled t
   :ensure t)
