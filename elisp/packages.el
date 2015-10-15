@@ -155,6 +155,14 @@
    (add-hook 'org-mode-hook
 	     (lambda () (local-set-key (kbd "C-c C-x M-l") (kbd "C-u C-u C-c C-x C-l")))))
 
+(use-package puml-mode
+  :disabled nil
+  :ensure t
+  :init
+  (add-to-list 'auto-mode-alist
+	       '("\\.puml\\'" . puml-mode)
+	       '("\\.plantuml\\'" . puml-mode)))
+
 (use-package powerline-evil
   :ensure t
   :init
