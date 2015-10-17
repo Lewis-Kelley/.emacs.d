@@ -60,6 +60,16 @@
 						  (interactive)
 						  (evil-scroll-down nil))))
 
+(use-package evil-easymotion
+  :ensure t
+  :init
+  (evilem-default-keybindings "SPC"))
+
+(use-package evil-mc
+  :ensure t
+  :init
+  (global-evil-mc-mode 1))
+
 (use-package emacs-lisp
   :init
   (add-hook 'emacs-lisp-mode-hook 'flycheck-mode)
@@ -89,10 +99,7 @@
   :init
   (fa-config-default))
 
-(use-package gdb
-  :init
-  (setq gdb-many-windows t)
-  (setq gdb-show-main t))
+(use-package gdb)
 
 (use-package gnuplot
   :ensure t
@@ -132,8 +139,12 @@
   (multicolumn-global-mode 1))
 
 (use-package multiple-cursors
+  :disabled t
   :ensure t
   :init
+  (global-set-key (kbd "C-c j") 'mc/mark-next-like-this)
+  (global-set-key (kbd "C-c k") 'mc/mark-previous-like-this)
+  (global-set-key (kbd "s-m") 'mc/mark-all-like-this)
   (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines))
 
 (use-package multi-term

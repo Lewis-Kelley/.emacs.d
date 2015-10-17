@@ -9,6 +9,7 @@
 (global-set-key (kbd "s-e") 'event)
 (global-set-key (kbd "s-n") 'notes)
 (global-set-key (kbd "s-v") 'view-notes)
+(global-set-key (kbd "s-b") 'eww)
 
 ;; custom desktop save/load commands
 (global-set-key (kbd "C-c d") 'my-desktop-save)
@@ -24,10 +25,6 @@
 
 ;; miscellaneous
 (global-set-key (kbd "s-f") 'hs-toggle-hiding)
-(global-set-key (kbd "<f5>") (lambda ()
-                               (interactive)
-                               (setq-local compilation-read-command nil)
-                               (call-interactively 'compile)))
 
 (provide 'keys)
 
