@@ -25,6 +25,7 @@
 
 ;; miscellaneous
 (global-set-key (kbd "s-f") 'hs-toggle-hiding)
+(global-set-key (kbd "<f5>") 'compile)
 
 (provide 'keys)
 

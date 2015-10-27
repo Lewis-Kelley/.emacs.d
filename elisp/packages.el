@@ -68,7 +68,8 @@
 (use-package evil-mc
   :ensure t
   :init
-  (global-evil-mc-mode 1))
+  (global-evil-mc-mode 1)
+  (add-hook 'evil-mc-mode-hook '(lambda() (diminish 'evil-mc-mode))))
 
 (use-package emacs-lisp
   :init
@@ -92,7 +93,9 @@
   (setq flycheck-gcc-args "-std=c99")
   (add-hook 'flycheck-mode-hook '(lambda () (diminish 'flycheck-mode))))
 
-(use-package flyspell)
+(use-package flyspell
+  :init
+  (add-hook 'flyspell-mode-hook '(lambda () (dimish 'flyspell-mode))))
 
 (use-package function-args
   :ensure t
