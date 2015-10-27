@@ -1,13 +1,10 @@
-;;; package --- Summary: Uses the use-package package to neatly install all needed packages.
+;;; packages --- Summary: Uses the use-package package to neatly install all needed packages.
 ;;; Commentary:
 
 ;;; Code:
 (require 'use-package)
 
 (use-package arduino-mode
-  :ensure t)
-
-(use-package autotetris-mode
   :ensure t)
 
 (use-package buffer-move
@@ -37,6 +34,12 @@
   :init
   (add-hook 'cdlatex-mode-hook '(lambda () (diminish 'cdlatex-mode))))
 
+(use-package color-identifiers-mode
+  :ensure t
+  :init
+  (add-hook 'color-identifiers-mode-hook '(lambda () (diminish 'color-identifiers-mode)))
+  (global-color-identifiers-mode))
+
 (use-package company
   :ensure t
   :init
@@ -53,6 +56,7 @@
   :ensure t
   :init
   (evil-mode)
+  (setq evil-move-cursor-back nil)
   (define-key evil-normal-state-map (kbd "C-k") (lambda ()
 						  (interactive)
 						  (evil-scroll-up nil)))
@@ -90,7 +94,7 @@
 (use-package flycheck
   :ensure t
   :init
-  (setq flycheck-gcc-args "-std=c99")
+  (setq flycheck-gcc-args "-std=gnu99")
   (add-hook 'flycheck-mode-hook '(lambda () (diminish 'flycheck-mode))))
 
 (use-package flyspell
@@ -180,7 +184,8 @@
 (use-package powerline-evil
   :ensure t
   :init
-  (powerline-evil-center-color-theme))
+  (powerline-evil-center-color-theme)
+  (display-time-mode t))
 
 (use-package projectile
   :ensure t
@@ -188,6 +193,11 @@
   (projectile-global-mode)
   (setq projectile-enable-caching t)
   (add-hook 'projectile-mode-hook '(lambda () (diminish 'projectile-mode))))
+
+(use-package rainbow-delimiters
+  :ensure t
+  :init
+  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 
 (use-package seethru
   :ensure t
