@@ -22,6 +22,12 @@
   (add-hook 'c-mode-common-hook 'hs-minor-mode)
   (setq-default c-basic-offset 4))
 
+(use-package c++-mode
+  :init
+  (add-hook 'c++-mode-hook 'flycheck-mode)
+  (add-hook 'c++-mode-hook #'yas-minor-mode)
+  (add-hook 'c++-mode-common-hook 'hs-minor-mode))
+
 (use-package calc
   :init
   (global-set-key (kbd "s-c") 'calc))
@@ -213,7 +219,6 @@
   (add-hook 'undo-tree-mode-hook '(lambda () (diminish 'undo-tree-mode))))
 
 (use-package xkcd
-  :disabled t
   :ensure t)
 
 (use-package yasnippet
