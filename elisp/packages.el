@@ -7,6 +7,13 @@
 (use-package arduino-mode
   :ensure t)
 
+(use-package bm
+  :ensure t
+  :init
+  (global-set-key (kbd "s-d") 'bm-toggle)
+  (global-set-key (kbd "s-j") 'bm-next)
+  (global-set-key (kbd "s-k") 'bm-previous))
+
 (use-package buffer-move
   :ensure t
   :init
@@ -105,12 +112,13 @@
 
 (use-package flyspell
   :init
-  (add-hook 'flyspell-mode-hook '(lambda () (dimish 'flyspell-mode))))
+  (add-hook 'flyspell-mode-hook '(lambda () (diminish 'flyspell-mode))))
 
 (use-package function-args
   :ensure t
   :init
-  (fa-config-default))
+  (fa-config-default)
+  (add-hook 'functions-args-mode-hook '(lambda () (diminish 'function-args-mode))))
 
 (use-package gdb)
 
@@ -123,6 +131,10 @@
 (use-package gnus
   :init
   (global-set-key (kbd "s-g") 'gnus))
+
+(use-package hs
+  :init
+  (add-hook 'hs-minor-mode-hook '(lambda () (diminish 'hs-minor-mode))))
 
 (use-package ido
   :init
@@ -139,6 +151,9 @@
   (global-set-key (kbd "C-x g") 'magit-status)
   (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)
   (global-magit-file-mode))
+
+(use-package minimap
+  :ensure t)
 
 (use-package monokai-theme
   :ensure t
@@ -212,6 +227,11 @@
 
 (use-package speed-type
   :ensure t)
+
+(use-package switch-window
+  :ensure t
+  :init
+  (global-set-key (kbd "s-o") 'switch-window))
 
 (use-package undo-tree
   :ensure t

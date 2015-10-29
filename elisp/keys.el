@@ -1,4 +1,4 @@
-;;; package --- Summary:
+;;; keys --- Summary:
 ;;; Commentary:
 
 ;;; Code:
