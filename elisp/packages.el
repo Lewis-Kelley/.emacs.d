@@ -153,6 +153,7 @@
   (global-magit-file-mode))
 
 (use-package minimap
+  :disabled nil
   :ensure t)
 
 (use-package monokai-theme
@@ -206,6 +207,7 @@
   :ensure t
   :init
   (powerline-evil-center-color-theme)
+  (setq powerline-default-separator nil)
   (display-time-mode t))
 
 (use-package projectile
