@@ -9,6 +9,8 @@
 
 (setq inhibit-splash-screen t)
 (setq diary-file "~/.emacs.d/diary")
+(setq-default tab-width 4 indent-tabs-mode t)
+(setq-default c-basic-offset 4)
 (setq scroll-margin 5            ;;Smooth scrolling
       scroll-conservatively 9999
       scroll-step 1)

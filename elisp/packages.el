@@ -65,6 +65,11 @@
 (use-package diminish
   :ensure t)
 
+(use-package dtrt-indent
+  :ensure t
+  :init
+  (dtrt-indent-mode 1))
+
 (use-package evil
   :ensure t
   :init

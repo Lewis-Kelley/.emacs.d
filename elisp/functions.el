@@ -15,8 +15,8 @@
   (interactive "sWhich class? ")
   (if (file-exists-p (format "~/notes/%s" class))
       (progn
-	(if (get-buffer "summary.org")
-	    (kill-buffer "summary.org"))
+		(if (get-buffer "summary.org")
+			(kill-buffer "summary.org"))
 	(shell-command (format "~/bin/compile-orgs.sh ~/notes/%s/" class))
 	(if (<= (count-windows) 1)
 	    (progn
