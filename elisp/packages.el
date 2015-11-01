@@ -70,6 +70,13 @@
   :init
   (dtrt-indent-mode 1))
 
+(use-package emacs-eclim
+  :ensure t
+  :init
+  (require 'eclim)
+  (require 'eclimd)
+  (global-eclim-mode))
+
 (use-package evil
   :ensure t
   :init
@@ -158,7 +165,6 @@
   (global-magit-file-mode))
 
 (use-package minimap
-  :disabled nil
   :ensure t)
 
 (use-package monokai-theme
