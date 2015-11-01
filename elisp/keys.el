@@ -14,7 +14,7 @@
 ;; custom desktop save/load commands
 (global-set-key (kbd "C-c d") 'my-desktop-save)
 (global-set-key (kbd "C-c r") 'desktop-read)
-(global-set-key (kbd "C-x c") 'desktop-save-and-close)
+(global-set-key (kbd "C-x x") 'desktop-save-and-close)
 
 ;; dealing with other frames
 (global-set-key (kbd "C-c o") 'other-frame)

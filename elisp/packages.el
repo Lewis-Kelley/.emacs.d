@@ -144,6 +144,14 @@
   :init
   (global-set-key (kbd "s-g") 'gnus))
 
+(use-package helm
+  :ensure t
+  :init
+  (require 'helm-config)
+  (global-set-key (kbd "M-x") 'helm-M-x)
+  (global-set-key (kbd "C-x C-f") 'helm-find-files)
+  (helm-mode 1))
+
 (use-package hs
   :init
   (add-hook 'hs-minor-mode-hook '(lambda () (diminish 'hs-minor-mode))))
