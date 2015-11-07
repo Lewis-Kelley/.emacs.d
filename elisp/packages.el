@@ -145,6 +145,7 @@
   (global-set-key (kbd "s-g") 'gnus))
 
 (use-package helm
+  :disabled t
   :ensure t
   :init
   (require 'helm-config)
@@ -164,6 +165,10 @@
   :init
   (global-set-key (kbd "C-x l") 'ispell-buffer))
 
+(use-package jdee
+  :disabled t
+  :ensure t)
+
 (use-package magit
   :ensure t
   :init
@@ -173,6 +178,7 @@
   (global-magit-file-mode))
 
 (use-package minimap
+  :disabled t
   :ensure t)
 
 (use-package monokai-theme

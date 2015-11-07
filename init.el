@@ -73,6 +73,7 @@
 (org-agenda-list)
 (other-window 1)
 (yas-reload-all)
+(semantic-mode 1)
 
 (provide 'init)
 
