@@ -43,13 +43,20 @@
 	("~/schedules/Y1/Q1.org" "~/homework/CSSE132.org" "~/homework/CSSE220.org" "~/homework/CLSK100.org" "~/homework/MA212.org" "~/homework/PH113.org" "~/planner.org")))
  '(package-selected-packages
    (quote
-	(emacs-eclim switch-window sublimity rainbow-delimiters evil-mc evil-easymotion company pacmacs puml-mode wsd-mode xkcd autotetris-mode centered-window-mode buffer-move speed-type multiple-cursors mulitple-cursors flx-ido multicolumn company-c-headers seethru projectile magit powerline-evil monokai function-args arduino-mode package-build shut-up epl git commander f dash s gnuplot flycheck evil yasnippet monokai-theme use-package multi-term cdlatex))))
+	(irony emacs-eclim switch-window sublimity rainbow-delimiters evil-mc evil-easymotion company pacmacs puml-mode wsd-mode xkcd autotetris-mode centered-window-mode buffer-move speed-type multiple-cursors mulitple-cursors flx-ido multicolumn company-c-headers seethru projectile magit powerline-evil monokai function-args arduino-mode package-build shut-up epl git commander f dash s gnuplot flycheck evil yasnippet monokai-theme use-package multi-term cdlatex))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(fringe ((t (:background "white")))))
+ '(fringe ((t (:background "white"))))
+ '(powerline-evil-emacs-face ((t (:inherit powerline-evil-base-face :background "salmon2"))))
+ '(powerline-evil-insert-face ((t (:inherit powerline-evil-base-face :background "steel blue"))))
+ '(powerline-evil-motion-face ((t (:inherit powerline-evil-base-face :background "medium orchid"))))
+ '(powerline-evil-normal-face ((t (:inherit powerline-evil-base-face :background "lime green"))))
+ '(powerline-evil-operator-face ((t (:inherit powerline-evil-operator-face :background "dodger blue"))))
+ '(powerline-evil-replace-face ((t (:inherit powerline-evil-base-face :background "dark red"))))
+ '(powerline-evil-visual-face ((t (:inherit powerline-evil-base-face :background "goldenrod")))))
 
 ;;
 ;; load external files

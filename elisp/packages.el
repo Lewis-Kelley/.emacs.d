@@ -7,7 +7,7 @@
 (use-package arduino-mode
   :ensure t)
 
-(use-package bm
+(use-package bm ;;make bookmarks and cycle through them
   :ensure t
   :init
   (global-set-key (kbd "s-d") 'bm-toggle)
@@ -22,11 +22,19 @@
   (global-set-key (kbd "C-S-k") 'buf-move-up)
   (global-set-key (kbd "C-S-l") 'buf-move-right))
 
+(use-package c-eldoc
+  :ensure t
+  :init
+  (add-hook 'c-mode-hook 'c-turn-on-eldoc-mode)
+  (add-hook 'c++-mode-hook 'c-turn-on-eldoc-mode))
+
 (use-package c-mode
   :init
   (add-hook 'c-mode-hook 'flycheck-mode)
   (add-hook 'c-mode-hook #'yas-minor-mode)
   (add-hook 'c-mode-common-hook 'hs-minor-mode)
+  (add-hook 'c-mode-common-hook '(lambda ()
+                                   (add-to-list 'ac-sources 'ac-source-semantic)))
   (setq-default c-basic-offset 4))
 
 (use-package c++-mode
@@ -62,15 +70,16 @@
 (use-package company-c-headers
   :ensure t)
 
-(use-package diminish
+(use-package diminish ;;hide minor modes from the minibar
   :ensure t)
 
-(use-package dtrt-indent
+(use-package dtrt-indent ;;auto-detect indentation on files
   :ensure t
   :init
   (dtrt-indent-mode 1))
 
-(use-package emacs-eclim
+(use-package emacs-eclim ;;emacs-eclipse integration
+  :disabled t
   :ensure t
   :init
   (require 'eclim)
@@ -90,11 +99,12 @@
 						  (evil-scroll-down nil))))
 
 (use-package evil-easymotion
+  :disabled t
   :ensure t
   :init
   (evilem-default-keybindings "SPC"))
 
-(use-package evil-mc
+(use-package evil-mc ;;multiple cursors
   :ensure t
   :init
   (global-evil-mc-mode 1)
@@ -140,10 +150,6 @@
   (autoload 'gnuplot-mode "gnuplot" t)
   (autoload 'gnuplot-make-buffer "gnuplot" t))
 
-(use-package gnus
-  :init
-  (global-set-key (kbd "s-g") 'gnus))
-
 (use-package helm
   :disabled t
   :ensure t
@@ -154,6 +160,7 @@
   (helm-mode 1))
 
 (use-package hs
+  :disabled
   :init
   (add-hook 'hs-minor-mode-hook '(lambda () (diminish 'hs-minor-mode))))
 
@@ -161,15 +168,28 @@
   :init
   (ido-mode t))
 
+(use-package irony
+  :init
+  (add-hook 'c-mode-hook 'irony-mode)
+  (add-hook 'c++-mode-hook 'irony-mode)
+  (add-hook 'objc-mode-hook 'irony-mode)
+  (add-hook 'irony-mode-hook '(lambda ()
+                                (define-key irony-mode-map [remap completion-at-point]
+                                  'irony-completion-at-point-async)
+                                (define-key irony-mode-map [remap complete-symbol]
+                                  'irony-completion-at-point-async)))
+  (add-hook 'irony-mode-hook 'irony-cbd-auto-setup-compile-options))
+
 (use-package ispell
+  :disabled t
   :init
   (global-set-key (kbd "C-x l") 'ispell-buffer))
 
-(use-package jdee
+(use-package jdee ;;java IDE
   :disabled t
   :ensure t)
 
-(use-package magit
+(use-package magit ;;git porcelain
   :ensure t
   :init
   (setq magit-restore-window-configuration t)
@@ -177,7 +197,7 @@
   (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)
   (global-magit-file-mode))
 
-(use-package minimap
+(use-package minimap ;;shows a miniature version of the current file
   :disabled t
   :ensure t)
 
@@ -220,7 +240,7 @@
    (add-hook 'org-mode-hook
 	     (lambda () (local-set-key (kbd "C-c C-x M-l") (kbd "C-u C-u C-c C-x C-l")))))
 
-(use-package puml-mode
+(use-package puml-mode ;;uml writer
   :disabled nil
   :ensure t
   :init
