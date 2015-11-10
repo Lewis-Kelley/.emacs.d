@@ -104,6 +104,11 @@
   :init
   (evilem-default-keybindings "SPC"))
 
+(use-package evil-magit
+  :ensure t
+  :init
+  (setq evil-magit-state 'motion))
+
 (use-package evil-mc ;;multiple cursors
   :ensure t
   :init
