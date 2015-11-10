@@ -53,20 +53,19 @@
 
 (use-package cdlatex
   :ensure t
-  :config
-  (add-hook 'cdlatex-mode-hook '(lambda () (diminish 'cdlatex-mode))))
+  :diminish cdlatex-mode)
 
 (use-package color-identifiers-mode
   :ensure t
+  :diminish color-identifiers-mode
   :init
-  (add-hook 'color-identifiers-mode-hook '(lambda () (diminish 'color-identifiers-mode)))
   (global-color-identifiers-mode))
 
 (use-package company
   :ensure t
+  :diminish company-mode
   :config
-  (global-company-mode)
-  (add-hook 'company-mode-hook '(lambda () (diminish 'company-mode))))
+  (global-company-mode))
 
 (use-package company-c-headers
   :ensure t)
@@ -114,10 +113,9 @@
 
 (use-package evil-mc ;;multiple cursors
   :ensure t
+  :diminish evil-mc-mode
   :init
-  (global-evil-mc-mode 1)
-  :config
-  (add-hook 'evil-mc-mode-hook '(lambda() (diminish 'evil-mc-mode))))
+  (global-evil-mc-mode 1))
 
 (use-package emacs-lisp
   :init
@@ -137,19 +135,18 @@
 
 (use-package flycheck
   :ensure t
+  :diminish flycheck-mode
   :init
-  (setq flycheck-gcc-args "-std=gnu99")
-  (add-hook 'flycheck-mode-hook '(lambda () (diminish 'flycheck-mode))))
+  (setq flycheck-gcc-args "-std=gnu99"))
 
 (use-package flyspell
-  :init
-  (add-hook 'flyspell-mode-hook '(lambda () (diminish 'flyspell-mode))))
+  :diminish flyspell-mode)
 
 (use-package function-args
   :ensure t
+  :diminish function-args-mode
   :init
-  (fa-config-default)
-  (add-hook 'functions-args-mode-hook '(lambda () (diminish 'function-args-mode))))
+  (fa-config-default))
 
 (use-package gdb)
 
@@ -257,6 +254,10 @@
    :bind
    ("C-c a" . org-agenda))
 
+(use-package prettify-symbols-mode
+  :init
+  (global-prettify-symbols-mode 1))
+
 (use-package puml-mode ;;uml writer
   :ensure t
   :mode
@@ -272,10 +273,10 @@
 
 (use-package projectile
   :ensure t
+  :diminish projectile-mode
   :init
   (projectile-global-mode)
-  (setq projectile-enable-caching t)
-  (add-hook 'projectile-mode-hook '(lambda () (diminish 'projectile-mode))))
+  (setq projectile-enable-caching t))
 
 (use-package rainbow-delimiters
   :ensure t
@@ -297,8 +298,7 @@
 
 (use-package undo-tree
   :ensure t
-  :config
-  (add-hook 'undo-tree-mode-hook '(lambda () (diminish 'undo-tree-mode))))
+  :diminish undo-tree-mode)
 
 (use-package wgrep
   :ensure t)
@@ -308,8 +308,7 @@
 
 (use-package yasnippet
   :ensure t
-  :config
-  (add-hook 'yas-minor-mode-hook '(lambda () (diminish 'yas-minor-mode))))
+  :diminish yas-minor-mode)
 
 (provide 'packages)
 ;;; packages.el ends here
