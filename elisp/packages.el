@@ -9,18 +9,18 @@
 
 (use-package bm ;;make bookmarks and cycle through them
   :ensure t
-  :init
-  (global-set-key (kbd "s-d") 'bm-toggle)
-  (global-set-key (kbd "s-j") 'bm-next)
-  (global-set-key (kbd "s-k") 'bm-previous))
+  :bind
+  ("s-d" . bm-toggle)
+  ("s-j" . bm-next)
+  ("s-k" . bm-previous))
 
 (use-package buffer-move
   :ensure t
-  :init
-  (global-set-key (kbd "C-S-j") 'buf-move-down)
-  (global-set-key (kbd "C-S-h") 'buf-move-left)
-  (global-set-key (kbd "C-S-k") 'buf-move-up)
-  (global-set-key (kbd "C-S-l") 'buf-move-right))
+  :bind
+  ("C-S-j" . buf-move-down)
+  ("C-S-h" . buf-move-left)
+  ("C-S-k" . buf-move-up)
+  ("C-S-l" . buf-move-right))
 
 (use-package c-eldoc
   :ensure t
@@ -44,8 +44,8 @@
   (add-hook 'c++-mode-common-hook 'hs-minor-mode))
 
 (use-package calc
-  :init
-  (global-set-key (kbd "s-c") 'calc))
+  :bind
+  ("s-c" . calc))
 
 (use-package centered-window-mode
   :ensure t)
@@ -90,6 +90,8 @@
   :ensure t
   :init
   (evil-mode)
+  (evil-set-initial-state 'xkcd-mode 'emacs)
+  (evil-set-initial-state 'package-menu-mode 'motion)
   (setq evil-move-cursor-back nil)
   (define-key evil-normal-state-map (kbd "C-k") (lambda ()
 						  (interactive)
@@ -160,9 +162,11 @@
   :ensure t
   :init
   (require 'helm-config)
-  (global-set-key (kbd "M-x") 'helm-M-x)
-  (global-set-key (kbd "C-x C-f") 'helm-find-files)
-  (helm-mode 1))
+  :config
+  (helm-mode 1)
+  :bind
+  ("M-x" . helm-M-x)
+  ("C-x C-f" . helm-find-files))
 
 (use-package hs
   :disabled
@@ -187,20 +191,24 @@
 
 (use-package ispell
   :disabled t
-  :init
-  (global-set-key (kbd "C-x l") 'ispell-buffer))
+  :bind
+  ("C-x l" . ispell-buffer))
 
 (use-package jdee ;;java IDE
   :disabled t
   :ensure t)
 
+(use-package makefile-mode
+  :init
+  (add-to-list 'auto-mode-alist '("Doxyfile" . makefile-mode)))
+
 (use-package magit ;;git porcelain
   :ensure t
   :init
   (setq magit-restore-window-configuration t)
-  (global-set-key (kbd "C-x g") 'magit-status)
-  (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)
-  (global-magit-file-mode))
+  :bind
+  ("C-x g" . magit-status)
+  ("C-x M-g" . magit-dispatch-popup))
 
 (use-package minimap ;;shows a miniature version of the current file
   :disabled t
@@ -229,8 +237,9 @@
 (use-package multi-term
   :ensure t
   :init
-  (global-set-key (kbd "s-t") 'multi-term)
-  (setq multi-term-program "/bin/bash"))
+  (setq multi-term-program "/bin/bash")
+  :bind
+  ("s-t" . multi-term))
 
 (use-package org-mode
    :init
@@ -282,13 +291,16 @@
 
 (use-package switch-window
   :ensure t
-  :init
-  (global-set-key (kbd "s-o") 'switch-window))
+  :bind
+  ("s-o" . switch-window))
 
 (use-package undo-tree
   :ensure t
   :init
   (add-hook 'undo-tree-mode-hook '(lambda () (diminish 'undo-tree-mode))))
+
+(use-package wgrep
+  :ensure t)
 
 (use-package xkcd
   :ensure t)
