@@ -24,21 +24,22 @@
 
 (use-package c-eldoc
   :ensure t
-  :init
+  :config
   (add-hook 'c-mode-hook 'c-turn-on-eldoc-mode)
   (add-hook 'c++-mode-hook 'c-turn-on-eldoc-mode))
 
 (use-package c-mode
   :init
+  (setq-default c-basic-offset 4)
+  :config
   (add-hook 'c-mode-hook 'flycheck-mode)
   (add-hook 'c-mode-hook #'yas-minor-mode)
   (add-hook 'c-mode-common-hook 'hs-minor-mode)
   (add-hook 'c-mode-common-hook '(lambda ()
-                                   (add-to-list 'ac-sources 'ac-source-semantic)))
-  (setq-default c-basic-offset 4))
+                                   (add-to-list 'ac-sources 'ac-source-semantic))))
 
 (use-package c++-mode
-  :init
+  :config
   (add-hook 'c++-mode-hook 'flycheck-mode)
   (add-hook 'c++-mode-hook #'yas-minor-mode)
   (add-hook 'c++-mode-common-hook 'hs-minor-mode))
@@ -52,7 +53,7 @@
 
 (use-package cdlatex
   :ensure t
-  :init
+  :config
   (add-hook 'cdlatex-mode-hook '(lambda () (diminish 'cdlatex-mode))))
 
 (use-package color-identifiers-mode
@@ -63,7 +64,7 @@
 
 (use-package company
   :ensure t
-  :init
+  :config
   (global-company-mode)
   (add-hook 'company-mode-hook '(lambda () (diminish 'company-mode))))
 
@@ -75,8 +76,8 @@
 
 (use-package dtrt-indent ;;auto-detect indentation on files
   :ensure t
-  :init
-  (dtrt-indent-mode 1))
+  :config
+  (add-hook 'java-mode-hook 'dtrt-indent-mode))
 
 (use-package emacs-eclim ;;emacs-eclipse integration
   :disabled t
@@ -115,6 +116,7 @@
   :ensure t
   :init
   (global-evil-mc-mode 1)
+  :config
   (add-hook 'evil-mc-mode-hook '(lambda() (diminish 'evil-mc-mode))))
 
 (use-package emacs-lisp
@@ -250,17 +252,16 @@
    (add-hook 'org-mode-hook 'org-preview-latex-fragment)
    (add-hook 'org-cdlatex-mode-hook (lambda () (diminish 'org-cdlatex-mode)))
    (add-hook 'org-indent-mode-hook (lambda () (diminish 'org-indent-mode)))
-   (global-set-key (kbd "C-c a") 'org-agenda)
    (add-hook 'org-mode-hook
-	     (lambda () (local-set-key (kbd "C-c C-x M-l") (kbd "C-u C-u C-c C-x C-l")))))
+	     (lambda () (local-set-key (kbd "C-c C-x M-l") (kbd "C-u C-u C-c C-x C-l"))))
+   :bind
+   ("C-c a" . org-agenda))
 
 (use-package puml-mode ;;uml writer
-  :disabled nil
   :ensure t
-  :init
-  (add-to-list 'auto-mode-alist
-	       '("\\.puml\\'" . puml-mode)
-	       '("\\.plantuml\\'" . puml-mode)))
+  :mode
+  ("\\.puml\\'" . puml-mode)
+  ("\\.plantuml\\'" . puml-mode))
 
 (use-package powerline-evil
   :ensure t
@@ -278,7 +279,7 @@
 
 (use-package rainbow-delimiters
   :ensure t
-  :init
+  :config
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 
 (use-package seethru
@@ -296,7 +297,7 @@
 
 (use-package undo-tree
   :ensure t
-  :init
+  :config
   (add-hook 'undo-tree-mode-hook '(lambda () (diminish 'undo-tree-mode))))
 
 (use-package wgrep
@@ -307,7 +308,7 @@
 
 (use-package yasnippet
   :ensure t
-  :init
+  :config
   (add-hook 'yas-minor-mode-hook '(lambda () (diminish 'yas-minor-mode))))
 
 (provide 'packages)
