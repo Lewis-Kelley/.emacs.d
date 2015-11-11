@@ -11,9 +11,20 @@
 (setq diary-file "~/.emacs.d/diary")
 (setq-default tab-width 4 indent-tabs-mode t)
 (setq-default c-basic-offset 4)
-(setq scroll-margin 5            ;;Smooth scrolling
-      scroll-conservatively 9999
-      scroll-step 1)
+(setq redisplay-dont-pause t ;;Smooth scrolling
+      scroll-margin 3
+      scroll-step 1
+      scroll-conservatively 10000
+      scroll-preserve-screen-position 1)
+(set-face-attribute 'default nil
+                    :family "DejaVu Sans Mono"
+                    :height 100
+                    :weight 'normal
+                    :width 'normal)
+(add-hook 'after-init-hook '(lambda ()
+							  (dolist (f (face-list))
+								(when (not (= 'default f))
+								  (set-face-attribute f nil :height 1.0)))))
 
 ;; disable toolbar and the like
 (tool-bar-mode -1)

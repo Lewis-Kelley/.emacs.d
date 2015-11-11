@@ -189,5 +189,10 @@
 
 	(balance-windows-area)))
 
+(defun clean-buffer ()
+  "Reindent the whole buffer."
+  (interactive)
+  (indent-region (point-min) (point-max)))
+
 (provide 'functions)
 ;;; functions.el ends here

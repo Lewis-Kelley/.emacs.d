@@ -148,7 +148,10 @@
   :init
   (fa-config-default))
 
-(use-package gdb)
+(use-package git-gutter-fringe
+  :ensure t
+  :init
+  (global-git-gutter-mode 1))
 
 (use-package gnuplot
   :ensure t

@@ -1,6 +1,7 @@
-;;
-;; Custom minor modes to be loaded by init.el.
-;;
+;;; minor-modes --- Holds my own minor modes to be read by init.el.
+;;; Commentary:
+
+;;; Code:
 
 (define-minor-mode event-mode
   "A simple mode for appending a small temporary file to ~/planner.org"
@@ -27,3 +28,7 @@
 	     (define-key map (kbd "C-c q") 'quit-homework)
 	     map)
   (make-local-variable homework-class))
+
+(provide 'minor-modes)
+
+;;; minor-modes.el ends here

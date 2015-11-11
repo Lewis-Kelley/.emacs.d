@@ -10,6 +10,7 @@
 (global-set-key (kbd "s-n") 'notes)
 (global-set-key (kbd "s-v") 'view-notes)
 (global-set-key (kbd "s-b") 'eww)
+(global-set-key (kbd "s-r") 'clean-buffer)
 
 ;; custom desktop save/load commands
 (global-set-key (kbd "C-c d") 'my-desktop-save)
