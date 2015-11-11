@@ -93,8 +93,7 @@
 
 (use-package evil
   :ensure t
-  :init
-  (evil-mode)
+  :config
   (evil-set-initial-state 'xkcd-mode 'emacs)
   (evil-set-initial-state 'package-menu-mode 'motion)
   (setq evil-move-cursor-back nil)
@@ -110,6 +109,17 @@
   :ensure t
   :init
   (evilem-default-keybindings "SPC"))
+
+(use-package evil-leader
+  :ensure t
+  :init
+  (global-evil-leader-mode)
+  :config
+  (evil-leader/set-leader "SPC")
+  (evil-leader/set-key
+   "f" 'find-file
+   "k" 'kill-buffer
+   "x" 'execute-extended-command))
 
 (use-package evil-magit
   :ensure t
@@ -193,7 +203,7 @@
                                   'irony-completion-at-point-async)
                                 (define-key irony-mode-map [remap complete-symbol]
                                   'irony-completion-at-point-async)))
-  (add-hook 'irony-mode-hook 'irony-cbd-auto-setup-compile-options))
+  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
 
 (use-package ispell
   :disabled t

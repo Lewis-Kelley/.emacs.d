@@ -54,7 +54,7 @@
 	("~/schedules/Y1/Q1.org" "~/homework/CSSE132.org" "~/homework/CSSE220.org" "~/homework/CLSK100.org" "~/homework/MA212.org" "~/homework/PH113.org" "~/planner.org")))
  '(package-selected-packages
    (quote
-	(graphene-meta-theme wgrep chess irony emacs-eclim switch-window sublimity rainbow-delimiters evil-mc evil-easymotion company pacmacs puml-mode wsd-mode xkcd autotetris-mode centered-window-mode buffer-move speed-type multiple-cursors mulitple-cursors flx-ido multicolumn company-c-headers seethru projectile magit powerline-evil monokai function-args arduino-mode package-build shut-up epl git commander f dash s gnuplot flycheck evil yasnippet monokai-theme use-package multi-term cdlatex))))
+	(evil-leader graphene-meta-theme wgrep chess irony emacs-eclim switch-window sublimity rainbow-delimiters evil-mc evil-easymotion company pacmacs puml-mode wsd-mode xkcd autotetris-mode centered-window-mode buffer-move speed-type multiple-cursors mulitple-cursors flx-ido multicolumn company-c-headers seethru projectile magit powerline-evil monokai function-args arduino-mode package-build shut-up epl git commander f dash s gnuplot flycheck evil yasnippet monokai-theme use-package multi-term cdlatex))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -94,6 +94,7 @@
 (other-window 1)
 (yas-reload-all)
 (semantic-mode 1)
+(evil-mode)
 
 (provide 'init)
 
