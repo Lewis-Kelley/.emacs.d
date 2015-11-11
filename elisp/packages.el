@@ -86,6 +86,11 @@
   (require 'eclimd)
   (global-eclim-mode))
 
+(use-package emacs-lisp
+  :init
+  (add-hook 'emacs-lisp-mode-hook 'flycheck-mode)
+  (add-hook 'emacs-lisp-mode-hook #'yas-minor-mode))
+
 (use-package evil
   :ensure t
   :init
@@ -117,10 +122,9 @@
   :init
   (global-evil-mc-mode 1))
 
-(use-package emacs-lisp
-  :init
-  (add-hook 'emacs-lisp-mode-hook 'flycheck-mode)
-  (add-hook 'emacs-lisp-mode-hook #'yas-minor-mode))
+(use-package eww
+  :bind
+  ("s-b" . eww))
 
 (use-package flx-ido
   :ensure t
@@ -209,7 +213,7 @@
   :init
   (setq magit-restore-window-configuration t)
   :bind
-  ("C-x g" . magit-status)
+  ("s-g" . magit-status)
   ("C-x M-g" . magit-dispatch-popup))
 
 (use-package minimap ;;shows a miniature version of the current file

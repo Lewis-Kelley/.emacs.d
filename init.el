@@ -69,6 +69,8 @@
  '(powerline-evil-replace-face ((t (:inherit powerline-evil-base-face :background "dark red"))))
  '(powerline-evil-visual-face ((t (:inherit powerline-evil-base-face :background "goldenrod")))))
 
+(put 'downcase-region 'disabled nil)
+
 ;;
 ;; load external files
 ;;
@@ -96,4 +98,3 @@
 (provide 'init)
 
 ;;; init.el ends here
-(put 'downcase-region 'disabled nil)

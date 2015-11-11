@@ -9,7 +9,6 @@
 (global-set-key (kbd "s-e") 'event)
 (global-set-key (kbd "s-n") 'notes)
 (global-set-key (kbd "s-v") 'view-notes)
-(global-set-key (kbd "s-b") 'eww)
 (global-set-key (kbd "s-r") 'clean-buffer)
 
 ;; custom desktop save/load commands
@@ -26,6 +25,7 @@
 
 ;; miscellaneous
 (global-set-key (kbd "s-f") 'hs-toggle-hiding)
+(global-set-key (kbd "C-c /") 'comment-or-uncomment-region)
 (global-set-key (kbd "<f5>") 'compile)
 
 (provide 'keys)
