@@ -25,7 +25,8 @@
 
 ;; miscellaneous
 (global-set-key (kbd "s-f") 'hs-toggle-hiding)
-(global-set-key (kbd "C-c /") 'comment-or-uncomment-region)
+(global-set-key (kbd "C-c /") 'comment-line)
+(global-set-key (kbd "C-c C-/") 'comment-or-uncomment-region)
 (global-set-key (kbd "<f5>") 'compile)
 
 (provide 'keys)

@@ -118,7 +118,11 @@
   (evil-leader/set-leader "SPC")
   (evil-leader/set-key
    "f" 'find-file
-   "k" 'kill-buffer
+   "d" 'divide-evenly
+   "s" 'save-buffer
+   "o" 'other-window
+   "k" 'goto-last-change
+   "j" 'goto-last-change-reverse
    "x" 'execute-extended-command))
 
 (use-package evil-magit
@@ -173,6 +177,9 @@
   (autoload 'gnuplot-mode "gnuplot" t)
   (autoload 'gnuplot-make-buffer "gnuplot" t))
 
+(use-package goto-chg
+  :ensure t)
+
 (use-package helm
   :disabled t
   :ensure t
@@ -211,7 +218,6 @@
   ("C-x l" . ispell-buffer))
 
 (use-package jdee ;;java IDE
-  :disabled t
   :ensure t)
 
 (use-package makefile-mode
@@ -262,6 +268,7 @@
    (setq org-startup-indented t)
    (setq org-agenda-include-diary t)
    (setq org-agenda-start-on-weekday nil)
+   (setq org-ellipsis "…")
    (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
    (add-hook 'org-mode-hook 'org-preview-latex-fragment)
    (add-hook 'org-cdlatex-mode-hook (lambda () (diminish 'org-cdlatex-mode)))
