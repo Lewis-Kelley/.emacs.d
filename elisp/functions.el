@@ -17,15 +17,15 @@
       (progn
 		(if (get-buffer "summary.org")
 			(kill-buffer "summary.org"))
-	(shell-command (format "~/bin/compile-orgs.sh ~/notes/%s/" class))
-	(if (<= (count-windows) 1)
-	    (progn
-	      (split-window-right)
-	      (other-window 1)))
-	(find-file (format "~/notes/%s/summary.org" class))
-	(org-shifttab 2))
+		(shell-command (format "~/bin/compile-orgs.sh ~/notes/%s/" class))
+		(if (<= (count-windows) 1)
+			(progn
+			  (split-window-right)
+			  (other-window 1)))
+		(find-file (format "~/notes/%s/summary.org" class))
+		(org-shifttab 2))
     (message (format "The class %s does not exist." class))))
-  
+
 
 (defun quit-event ()
   "Used by event to close the buffer and return key configs to normal."
@@ -77,11 +77,11 @@
   (interactive "sWhich class? ")
   (if (file-exists-p (format "~/notes/%s" class))
       (progn
-	(setq notes-class class)
-	(find-file (format "~/notes/%s/today.org" notes-class))
-	(shell-command (format "cd ~/notes/%s" notes-class))
-	(notes-mode)
-	(message "Press C-c s to save these notes or C-c q to discard."))
+		(setq notes-class class)
+		(find-file (format "~/notes/%s/today.org" notes-class))
+		(shell-command (format "cd ~/notes/%s" notes-class))
+		(notes-mode)
+		(message "Press C-c s to save these notes or C-c q to discard."))
     (message (format "The class %s does not exist." class))))
 
 (defun quit-homework ()
@@ -114,7 +114,7 @@
 		(find-file "~/homework/homework.org")
 		(homework-mode)
 		(message "Press C-c s to save these assignments or C-c q to discard."))
-      (message (format "The class %s does not exist." class))))
+	(message (format "The class %s does not exist." class))))
 
 (defun my-desktop-save ()
   "Save the current window to ~/.emacs.d/."
@@ -193,6 +193,18 @@
   "Reindent the whole buffer."
   (interactive)
   (indent-region (point-min) (point-max)))
+
+(defun toggle-windows-split()
+  "Switch back and forth between one window and whatever split of windows we might have in the frame. The idea is to maximize the current buffer, while being able to go back to the previous split of windows in the frame simply by calling this command again. Source: https://ignaciopp.wordpress.com/page/6/"
+  (interactive)
+  (if (not(window-minibuffer-p (selected-window)))
+	  (progn
+		(if (< 1 (count-windows))
+			(progn
+			  (window-configuration-to-register ?u)
+			  (delete-other-windows))
+		  (jump-to-register ?u))))
+  (my-iswitchb-close))
 
 (provide 'functions)
 ;;; functions.el ends here

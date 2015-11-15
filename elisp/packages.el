@@ -121,8 +121,11 @@
    "d" 'divide-evenly
    "s" 'save-buffer
    "o" 'other-window
+   "O" 'switch-window
+   "`" 'evil-invert-char
    "k" 'goto-last-change
    "j" 'goto-last-change-reverse
+   "b" 'ido-switch-buffer
    "x" 'execute-extended-command))
 
 (use-package evil-magit

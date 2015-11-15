@@ -15,6 +15,7 @@
 (global-set-key (kbd "C-c d") 'my-desktop-save)
 (global-set-key (kbd "C-c r") 'desktop-read)
 (global-set-key (kbd "C-x x") 'desktop-save-and-close)
+(global-set-key (kbd "C-x C-0") 'toggle-windows-split)
 
 ;; dealing with other frames
 (global-set-key (kbd "C-c o") 'other-frame)
