@@ -187,7 +187,8 @@
 	  (other-window 1)
 	  (setq col-ct (1+ col-ct)))
 
-	(balance-windows-area)))
+	(balance-windows-area)
+	(follow-mode)))
 
 (defun clean-buffer ()
   "Reindent the whole buffer."

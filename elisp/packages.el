@@ -98,11 +98,11 @@
   (evil-set-initial-state 'package-menu-mode 'motion)
   (setq evil-move-cursor-back nil)
   (define-key evil-normal-state-map (kbd "C-k") (lambda ()
-						  (interactive)
-						  (evil-scroll-up nil)))
+												  (interactive)
+												  (evil-scroll-up nil)))
   (define-key evil-normal-state-map (kbd "C-j") (lambda ()
-						  (interactive)
-						  (evil-scroll-down nil))))
+												  (interactive)
+												  (evil-scroll-down nil))))
 
 (use-package evil-easymotion
   :disabled t
@@ -117,16 +117,21 @@
   :config
   (evil-leader/set-leader "SPC")
   (evil-leader/set-key
-   "f" 'find-file
-   "d" 'divide-evenly
-   "s" 'save-buffer
-   "o" 'other-window
-   "O" 'switch-window
-   "`" 'evil-invert-char
-   "k" 'goto-last-change
-   "j" 'goto-last-change-reverse
-   "b" 'ido-switch-buffer
-   "x" 'execute-extended-command))
+	"0" #'delete-window
+	"1" #'delete-other-windows
+	"2" #'split-window-below
+	"3" #'split-window-right
+	"f" #'find-file
+	"d" #'divide-evenly
+	"s" #'save-buffer
+	"o" #'other-window
+	"O" #'switch-window
+	"l" #'ispell-buffer
+	"`" #'evil-invert-char
+	"k" #'goto-last-change
+	"j" #'goto-last-change-reverse
+	"b" #'ido-switch-buffer
+	"x" #'execute-extended-command))
 
 (use-package evil-magit
   :ensure t
@@ -142,6 +147,12 @@
 (use-package eww
   :bind
   ("s-b" . eww))
+
+(use-package fic-mode
+  :ensure t
+  :diminish fic-mode
+  :config
+  (add-hook 'prog-mode-hook #'turn-on-fic-mode))
 
 (use-package flx-ido
   :ensure t
@@ -171,6 +182,7 @@
 
 (use-package git-gutter-fringe
   :ensure t
+  :diminish git-gutter-mode
   :init
   (global-git-gutter-mode 1))
 
@@ -267,19 +279,19 @@
   ("s-t" . multi-term))
 
 (use-package org-mode
-   :init
-   (setq org-startup-indented t)
-   (setq org-agenda-include-diary t)
-   (setq org-agenda-start-on-weekday nil)
-   (setq org-ellipsis "…")
-   (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
-   (add-hook 'org-mode-hook 'org-preview-latex-fragment)
-   (add-hook 'org-cdlatex-mode-hook (lambda () (diminish 'org-cdlatex-mode)))
-   (add-hook 'org-indent-mode-hook (lambda () (diminish 'org-indent-mode)))
-   (add-hook 'org-mode-hook
-	     (lambda () (local-set-key (kbd "C-c C-x M-l") (kbd "C-u C-u C-c C-x C-l"))))
-   :bind
-   ("C-c a" . org-agenda))
+  :init
+  (setq org-startup-indented t)
+  (setq org-agenda-include-diary t)
+  (setq org-agenda-start-on-weekday nil)
+  (setq org-ellipsis "…")
+  (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
+  (add-hook 'org-mode-hook 'org-preview-latex-fragment)
+  (add-hook 'org-cdlatex-mode-hook (lambda () (diminish 'org-cdlatex-mode)))
+  (add-hook 'org-indent-mode-hook (lambda () (diminish 'org-indent-mode)))
+  (add-hook 'org-mode-hook
+			(lambda () (local-set-key (kbd "C-c C-x M-l") (kbd "C-u C-u C-c C-x C-l"))))
+  :bind
+  ("C-c a" . org-agenda))
 
 (use-package prettify-symbols-mode
   :init
