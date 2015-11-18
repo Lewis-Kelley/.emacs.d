@@ -24,11 +24,17 @@
 (global-set-key (kbd "C-c 0") #'delete-frame)
 (global-set-key (kbd "C-c 1") #'delete-other-frames)
 
-;; miscellaneous
-(global-set-key (kbd "s-f") #'hs-toggle-hiding)
+;; coding
 (global-set-key (kbd "C-c /") #'comment-line)
 (global-set-key (kbd "C-c C-/") #'comment-or-uncomment-region)
 (global-set-key (kbd "<f5>") #'compile)
+(global-set-key (kbd "C-M-k") #'beginning-of-defun)
+(global-set-key (kbd "C-M-j") #'end-of-defun)
+
+;; miscellaneous
+(global-set-key (kbd "s-f") #'hs-toggle-hiding)
+(global-set-key (kbd "C-x h") #'previous-buffer)
+(global-set-key (kbd "C-x l") #'next-buffer)
 
 (provide 'keys)
 

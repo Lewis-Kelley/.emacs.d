@@ -180,6 +180,19 @@
   :init
   (fa-config-default))
 
+(use-package ggtags
+  :ensure t
+  :diminish ggtags-mode
+  :config
+  (add-hook 'c-mode-hook #'ggtags-mode)
+  (add-hook 'c++-mode-hook #'ggtags-mode)
+  (define-key ggtags-mode-map (kbd "M-g M-g") #'ggtags-find-tag-dwim)
+  (define-key ggtags-mode-map (kbd "M-g M-s") #'ggtags-find-other-symbol)
+  (define-key ggtags-mode-map (kbd "M-g M-f") #'ggtags-find-file)
+  (define-key ggtags-mode-map (kbd "M-g M-c") #'ggtags-create-tags)
+  (define-key ggtags-mode-map (kbd "M-g M-u") #'ggtags-update-tags)
+  (define-key ggtags-mode-map (kbd "M-g M-r") #'ggtags-find-reference))
+
 (use-package git-gutter-fringe
   :ensure t
   :diminish git-gutter-mode
@@ -216,6 +229,7 @@
   (ido-mode t))
 
 (use-package irony
+  :disabled t
   :init
   (add-hook 'c-mode-hook 'irony-mode)
   (add-hook 'c++-mode-hook 'irony-mode)
@@ -309,6 +323,10 @@
   (powerline-evil-center-color-theme)
   (setq powerline-default-separator nil)
   (display-time-mode t))
+
+(use-package prog-mode
+  :config
+  (add-hook 'prog-mode-hook #'delete-trailing-whitespace))
 
 (use-package projectile
   :ensure t
