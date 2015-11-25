@@ -195,8 +195,11 @@
   (interactive)
   (indent-region (point-min) (point-max)))
 
-(defun toggle-windows-split()
-  "Switch back and forth between one window and whatever split of windows we might have in the frame. The idea is to maximize the current buffer, while being able to go back to the previous split of windows in the frame simply by calling this command again. Source: https://ignaciopp.wordpress.com/page/6/"
+(defun toggle-windows-split ()
+  "Switch back and forth between one window and a set of windows in a frame.
+The idea is to maximize the current buffer, while being able to go back to
+the previous split of windows in the frame simply by calling this command again.
+Source: https://ignaciopp.wordpress.com/page/6/"
   (interactive)
   (if (not(window-minibuffer-p (selected-window)))
 	  (progn
@@ -206,6 +209,12 @@
 			  (delete-other-windows))
 		  (jump-to-register ?u))))
   (my-iswitchb-close))
+
+(defun update-doxygen ()
+  "Check to see if there is a Doxyfile in the current directory, and if so update the file."
+  (interactive)
+  (if (file-exists-p "Doxyfile")
+	  (shell-command "doxygen Doxyfile > /dev/null")))
 
 (provide 'functions)
 ;;; functions.el ends here

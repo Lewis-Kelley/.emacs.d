@@ -73,6 +73,9 @@
 (use-package diminish ;;hide minor modes from the minibar
   :ensure t)
 
+;;(use-package diredful ;;colors files in dired mode according to type
+;;  :ensure t)          ;;currently unavailable,try again later
+
 (use-package dtrt-indent ;;auto-detect indentation on files
   :ensure t
   :config
@@ -113,6 +116,7 @@
 (use-package evil-leader
   :ensure t
   :init
+  (setq evil-leader/in-all-states 1)
   (global-evil-leader-mode)
   :config
   (evil-leader/set-leader "SPC")
@@ -131,6 +135,7 @@
 	"k" #'goto-last-change
 	"j" #'goto-last-change-reverse
 	"b" #'ido-switch-buffer
+	"r" #'quickrun
 	"x" #'execute-extended-command))
 
 (use-package evil-magit
@@ -335,6 +340,14 @@
   (projectile-global-mode)
   (setq projectile-enable-caching t))
 
+(use-package quickrun
+  :ensure t
+  :config
+  (quickrun-add-command "c/gcc"
+						'((:command . "gcc")
+						  (:exec . ("%c %o -std=gnu11 -o %e %s" "%e")))
+						:override t))
+
 (use-package rainbow-delimiters
   :ensure t
   :config
@@ -345,7 +358,7 @@
   :init
   (seethru 90))
 
-(use-package speed-type
+(use-package speed-type ;;Typing game
   :ensure t)
 
 (use-package switch-window
