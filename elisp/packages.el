@@ -98,7 +98,9 @@
   :ensure t
   :config
   (evil-set-initial-state 'xkcd-mode 'emacs)
+  (evil-set-initial-state 'blackbox-mode 'emacs)
   (evil-set-initial-state 'package-menu-mode 'motion)
+  (evil-set-initial-state 'org-agenda-mode 'motion)
   (setq evil-move-cursor-back nil)
   (define-key evil-normal-state-map (kbd "C-k") (lambda ()
 												  (interactive)
@@ -252,6 +254,7 @@
   ("C-x l" . ispell-buffer))
 
 (use-package jdee ;;java IDE
+  :disabled t
   :ensure t)
 
 (use-package makefile-mode
@@ -327,7 +330,7 @@
   :init
   (powerline-evil-center-color-theme)
   (setq powerline-default-separator nil)
-  (display-time-mode t))
+  (display-time-mode nil))
 
 (use-package prog-mode
   :config

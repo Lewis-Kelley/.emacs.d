@@ -173,7 +173,6 @@
 
 	(while (< col-ct cols)
 	  (split-window-horizontally)
-	  (message (format "col-ct: %d cols: %d" col-ct cols))
 	  (setq col-ct (1+ col-ct)))
 
 	(setq col-ct 0)
@@ -182,7 +181,6 @@
 	  (while (< row-ct rows)
 		(split-window-below)
 		(other-window 1)
-		(message (format "col-ct: %d row-ct: %d" col-ct row-ct))
 		(setq row-ct (1+ row-ct)))
 	  (other-window 1)
 	  (setq col-ct (1+ col-ct)))
@@ -211,10 +209,27 @@ Source: https://ignaciopp.wordpress.com/page/6/"
   (my-iswitchb-close))
 
 (defun update-doxygen ()
-  "Check to see if there is a Doxyfile in the current directory, and if so update the file."
+  "Check to see if there is a Doxyfile in the current directory.
+If it does, update the file.  If not, generate a new Doxyfile."
   (interactive)
   (if (file-exists-p "Doxyfile")
-	  (shell-command "doxygen Doxyfile > /dev/null")))
+	  (shell-command "doxygen Doxyfile > /dev/null")
+	(progn
+	  (shell-command "doxygen -g > /dev/null; doxygen Doxyfile > /dev/null")
+	  (message "Created new Doxyfile"))))
+
+(defun time-in-range (time low high)
+  "Return a bool signifying if the passed TIME is between LOW and HIGH.
+LOW is the earlier bound, and HIGH is the later bound."
+  (return (and (>= (nth 0 time) (nth 0 low)) (<= (nth 0 time) (nth 0 high)) (>= (nth 1 time) (nth 1 low)) (<= (nth 1 time) (nth 1 high)))))
+
+(let ((min) (hour) (dow))
+  (defun time-tester ()
+	"Random time function tester."
+	(interactive)
+	(setq min (nth 1 (decode-time)))
+	(setq hour (nth 2 (decode-time)))
+	(setq dow (nth 6 (decode-time)))))
 
 (provide 'functions)
 ;;; functions.el ends here
