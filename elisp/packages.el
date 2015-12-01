@@ -73,8 +73,8 @@
 (use-package diminish ;;hide minor modes from the minibar
   :ensure t)
 
-;;(use-package diredful ;;colors files in dired mode according to type
-;;  :ensure t)          ;;currently unavailable,try again later
+(use-package diredful ;;colors files in dired mode according to type
+ :ensure t)
 
 (use-package dtrt-indent ;;auto-detect indentation on files
   :ensure t
@@ -138,6 +138,7 @@
 	"o" #'other-window
 	"O" #'switch-window
 	"l" #'ispell-buffer
+	"L" #'(org-preview-latex-fragment)
 	"`" #'evil-invert-char
 	"k" #'goto-last-change
 	"j" #'goto-last-change-reverse
@@ -258,6 +259,12 @@
   :bind
   ("C-x l" . ispell-buffer))
 
+(use-package java-imports ;;Currently not working
+  :disabled t
+  :ensure t
+  :init
+  (define-key java-mode-map (kbd "M-I") 'java-imports-add-import))
+
 (use-package jdee ;;java IDE
   :disabled t
   :ensure t)
@@ -316,6 +323,7 @@
   (setq org-agenda-include-diary t)
   (setq org-agenda-start-on-weekday nil)
   (setq org-ellipsis "…")
+  (setq org-src-fontify-natively t)
   (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
   (add-hook 'org-mode-hook 'org-preview-latex-fragment)
   (add-hook 'org-cdlatex-mode-hook (lambda () (diminish 'org-cdlatex-mode)))
