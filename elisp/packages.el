@@ -81,6 +81,11 @@
   :config
   (add-hook 'java-mode-hook 'dtrt-indent-mode))
 
+(use-package elpy
+  :ensure t
+  :init
+  (elpy-enable))
+
 (use-package emacs-eclim ;;emacs-eclipse integration
   :disabled t
   :ensure t
@@ -283,6 +288,12 @@
   :ensure t
   :init
   (multicolumn-global-mode 1))
+
+(use-package multi-line
+  :disabled t
+  :ensure t
+  :bind
+  ("s-m" . multi-line))
 
 (use-package multiple-cursors
   :disabled t
