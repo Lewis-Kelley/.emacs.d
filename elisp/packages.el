@@ -289,8 +289,7 @@
   :init
   (multicolumn-global-mode 1))
 
-(use-package multi-line
-  :disabled t
+(use-package multi-line ;;Changes a list of comma-separated items to different formats
   :ensure t
   :bind
   ("s-m" . multi-line))
@@ -366,6 +365,11 @@
   :ensure t
   :config
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+
+(use-package resize-window
+  :ensure t
+  :bind
+  ("C-S-r" . resize-window))
 
 (use-package seethru
   :ensure t
