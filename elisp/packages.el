@@ -259,7 +259,7 @@
   :bind
   ("C-x l" . ispell-buffer))
 
-(use-package java-imports ;;Currently not working
+(use-package java-imports ;;currently not working
   :disabled t
   :ensure t
   :init

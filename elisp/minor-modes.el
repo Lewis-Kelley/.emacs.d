@@ -12,13 +12,9 @@
 			map))
 
 (define-minor-mode notes-mode
-  "A simple mode for renaming and storing a temporary notes buffer"
+  "Used primarily to deal with updating the .dvi files upon each save when typing notes."
   :lighter " Notes"
-  :keymap (let ((map (make-sparse-keymap)))
-			(define-key map (kbd "C-c s") 'store-notes)
-			(define-key map (kbd "C-c q") 'quit-notes)
-			map)
-  (make-local-variable notes-class))
+  (add-hook 'after-save-hook 'my-org-latex-export-to-latex))
 
 (define-minor-mode homework-mode
   "Opens a small buffer to input an assignment for a given class."
