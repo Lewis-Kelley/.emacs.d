@@ -55,6 +55,9 @@
   :ensure t
   :diminish cdlatex-mode)
 
+(use-package cheatsheet ;;Something to keep in mind for the future
+  :disabled t)          ;;Allows you to make a small cheatsheet of different keyboard shortcuts.
+
 (use-package color-identifiers-mode
   :ensure t
   :diminish color-identifiers-mode
@@ -74,7 +77,7 @@
   :ensure t)
 
 (use-package diredful ;;colors files in dired mode according to type
- :ensure t)
+  :ensure t)
 
 (use-package dtrt-indent ;;auto-detect indentation on files
   :ensure t
@@ -156,6 +159,12 @@
   :diminish evil-mc-mode
   :init
   (global-evil-mc-mode 1))
+
+(use-package evil-smartparens
+  :ensure t
+  :diminish evil-smartparens-mode
+  :init
+  (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode))
 
 (use-package eww
   :bind
@@ -333,6 +342,14 @@
   :bind
   ("C-c a" . org-agenda))
 
+(use-package org-bullets
+  :ensure t
+  :init
+  (setq org-bullets-bullet-list
+		'("◉" "◎" "⚫" "○" "►" "◇"))
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+
 (use-package prettify-symbols-mode
   :init
   (global-prettify-symbols-mode 1))
@@ -384,6 +401,20 @@
   :init
   (seethru 90))
 
+(use-package slime ;; Superior Lisp Interaction Mode for Emacs
+  :ensure t
+  :init
+  (setq inferior-lisp-program "/usr/local/bin/sbcl")
+  (setq slime-contribs '(slime-fancy)))
+
+(use-package slime-company
+  :ensure t)
+
+(use-package smartparens
+  :ensure t
+  :init
+  (smartparens-global-mode))
+
 (use-package speed-type ;;Typing game
   :ensure t)
 
@@ -395,6 +426,13 @@
 (use-package undo-tree
   :ensure t
   :diminish undo-tree-mode)
+
+(use-package verilog-mode
+  :init
+  (setq verilog-tool 'verilog-linter)
+  (setq verilog-linter "verilator --lint-only")
+  (setq verilog-simulator "verilator")
+  (setq verilog-compiler "verilator"))
 
 (use-package wgrep
   :ensure t)

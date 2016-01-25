@@ -8,6 +8,132 @@
 (defvar notes-class)
 (defvar class-list)
 
+(let ((min) (hour) (dow))
+  (defun start-notes ()
+	"Open the correct notes file given the time and start 'notes-mode'."
+	(interactive)
+	(setq min (nth 1 (decode-time)))
+	(setq hour (nth 2 (decode-time)))
+	(setq dow (nth 6 (decode-time)))
+
+	(if (= dow 3) ;; if Wednesday
+		(progn
+		  (if (= hour 14)
+			  (if (> min 30)
+				  (progn
+					(find-file "~/notes/CSSE232.org")
+					(notes-mode)
+					(return))))
+		  (if (= hour 15)
+			  (progn
+				(find-file "~/notes/CSSE232.org")
+				(notes-mode)
+				(return))))
+	  (if (= hour 16)
+		  (if (< min 15)
+			  (progn
+				(find-file "~/notes/CSSE232.org")
+				(notes-mode)
+				(return))))
+	  )
+	(progn
+	  (if (or (= dow 1) (= dow 2) (= dow 4)) ;; if Mon, Tue, or Thu
+		  (progn
+			(if (= hour 9)
+				(progn
+				  (find-file "~/notes/CSSE230.org")
+				  (notes-mode)
+				  (return)))
+			(if (= hour 10)
+				(if (< min 45)
+					(progn
+					  (find-file "~/notes/CSSE230.org")
+					  (notes-mode)
+					  (return))))
+			(if (= hour 13)
+				(progn
+				  (if (> min 35)
+					  (progn
+						(find-file "~/notes/MA381.org")
+						(notes-mode)
+						(return)))))
+			(if (= hour 14)
+				(progn
+				  (if (< min 25)
+					  (progn
+						(find-file "~/notes/MA381.org")
+						(notes-mode)
+						(return))))
+			  (progn
+				(if (> min 30)
+					(progn
+					  (find-file "~/notes/CSSE232.org")
+					  (notes-mode)
+					  (return)))))
+			(if (= hour 15)
+				(progn
+				  (if (< min 20)
+					  (progn
+						(find-file "~/notes/CSSE232.org")
+						(notes-mode)
+						(return))))
+			  (progn
+				(if (> min 25)
+					(progn
+					  (find-file "~/notes/MA275.org")
+					  (notes-mode)
+					  (return)))))
+			(if (= hour 16)
+				(progn
+				  (if (< min 15)
+					  (progn
+						(find-file "~/notes/MA275.org")
+						(notes-mode)
+						(return)))))
+			(if (= dow 5) ;; if Friday
+				(progn
+				  (if (= hour 13)
+					  (progn
+						(if (> min 35)
+							(progn
+							  (find-file "~/notes/MA381.org")
+							  (notes-mode)
+							  (return)))))
+				  (if (= hour 14)
+					  (progn
+						(if (< min 25)
+							(progn
+							  (find-file "~/notes/MA381.org")
+							  (notes-mode)
+							  (return))))
+					(progn
+					  (if (> min 30)
+						  (progn
+							(find-file "~/notes/CSSE232.org")
+							(notes-mode)
+							(return)))))
+				  (if (= hour 15)
+					  (progn
+						(if (< min 20)
+							(progn
+							  (find-file "~/notes/CSSE232.org")
+							  (notes-mode)
+							  (return))))
+					(progn
+					  (if (> min 25)
+						  (progn
+							(find-file "~/notes/MA275.org")
+							(notes-mode)
+							(return)))))
+				  (if (= hour 16)
+					  (progn
+						(if (< min 15)
+							(progn
+							  (find-file "~/notes/MA275.org")
+							  (notes-mode)
+							  (return)))))))))))
+  (message "Not currently in a class (probably)"))
+
 (defun quit-event ()
   "Used by event to close the buffer and return key configs to normal."
   (interactive)
@@ -56,7 +182,7 @@
   "Generate a small buffer for adding a homework assignment in the given CLASS."
   (interactive "sWhich class? ")
   (if (file-exists-p (format "~/homework/%s.org" class))
-      (progn
+	  (progn
 		(setq homework-class class)
 		(split-window-below)
 		(enlarge-window 16)
@@ -71,11 +197,10 @@
   (interactive)
   ;; (message (format "%s" major-mode)))
   (if (string= (format "%s" major-mode) "org-mode")
-  	  (progn
+	  (progn
 		(org-latex-export-to-latex)
-		(shell-command "latex ~/notes/*.tex < ~/bin/newlines.txt > /dev/null")
-		(shell-command "rm *.aux *.html *.log *.out *.toc > /dev/null"))
-  	(message "There's a time and place for everything, but not now.")))
+		(shell-command "sh ~/bin/compile-tex.sh"))
+	(message "There's a time and place for everything, but not now.")))
 
 (defun my-desktop-save ()
   "Save the current window to ~/.emacs.d/."
@@ -179,18 +304,18 @@ If it does, update the file.  If not, generate a new Doxyfile."
 	  (shell-command "doxygen -g > /dev/null; doxygen Doxyfile > /dev/null")
 	  (message "Created new Doxyfile"))))
 
-(defun time-in-range (time low high)
-  "Return a bool signifying if the passed TIME is between LOW and HIGH.
-LOW is the earlier bound, and HIGH is the later bound."
-  (return (and (>= (nth 0 time) (nth 0 low)) (<= (nth 0 time) (nth 0 high)) (>= (nth 1 time) (nth 1 low)) (<= (nth 1 time) (nth 1 high)))))
-
-(let ((min) (hour) (dow))
-  (defun time-tester ()
-	"Random time function tester."
-	(interactive)
-	(setq min (nth 1 (decode-time)))
-	(setq hour (nth 2 (decode-time)))
-	(setq dow (nth 6 (decode-time)))))
+;; Taken from: http://ergoemacs.org/emacs/elisp_eval_lisp_code.html
+(defun xah-syntax-color-hex ()
+  "Syntax color hex color spec such as 「#ff1100」 in current buffer."
+  (interactive)
+  (font-lock-add-keywords
+   nil
+   '(("#[abcdef[:digit:]]\\{6\\}"
+      (0 (put-text-property
+          (match-beginning 0)
+          (match-end 0)
+          'face (list :background (match-string-no-properties 0)))))))
+  (font-lock-fontify-buffer))
 
 (provide 'functions)
 ;;; functions.el ends here
