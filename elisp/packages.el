@@ -7,6 +7,12 @@
 (use-package arduino-mode
   :ensure t)
 
+(use-package avy
+  :ensure t
+  :bind
+  ("C-;" . avy-goto-char-2)
+  ("C-M-;" . avy-goto-line))
+
 (use-package bm ;;make bookmarks and cycle through them
   :ensure t
   :bind
@@ -116,12 +122,6 @@
   (define-key evil-normal-state-map (kbd "C-j") (lambda ()
 												  (interactive)
 												  (evil-scroll-down nil))))
-
-(use-package evil-easymotion
-  :disabled t
-  :ensure t
-  :init
-  (evilem-default-keybindings "SPC"))
 
 (use-package evil-leader
   :ensure t
