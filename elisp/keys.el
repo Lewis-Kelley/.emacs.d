@@ -5,10 +5,8 @@
 
 ;; various custom functions and frequently
 ;; used programs
-(global-set-key (kbd "s-h") #'homework)
 (global-set-key (kbd "s-e") #'event)
 (global-set-key (kbd "s-n") #'notes)
-(global-set-key (kbd "s-v") #'view-notes)
 (global-set-key (kbd "s-r") #'clean-buffer)
 
 ;; custom desktop save/load commands

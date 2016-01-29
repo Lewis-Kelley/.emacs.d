@@ -60,7 +60,7 @@
 	("~/homework/CSSE232.org" "~/homework/CSSE230.org" "~/homework/MA275.org" "~/homework/MA381.org" "~/schedules/Y1/Q2.org" "~/planner.org")))
  '(package-selected-packages
    (quote
-	(zone-rainbow org-bullets reykjavik-theme evil-smartparens slime slime-company fireplace c-c-combo dired-filetype-face ess 2048-game elisp--witness--lisp java-imports diredful resize-window elpy multi-line ggtags quickrun fic-mode evil-leader graphene-meta-theme wgrep chess irony emacs-eclim switch-window sublimity rainbow-delimiters evil-mc evil-easymotion company pacmacs puml-mode wsd-mode xkcd autotetris-mode centered-window-mode buffer-move speed-type multiple-cursors mulitple-cursors flx-ido multicolumn company-c-headers seethru projectile magit powerline-evil monokai function-args arduino-mode package-build shut-up epl git commander f dash s gnuplot flycheck evil yasnippet monokai-theme use-package multi-term cdlatex))))
+	(char-menu srefactor zone-rainbow org-bullets reykjavik-theme evil-smartparens slime slime-company fireplace c-c-combo dired-filetype-face ess 2048-game elisp--witness--lisp java-imports diredful resize-window elpy multi-line ggtags quickrun fic-mode evil-leader graphene-meta-theme wgrep chess irony emacs-eclim switch-window sublimity rainbow-delimiters evil-mc evil-easymotion company pacmacs puml-mode wsd-mode xkcd autotetris-mode centered-window-mode buffer-move speed-type multiple-cursors mulitple-cursors flx-ido multicolumn company-c-headers seethru projectile magit powerline-evil monokai function-args arduino-mode package-build shut-up epl git commander f dash s gnuplot flycheck evil yasnippet monokai-theme use-package multi-term cdlatex))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -80,6 +80,17 @@
 ;;
 ;; load external files
 ;;
+
+(require 'cc-mode)
+(require 'semantic)
+
+(require 'char-menu)
+(setq char-menu '("‘’" "“”"
+				  ("Math" "≠" "⋂" "⋃")
+				  ("Arrows" "←" "↓" "↑" "→" "↔")
+				  ("Lower Greek" "α" "β" "Y" "δ" "θ" "λ" "μ" "π")
+				  ("Upper Greek" "Δ" "Π" "Σ" "Ω")))
+(global-set-key (kbd "M-i") #'char-menu)
 
 (add-to-list 'load-path "~/.emacs.d/plugins/yasnippet")
 (add-to-list 'load-path "~/.emacs.d/plugins/evil-org-mode")
@@ -101,14 +112,11 @@
 (org-agenda-list)
 (other-window 1)
 
-(require 'cc-mode)
-(require 'semantic)
-
 (yas-reload-all)
 (yas-global-mode)
 (global-semanticdb-minor-mode 1)
 (global-semantic-idle-scheduler-mode 1)
-(semantic-mode 1)
+(add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode)
 (evil-mode)
 
 (provide 'init)

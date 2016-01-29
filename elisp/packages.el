@@ -61,6 +61,17 @@
   :ensure t
   :diminish cdlatex-mode)
 
+;; (use-package char-menu
+;;   :ensure t
+;;   :init
+;;   (setq char-menu '("‘’" "“”"
+;; 					("Math" "≠" "⋂" "⋃")
+;; 					("Arrows" "←" "↓" "↑" "→" "↔")
+;; 					("Lower Greek" "α" "β" "Y" "δ" "θ" "λ" "μ" "π")
+;; 					("Upper Greek" "Δ" "Π" "Σ" "Ω")))
+;;   :bind
+;;   ("M-i" . #'char-menu))
+
 (use-package cheatsheet ;;Something to keep in mind for the future
   :disabled t)          ;;Allows you to make a small cheatsheet of different keyboard shortcuts.
 
@@ -141,7 +152,7 @@
 	"o" #'other-window
 	"O" #'switch-window
 	"l" #'ispell-buffer
-	"L" #'(org-preview-latex-fragment)
+	"L" '(lambda () (kbd "C-u C-u C-c C-x C-l"))
 	"`" #'evil-invert-char
 	"k" #'goto-last-change
 	"j" #'goto-last-change-reverse
@@ -323,6 +334,7 @@
   :ensure t
   :init
   (setq multi-term-program "/bin/bash")
+  (add-hook 'term-mode-hook (lambda () (yas-minor-mode 0)))
   :bind
   ("s-t" . multi-term))
 
@@ -417,6 +429,13 @@
 
 (use-package speed-type ;;Typing game
   :ensure t)
+
+(use-package srefactor
+  :ensure t
+  :init
+  (semantic-mode 1)
+  :config
+  (define-key c-mode-map (kbd "M-RET") 'srefactor-refactor-at-point))
 
 (use-package switch-window
   :ensure t
