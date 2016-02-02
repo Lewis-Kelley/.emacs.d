@@ -142,10 +142,10 @@
   :config
   (evil-leader/set-leader "SPC")
   (evil-leader/set-key
-	"0" #'delete-window
-	"1" #'delete-other-windows
-	"2" #'split-window-below
-	"3" #'split-window-right
+	")" #'delete-window
+	"!" #'delete-other-windows
+	"@" #'split-window-below
+	"#" #'split-window-right
 	"f" #'find-file
 	"d" #'divide-evenly
 	"s" #'save-buffer
@@ -202,7 +202,9 @@
   :ensure t
   :diminish flycheck-mode
   :init
-  (setq flycheck-gcc-args "-std=gnu99"))
+  (setq flycheck-gcc-args "-std=gnu99")
+  :config
+  (add-hook 'prog-mode-hook 'flycheck-mode))
 
 (use-package flyspell
   :diminish flyspell-mode)
@@ -350,7 +352,12 @@
   (add-hook 'org-cdlatex-mode-hook (lambda () (diminish 'org-cdlatex-mode)))
   (add-hook 'org-indent-mode-hook (lambda () (diminish 'org-indent-mode)))
   (add-hook 'org-mode-hook
-			(lambda () (local-set-key (kbd "C-c C-x M-l") (kbd "C-u C-u C-c C-x C-l"))))
+			(lambda ()
+			  (local-set-key (kbd "C-c C-x M-l") (kbd "C-u C-u C-c C-x C-l"))
+			  (local-set-key (kbd "C-c 2") 'org-mark-subtree)
+			  (local-set-key (kbd "C-c 3") 'org-update-statistics-cookies)
+			  (local-unset-key (kbd "C-c @"))
+			  (local-unset-key (kbd "C-c #"))))
   :bind
   ("C-c a" . org-agenda))
 
