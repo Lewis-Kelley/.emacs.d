@@ -4,10 +4,7 @@
 ;;; Code:
 (require 'use-package)
 
-(use-package arduino-mode
-  :ensure t)
-
-(use-package avy
+(use-package avy ;;jump to any visible line
   :ensure t
   :bind
   ("C-;" . avy-goto-char-2)
@@ -21,6 +18,7 @@
   ("s-k" . bm-previous))
 
 (use-package buffer-move
+  :disabled t
   :ensure t
   :bind
   ("C-S-j" . buf-move-down)
@@ -29,6 +27,7 @@
   ("C-S-l" . buf-move-right))
 
 (use-package c-eldoc
+  :disabled t
   :ensure t
   :config
   (add-hook 'c-mode-hook 'c-turn-on-eldoc-mode)
@@ -40,15 +39,13 @@
   :config
   (add-hook 'c-mode-hook 'flycheck-mode)
   (add-hook 'c-mode-hook #'yas-minor-mode)
-  (add-hook 'c-mode-common-hook 'hs-minor-mode)
   (add-hook 'c-mode-common-hook '(lambda ()
                                    (add-to-list 'ac-sources 'ac-source-semantic))))
 
 (use-package c++-mode
   :config
   (add-hook 'c++-mode-hook 'flycheck-mode)
-  (add-hook 'c++-mode-hook #'yas-minor-mode)
-  (add-hook 'c++-mode-common-hook 'hs-minor-mode))
+  (add-hook 'c++-mode-hook #'yas-minor-mode))
 
 (use-package calc
   :bind
@@ -61,19 +58,56 @@
   :ensure t
   :diminish cdlatex-mode)
 
-;; (use-package char-menu
-;;   :ensure t
-;;   :init
-;;   (setq char-menu '("‘’" "“”"
-;; 					("Math" "≠" "⋂" "⋃")
-;; 					("Arrows" "←" "↓" "↑" "→" "↔")
-;; 					("Lower Greek" "α" "β" "Y" "δ" "θ" "λ" "μ" "π")
-;; 					("Upper Greek" "Δ" "Π" "Σ" "Ω")))
-;;   :bind
-;;   ("M-i" . #'char-menu))
+(use-package char-menu
+  :ensure t
+  :init
+  (setq char-menu '("‘’" "“”"
+  					("Math" "≠" "±" "×" "÷" "√" "∫" "∞" "≤" "≥")
+  					("Logic" "⋀" "⋁" "¬" "∀" "∃")
+  					("Sets" "⋂" "⋃" "∈" "∉" "⊂" "⊆" "∅")
+  					("Arrows" "←" "↓" "↑" "→" "↔")
+  					("Lower Greek" "α" "β" "Y" "δ" "θ" "λ" "μ" "π")
+  					("Upper Greek" "Δ" "Π" "Σ" "Ω")))
+  :bind
+  ("M-i" . char-menu))
 
-(use-package cheatsheet ;;Something to keep in mind for the future
-  :disabled t)          ;;Allows you to make a small cheatsheet of different keyboard shortcuts.
+(use-package cheatsheet ;;Allows you to make a small cheatsheet of different keyboard shortcuts.
+  :ensure t
+  :config
+  (cheatsheet-add
+   :group 'Programming
+   :key (substitute-command-keys "\\[hs-toggle-hiding]")
+   :description "Toggle code folding.")
+  (cheatsheet-add
+   :group 'Motion
+   :key (substitute-command-keys "\\[avy-goto-char-2]")
+   :description "Jump to a 2-character sequence.")
+  (cheatsheet-add
+   :group 'Motion
+   :key (substitute-command-keys "\\[avy-goto-line]")
+   :description "Jump to a line.")
+  (cheatsheet-add
+   :group 'ggtags
+   :key "M-g M-g"
+   :description "Jump to the definition of the symbol under the cursor.")
+  (cheatsheet-add
+   :group 'ggtags
+   :key "M-g g"
+   :description "Jump back to the previous jump origin.")
+  (cheatsheet-add
+   :group 'Programming
+   :key (substitute-command-keys "\\[hs-toggle-hiding]")
+   :description "Toggle code folding.")
+  (cheatsheet-add
+   :group 'Common
+   :key (substitute-command-keys "\\[multi-line]")
+   :description "Reformat a list of items.")
+  (cheatsheet-add
+   :group 'Common
+   :key (substitute-command-keys "\\[resize-window]")
+   :description "Enter resize-window mode.")
+  :bind
+  ("C-h h" . cheatsheet-show))
 
 (use-package color-identifiers-mode
   :ensure t
@@ -94,7 +128,9 @@
   :ensure t)
 
 (use-package diredful ;;colors files in dired mode according to type
-  :ensure t)
+  :ensure t
+  :config
+  (diredful-mode 1))
 
 (use-package dtrt-indent ;;auto-detect indentation on files
   :ensure t
@@ -142,10 +178,10 @@
   :config
   (evil-leader/set-leader "SPC")
   (evil-leader/set-key
-	")" #'delete-window
-	"!" #'delete-other-windows
-	"@" #'split-window-below
-	"#" #'split-window-right
+	"0" #'delete-window
+	"1" #'delete-other-windows
+	"2" #'split-window-below
+	"3" #'split-window-right
 	"f" #'find-file
 	"d" #'divide-evenly
 	"s" #'save-buffer
@@ -222,11 +258,7 @@
   (add-hook 'c-mode-hook #'ggtags-mode)
   (add-hook 'c++-mode-hook #'ggtags-mode)
   (define-key ggtags-mode-map (kbd "M-g M-g") #'ggtags-find-tag-dwim)
-  (define-key ggtags-mode-map (kbd "M-g M-s") #'ggtags-find-other-symbol)
-  (define-key ggtags-mode-map (kbd "M-g M-f") #'ggtags-find-file)
-  (define-key ggtags-mode-map (kbd "M-g M-c") #'ggtags-create-tags)
-  (define-key ggtags-mode-map (kbd "M-g M-u") #'ggtags-update-tags)
-  (define-key ggtags-mode-map (kbd "M-g M-r") #'ggtags-find-reference))
+  (define-key ggtags-mode-map (kbd "M-g g") #'ggtags-prev-mark))
 
 (use-package git-gutter-fringe
   :ensure t
@@ -255,9 +287,11 @@
   ("C-x C-f" . helm-find-files))
 
 (use-package hs
-  :disabled
   :init
-  (add-hook 'hs-minor-mode-hook '(lambda () (diminish 'hs-minor-mode))))
+  (add-hook 'hs-minor-mode-hook '(lambda () (diminish 'hs-minor-mode)))
+  (add-hook 'prog-mode-hook 'hs-minor-mode)
+  :bind
+  ("C-c C-f" . hs-toggle-hiding))
 
 (use-package ido
   :init
@@ -351,13 +385,7 @@
   (add-hook 'org-mode-hook 'org-preview-latex-fragment)
   (add-hook 'org-cdlatex-mode-hook (lambda () (diminish 'org-cdlatex-mode)))
   (add-hook 'org-indent-mode-hook (lambda () (diminish 'org-indent-mode)))
-  (add-hook 'org-mode-hook
-			(lambda ()
-			  (local-set-key (kbd "C-c C-x M-l") (kbd "C-u C-u C-c C-x C-l"))
-			  (local-set-key (kbd "C-c 2") 'org-mark-subtree)
-			  (local-set-key (kbd "C-c 3") 'org-update-statistics-cookies)
-			  (local-unset-key (kbd "C-c @"))
-			  (local-unset-key (kbd "C-c #"))))
+  (add-hook 'org-mode-hook (lambda () (local-set-key (kbd "C-c C-x M-l") (kbd "C-u C-u C-c C-x C-l"))))
   :bind
   ("C-c a" . org-agenda))
 

@@ -13,14 +13,14 @@
 (global-set-key (kbd "C-c d") #'my-desktop-save)
 (global-set-key (kbd "C-c r") #'desktop-read)
 (global-set-key (kbd "C-x x") #'desktop-save-and-close)
-(global-set-key (kbd "C-x C-)") #'toggle-windows-split)
+(global-set-key (kbd "C-x C-0") #'toggle-windows-split)
 
 ;; dealing with other frames
 (global-set-key (kbd "C-c o") #'other-frame)
-(global-set-key (kbd "C-c @") #'make-frame-command)
-(global-set-key (kbd "C-c #") #'setup-new-frame)
-(global-set-key (kbd "C-c )") #'delete-frame)
-(global-set-key (kbd "C-c !") #'delete-other-frames)
+(global-set-key (kbd "C-c 2") #'make-frame-command)
+(global-set-key (kbd "C-c 3") #'setup-new-frame)
+(global-set-key (kbd "C-c 0") #'delete-frame)
+(global-set-key (kbd "C-c 1") #'delete-other-frames)
 
 ;; coding
 (global-set-key (kbd "C-c /") #'comment-line)
