@@ -10,7 +10,6 @@
 (setq inhibit-splash-screen t)
 (setq diary-file "~/.emacs.d/diary")
 (setq-default tab-width 4 indent-tabs-mode t)
-(setq-default c-basic-offset 4)
 (setq default-input-method 'TeX)
 (setq redisplay-dont-pause t ;;Smooth scrolling
       scroll-margin 3
@@ -22,10 +21,6 @@
                     :height 100
                     :weight 'normal
                     :width 'normal)
-(add-hook 'after-init-hook '(lambda ()
-							  (dolist (f (face-list))
-								(when (not (= 'default f))
-								  (set-face-attribute f nil :height 1.0)))))
 
 ;; disable toolbar and the like
 (tool-bar-mode -1)
@@ -39,7 +34,6 @@
 (when (< emacs-major-version 24)
   ;; For important compatibility libraries like cl-lib
   (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
-(package-initialize)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -78,6 +72,8 @@
 
 (put 'downcase-region 'disabled nil)
 
+(package-initialize)
+
 ;;
 ;; load external files
 ;;
@@ -98,17 +94,6 @@
 ;;
 
 (show-paren-mode)
-
-(split-window-right)
-(org-agenda-list)
-(other-window 1)
-;; (invert-number-keys)
-
-(yas-reload-all)
-(yas-global-mode)
-(global-semanticdb-minor-mode 1)
-(global-semantic-idle-scheduler-mode 1)
-(add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode)
 (evil-mode)
 
 (provide 'init)

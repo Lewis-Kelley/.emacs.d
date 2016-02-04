@@ -87,13 +87,21 @@
    :key (substitute-command-keys "\\[avy-goto-line]")
    :description "Jump to a line.")
   (cheatsheet-add
-   :group 'ggtags
+   :group 'Tags
    :key "M-g M-g"
    :description "Jump to the definition of the symbol under the cursor.")
   (cheatsheet-add
-   :group 'ggtags
-   :key "M-g g"
+   :group 'Tags
+   :key "M-g r"
    :description "Jump back to the previous jump origin.")
+  (cheatsheet-add
+   :group 'Tags
+   :key (substitute-command-keys "\\[semantic-complete-analyze-inline]")
+   :description "Syntax-sensitive autocomplete.")
+  (cheatsheet-add
+   :group 'Tags
+   :key (substitute-command-keys "\\[semantic-complete-jump-local]")
+   :description "Prompt for a function, then jump to the definition.")
   (cheatsheet-add
    :group 'Programming
    :key (substitute-command-keys "\\[hs-toggle-hiding]")
@@ -112,10 +120,10 @@
 (use-package color-identifiers-mode
   :ensure t
   :diminish color-identifiers-mode
-  :init
+  :config
   (global-color-identifiers-mode))
 
-(use-package company
+(use-package company ;;TODO Speed up
   :ensure t
   :diminish company-mode
   :config
@@ -137,25 +145,12 @@
   :config
   (add-hook 'java-mode-hook 'dtrt-indent-mode))
 
-(use-package elpy
-  :ensure t
-  :init
-  (elpy-enable))
-
-(use-package emacs-eclim ;;emacs-eclipse integration
-  :disabled t
-  :ensure t
-  :init
-  (require 'eclim)
-  (require 'eclimd)
-  (global-eclim-mode))
-
 (use-package emacs-lisp
   :init
   (add-hook 'emacs-lisp-mode-hook 'flycheck-mode)
   (add-hook 'emacs-lisp-mode-hook #'yas-minor-mode))
 
-(use-package evil
+(use-package evil ;;TODO Speed up
   :ensure t
   :config
   (evil-set-initial-state 'xkcd-mode 'emacs)
@@ -164,11 +159,11 @@
   (evil-set-initial-state 'org-agenda-mode 'motion)
   (setq evil-move-cursor-back nil)
   (define-key evil-normal-state-map (kbd "C-k") (lambda ()
-												  (interactive)
-												  (evil-scroll-up nil)))
+  												  (interactive)
+  												  (evil-scroll-up nil)))
   (define-key evil-normal-state-map (kbd "C-j") (lambda ()
-												  (interactive)
-												  (evil-scroll-down nil))))
+  												  (interactive)
+  												  (evil-scroll-down nil))))
 
 (use-package evil-leader
   :ensure t
@@ -196,10 +191,10 @@
 	"r" #'quickrun
 	"x" #'execute-extended-command))
 
-(use-package evil-magit
-  :ensure t
-  :init
-  (setq evil-magit-state 'motion))
+(add-hook 'magit-mode-hook
+		  '(lambda ()
+			 (require 'evil-magit)
+			 (setq evil-magit-state 'motion)))
 
 (use-package evil-mc ;;multiple cursors
   :ensure t
@@ -245,35 +240,22 @@
 (use-package flyspell
   :diminish flyspell-mode)
 
-(use-package function-args
-  :ensure t
-  :diminish function-args-mode
-  :init
-  (fa-config-default))
-
 (use-package ggtags
   :ensure t
   :diminish ggtags-mode
   :config
   (add-hook 'c-mode-hook #'ggtags-mode)
   (add-hook 'c++-mode-hook #'ggtags-mode)
+  (add-hook 'java-mode-hook #'ggtags-mode)
+  (add-hook 'asm-mode-hook #'ggtags-mode)
   (define-key ggtags-mode-map (kbd "M-g M-g") #'ggtags-find-tag-dwim)
-  (define-key ggtags-mode-map (kbd "M-g g") #'ggtags-prev-mark))
+  (define-key ggtags-mode-map (kbd "M-g r") #'ggtags-prev-mark))
 
 (use-package git-gutter-fringe
   :ensure t
   :diminish git-gutter-mode
   :init
   (global-git-gutter-mode 1))
-
-(use-package gnuplot
-  :ensure t
-  :init
-  (autoload 'gnuplot-mode "gnuplot" t)
-  (autoload 'gnuplot-make-buffer "gnuplot" t))
-
-(use-package goto-chg
-  :ensure t)
 
 (use-package helm
   :disabled t
@@ -425,13 +407,13 @@
   (projectile-global-mode)
   (setq projectile-enable-caching t))
 
-(use-package quickrun
-  :ensure t
-  :config
-  (quickrun-add-command "c/gcc"
-						'((:command . "gcc")
-						  (:exec . ("%c %o -std=gnu11 -o %e %s" "%e")))
-						:override t))
+(add-hook 'prog-mode-hook
+		  '(lambda ()
+			 (require 'quickrun)
+			 (quickrun-add-command "c/gcc"
+								   '((:command . "gcc")
+									 (:exec . ("%c %o -std=gnu11 -o %e %s" "%e")))
+								   :override t)))
 
 (use-package rainbow-delimiters
   :ensure t
@@ -448,29 +430,34 @@
   :init
   (seethru 90))
 
+(use-package semantic
+  :init
+  (global-semanticdb-minor-mode 1)
+  (global-semantic-idle-scheduler-mode 1)
+  (add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode)
+  :bind
+  ("M-g TAB" . semantic-complete-analyze-inline)
+  ("M-g g" . semantic-complete-jump-local))
+
 (use-package slime ;; Superior Lisp Interaction Mode for Emacs
+  :disabled t
   :ensure t
   :init
   (setq inferior-lisp-program "/usr/local/bin/sbcl")
   (setq slime-contribs '(slime-fancy)))
 
 (use-package slime-company
+  :disabled t
   :ensure t)
 
 (use-package smartparens
   :ensure t
   :init
-  (smartparens-global-mode))
+  (add-hook 'prog-mode-hook 'smartparens-mode))
 
 (use-package speed-type ;;Typing game
+  :disabled t
   :ensure t)
-
-(use-package srefactor
-  :ensure t
-  :init
-  (semantic-mode 1)
-  :config
-  (define-key c-mode-map (kbd "M-RET") 'srefactor-refactor-at-point))
 
 (use-package switch-window
   :ensure t
@@ -489,14 +476,18 @@
   (setq verilog-compiler "verilator"))
 
 (use-package wgrep
-  :ensure t)
-
-(use-package xkcd
+  :disabled t
   :ensure t)
 
 (use-package yasnippet
   :ensure t
-  :diminish yas-minor-mode)
+  :diminish yas-minor-mode
+  :config
+  (add-hook 'prog-mode-hook
+			'(lambda ()
+			   (yas-reload-all)
+			   (yas-minor-mode))))
+
 
 (provide 'packages)
 ;;; packages.el ends here
