@@ -25,6 +25,13 @@
 			map)
   (make-local-variable homework-class))
 
+(define-minor-mode author-mode
+  "Turns off smartparens and turns on flyspell."
+  :lighter " Author"
+  :after-hook
+  (flyspell-mode 1)
+  (smartparens-mode 0))
+
 (define-minor-mode doxygen-mode
   "Update the Doxyfile after each save."
   :lighter " Doxygen"
