@@ -5,187 +5,12 @@
 ;;; Code:
 
 (defvar homework-class)
-(defvar notes-class)
-(defvar class-list)
-
-(defun invert-number-keys ()
-  "Flips the number keys so that the default is the symbol and shift triggers the numerals."
-  (interactive)
-  (define-key key-translation-map (kbd "1") (kbd "!"))
-  (define-key key-translation-map (kbd "!") (kbd "1"))
-  (define-key key-translation-map (kbd "2") (kbd "@"))
-  (define-key key-translation-map (kbd "@") (kbd "2"))
-  (define-key key-translation-map (kbd "3") (kbd "#"))
-  (define-key key-translation-map (kbd "#") (kbd "3"))
-  (define-key key-translation-map (kbd "4") (kbd "$"))
-  (define-key key-translation-map (kbd "$") (kbd "4"))
-  (define-key key-translation-map (kbd "5") (kbd "%"))
-  (define-key key-translation-map (kbd "%") (kbd "5"))
-  (define-key key-translation-map (kbd "6") (kbd "^"))
-  (define-key key-translation-map (kbd "^") (kbd "6"))
-  (define-key key-translation-map (kbd "7") (kbd "&"))
-  (define-key key-translation-map (kbd "&") (kbd "7"))
-  (define-key key-translation-map (kbd "8") (kbd "*"))
-  (define-key key-translation-map (kbd "*") (kbd "8"))
-  (define-key key-translation-map (kbd "9") (kbd "("))
-  (define-key key-translation-map (kbd "(") (kbd "9"))
-  (define-key key-translation-map (kbd "0") (kbd ")"))
-  (define-key key-translation-map (kbd ")") (kbd "0")))
-
-(defun normalize-number-keys ()
-  "Flips the number keys so that the default is the numeral and shift triggers the symbols."
-  (interactive)
-  (define-key key-translation-map (kbd "1") (kbd "1"))
-  (define-key key-translation-map (kbd "!") (kbd "!"))
-  (define-key key-translation-map (kbd "2") (kbd "2"))
-  (define-key key-translation-map (kbd "@") (kbd "@"))
-  (define-key key-translation-map (kbd "3") (kbd "3"))
-  (define-key key-translation-map (kbd "#") (kbd "#"))
-  (define-key key-translation-map (kbd "4") (kbd "4"))
-  (define-key key-translation-map (kbd "$") (kbd "$"))
-  (define-key key-translation-map (kbd "5") (kbd "5"))
-  (define-key key-translation-map (kbd "%") (kbd "%"))
-  (define-key key-translation-map (kbd "6") (kbd "6"))
-  (define-key key-translation-map (kbd "^") (kbd "^"))
-  (define-key key-translation-map (kbd "7") (kbd "7"))
-  (define-key key-translation-map (kbd "&") (kbd "&"))
-  (define-key key-translation-map (kbd "8") (kbd "8"))
-  (define-key key-translation-map (kbd "*") (kbd "*"))
-  (define-key key-translation-map (kbd "9") (kbd "9"))
-  (define-key key-translation-map (kbd "(") (kbd "("))
-  (define-key key-translation-map (kbd "0") (kbd "0"))
-  (define-key key-translation-map (kbd ")") (kbd ")")))
-
-(let ((min) (hour) (dow))
-  (defun start-notes ()
-	"Open the correct notes file given the time and start 'notes-mode'."
-	(interactive)
-	(setq min (nth 1 (decode-time)))
-	(setq hour (nth 2 (decode-time)))
-	(setq dow (nth 6 (decode-time)))
-
-	(if (= dow 3) ;; if Wednesday
-		(progn
-		  (if (= hour 14)
-			  (if (> min 30)
-				  (progn
-					(find-file "~/notes/CSSE232.org")
-					(notes-mode)
-					(return))))
-		  (if (= hour 15)
-			  (progn
-				(find-file "~/notes/CSSE232.org")
-				(notes-mode)
-				(return))))
-	  (if (= hour 16)
-		  (if (< min 15)
-			  (progn
-				(find-file "~/notes/CSSE232.org")
-				(notes-mode)
-				(return))))
-	  )
-	(progn
-	  (if (or (= dow 1) (= dow 2) (= dow 4)) ;; if Mon, Tue, or Thu
-		  (progn
-			(if (= hour 9)
-				(progn
-				  (find-file "~/notes/CSSE230.org")
-				  (notes-mode)
-				  (return)))
-			(if (= hour 10)
-				(if (< min 45)
-					(progn
-					  (find-file "~/notes/CSSE230.org")
-					  (notes-mode)
-					  (return))))
-			(if (= hour 13)
-				(progn
-				  (if (> min 35)
-					  (progn
-						(find-file "~/notes/MA381.org")
-						(notes-mode)
-						(return)))))
-			(if (= hour 14)
-				(progn
-				  (if (< min 25)
-					  (progn
-						(find-file "~/notes/MA381.org")
-						(notes-mode)
-						(return))))
-			  (progn
-				(if (> min 30)
-					(progn
-					  (find-file "~/notes/CSSE232.org")
-					  (notes-mode)
-					  (return)))))
-			(if (= hour 15)
-				(progn
-				  (if (< min 20)
-					  (progn
-						(find-file "~/notes/CSSE232.org")
-						(notes-mode)
-						(return))))
-			  (progn
-				(if (> min 25)
-					(progn
-					  (find-file "~/notes/MA275.org")
-					  (notes-mode)
-					  (return)))))
-			(if (= hour 16)
-				(progn
-				  (if (< min 15)
-					  (progn
-						(find-file "~/notes/MA275.org")
-						(notes-mode)
-						(return)))))
-			(if (= dow 5) ;; if Friday
-				(progn
-				  (if (= hour 13)
-					  (progn
-						(if (> min 35)
-							(progn
-							  (find-file "~/notes/MA381.org")
-							  (notes-mode)
-							  (return)))))
-				  (if (= hour 14)
-					  (progn
-						(if (< min 25)
-							(progn
-							  (find-file "~/notes/MA381.org")
-							  (notes-mode)
-							  (return))))
-					(progn
-					  (if (> min 30)
-						  (progn
-							(find-file "~/notes/CSSE232.org")
-							(notes-mode)
-							(return)))))
-				  (if (= hour 15)
-					  (progn
-						(if (< min 20)
-							(progn
-							  (find-file "~/notes/CSSE232.org")
-							  (notes-mode)
-							  (return))))
-					(progn
-					  (if (> min 25)
-						  (progn
-							(find-file "~/notes/MA275.org")
-							(notes-mode)
-							(return)))))
-				  (if (= hour 16)
-					  (progn
-						(if (< min 15)
-							(progn
-							  (find-file "~/notes/MA275.org")
-							  (notes-mode)
-							  (return)))))))))))
-  (message "Not currently in a class (probably)"))
 
 (defun quit-event ()
   "Used by event to close the buffer and return key configs to normal."
   (interactive)
   (kill-buffer "event.org")
+  (kill-buffer "planner.org")
   (delete-window)
   (shell-command "rm ~/.emacs.d/event.org*")
   (message "Done"))
@@ -196,7 +21,7 @@
   (save-buffer)
   (shell-command "cat ~/.emacs.d/event.org >> ~/planner.org")
   (quit-event)
-  (kill-buffer "~/planner.org"))
+  (kill-buffer "planner.org"))
 
 (defun event ()
   "Bring up a small buffer which, when closed, add it's contents to the planner."
@@ -204,6 +29,7 @@
   (split-window-below)
   (enlarge-window 16)
   (other-window 1)
+  (find-file "~/planner.org")
   (find-file "~/.emacs.d/event.org")
   (event-mode)
   (message "Press C-c s to store this event or C-c q to quit."))

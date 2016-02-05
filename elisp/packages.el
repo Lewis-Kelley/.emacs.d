@@ -51,9 +51,6 @@
   :bind
   ("s-c" . calc))
 
-(use-package centered-window-mode
-  :ensure t)
-
 (use-package cdlatex
   :ensure t
   :diminish cdlatex-mode)
