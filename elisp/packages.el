@@ -10,6 +10,11 @@
   ("C-;" . avy-goto-char-2)
   ("C-M-;" . avy-goto-line))
 
+(use-package aggressive-indent
+  :ensure t
+  :init
+  (add-hook 'prog-mode-hook 'aggressive-indent-mode))
+
 (use-package bm ;;make bookmarks and cycle through them
   :ensure t
   :bind
@@ -58,23 +63,13 @@
 (use-package char-menu
   :ensure t
   :init
-  (setq char-menu '("‘’" "“”"
-  					("Math" "≠" "±" "×" "÷" "√" "∫" "∞" "≤" "≥")
-  					("Logic" "⋀" "⋁" "¬" "∀" "∃")
-  					("Sets" "⋂" "⋃" "∈" "∉" "⊂" "⊆" "∅")
-  					("Arrows" "←" "↓" "↑" "→" "↔")
-  					("Lower Greek" "α" "β" "Y" "δ" "θ" "λ" "μ" "π")
-  					("Upper Greek" "Δ" "Π" "Σ" "Ω")))
+  (setq char-menu '("‘’" "“”" "…" "⌊⌋" "⋀" "⋁" "√"))
   :bind
   ("M-i" . char-menu))
 
 (use-package cheatsheet ;;Allows you to make a small cheatsheet of different keyboard shortcuts.
   :ensure t
   :config
-  (cheatsheet-add
-   :group 'Programming
-   :key (substitute-command-keys "\\[hs-toggle-hiding]")
-   :description "Toggle code folding.")
   (cheatsheet-add
    :group 'Motion
    :key (substitute-command-keys "\\[avy-goto-char-2]")
@@ -93,20 +88,12 @@
    :description "Jump back to the previous jump origin.")
   (cheatsheet-add
    :group 'Tags
-   :key (substitute-command-keys "\\[semantic-complete-analyze-inline]")
-   :description "Syntax-sensitive autocomplete.")
-  (cheatsheet-add
-   :group 'Tags
    :key (substitute-command-keys "\\[semantic-complete-jump-local]")
    :description "Prompt for a function, then jump to the definition.")
   (cheatsheet-add
    :group 'Programming
-   :key (substitute-command-keys "\\[hs-toggle-hiding]")
+   :key "C-c C-f"
    :description "Toggle code folding.")
-  (cheatsheet-add
-   :group 'Common
-   :key (substitute-command-keys "\\[multi-line]")
-   :description "Reformat a list of items.")
   (cheatsheet-add
    :group 'Common
    :key (substitute-command-keys "\\[resize-window]")
@@ -139,7 +126,7 @@
 
 (use-package dtrt-indent ;;auto-detect indentation on files
   :ensure t
-  :config
+  :init
   (add-hook 'java-mode-hook 'dtrt-indent-mode))
 
 (use-package emacs-lisp
@@ -155,10 +142,43 @@
   (evil-set-initial-state 'package-menu-mode 'motion)
   (evil-set-initial-state 'org-agenda-mode 'motion)
   (setq evil-move-cursor-back nil)
-  (define-key evil-normal-state-map (kbd "C-k") (lambda ()
+  (define-key evil-normal-state-map (kbd "n") 'evil-next-line)
+  (define-key evil-normal-state-map (kbd "e") 'evil-previous-line)
+  (define-key evil-normal-state-map (kbd "i") 'evil-forward-char)
+  (define-key evil-normal-state-map (kbd "l") 'undo-tree-undo)
+  (define-key evil-normal-state-map (kbd "u") 'evil-insert)
+  (define-key evil-normal-state-map (kbd "k") 'evil-search-next)
+  (define-key evil-normal-state-map (kbd "K") 'evil-search-previous)
+  (define-key evil-normal-state-map (kbd "C-n") (lambda ()
   												  (interactive)
   												  (evil-scroll-up nil)))
-  (define-key evil-normal-state-map (kbd "C-j") (lambda ()
+  (define-key evil-normal-state-map (kbd "C-e") (lambda ()
+  												  (interactive)
+  												  (evil-scroll-down nil)))
+  (define-key evil-visual-state-map (kbd "n") 'evil-next-line)
+  (define-key evil-visual-state-map (kbd "e") 'evil-previous-line)
+  (define-key evil-visual-state-map (kbd "i") 'evil-forward-char)
+  (define-key evil-visual-state-map (kbd "l") 'undo-tree-undo)
+  (define-key evil-visual-state-map (kbd "u") 'evil-insert)
+  (define-key evil-visual-state-map (kbd "k") 'evil-search-next)
+  (define-key evil-visual-state-map (kbd "K") 'evil-search-previous)
+  (define-key evil-visual-state-map (kbd "C-n") (lambda ()
+  												  (interactive)
+  												  (evil-scroll-up nil)))
+  (define-key evil-visual-state-map (kbd "C-e") (lambda ()
+  												  (interactive)
+  												  (evil-scroll-down nil)))
+  (define-key evil-motion-state-map (kbd "n") 'evil-next-line)
+  (define-key evil-motion-state-map (kbd "e") 'evil-previous-line)
+  (define-key evil-motion-state-map (kbd "i") 'evil-forward-char)
+  (define-key evil-motion-state-map (kbd "l") 'undo-tree-undo)
+  (define-key evil-motion-state-map (kbd "u") 'evil-insert)
+  (define-key evil-motion-state-map (kbd "k") 'evil-search-next)
+  (define-key evil-motion-state-map (kbd "K") 'evil-search-previous)
+  (define-key evil-motion-state-map (kbd "C-n") (lambda ()
+  												  (interactive)
+  												  (evil-scroll-up nil)))
+  (define-key evil-normal-state-map (kbd "C-e") (lambda ()
   												  (interactive)
   												  (evil-scroll-down nil))))
 
@@ -236,6 +256,18 @@
 
 (use-package flyspell
   :diminish flyspell-mode)
+
+(use-package forecast
+  :ensure t
+  :init
+  (setq forecast-latitude 39.4665
+		forecast-longitude -87.4132
+		forecast-city "Terre Haute"
+		forecast-country "USA"
+		forecast-units 'us)
+  (load (locate-user-emacs-file "forecast-api-key.el"))
+  :bind
+  ("s-f" . forecast))
 
 (use-package ggtags
   :ensure t
@@ -332,6 +364,7 @@
   (multicolumn-global-mode 1))
 
 (use-package multi-line ;;Changes a list of comma-separated items to different formats
+  :disabled t
   :ensure t
   :bind
   ("s-m" . multi-line))
