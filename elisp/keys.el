@@ -30,7 +30,6 @@
 (global-set-key (kbd "C-M-j") #'end-of-defun)
 
 ;; miscellaneous
-(global-set-key (kbd "s-f") #'hs-toggle-hiding)
 (global-set-key (kbd "C-x h") #'previous-buffer)
 (global-set-key (kbd "C-x l") #'next-buffer)
 (global-set-key (kbd "C-x )") #'delete-window)

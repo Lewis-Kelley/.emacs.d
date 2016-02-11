@@ -13,7 +13,10 @@
 (use-package aggressive-indent
   :ensure t
   :init
-  (add-hook 'prog-mode-hook 'aggressive-indent-mode))
+  (add-hook 'cc-mode-hook 'aggressive-indent-mode)
+  (add-hook 'java-mode-hook 'aggressive-indent-mode)
+  (add-hook 'lisp-mode-hook 'aggressive-indent-mode)
+  (add-hook 'elisp-mode-hook 'aggressive-indent-mode-hook))
 
 (use-package bm ;;make bookmarks and cycle through them
   :ensure t
@@ -180,50 +183,49 @@
   												  (evil-scroll-up nil)))
   (define-key evil-normal-state-map (kbd "C-e") (lambda ()
   												  (interactive)
-  												  (evil-scroll-down nil))))
+  												  (evil-scroll-down nil)))
+  (use-package alda-mode
+	:ensure t
+	:config
+	(define-key evil-normal-state-map "gp" 'alda-evil-play-region))
 
-(use-package evil-leader
-  :ensure t
-  :init
-  (setq evil-leader/in-all-states 1)
-  (global-evil-leader-mode)
-  :config
-  (evil-leader/set-leader "SPC")
-  (evil-leader/set-key
-	"0" #'delete-window
-	"1" #'delete-other-windows
-	"2" #'split-window-below
-	"3" #'split-window-right
-	"f" #'find-file
-	"d" #'divide-evenly
-	"s" #'save-buffer
-	"o" #'other-window
-	"O" #'switch-window
-	"l" #'ispell-buffer
-	"L" '(lambda () (kbd "C-u C-u C-c C-x C-l"))
-	"`" #'evil-invert-char
-	"k" #'goto-last-change
-	"j" #'goto-last-change-reverse
-	"b" #'ido-switch-buffer
-	"r" #'quickrun
-	"x" #'execute-extended-command))
+  (use-package evil-leader
+	:ensure t
+	:init
+	(setq evil-leader/in-all-states 1)
+	(global-evil-leader-mode)
+	:config
+	(evil-leader/set-leader "SPC")
+	(evil-leader/set-key
+	  "0" #'delete-window
+	  "1" #'delete-other-windows
+	  "2" #'split-window-below
+	  "3" #'split-window-right
+	  "f" #'find-file
+	  "d" #'divide-evenly
+	  "s" #'save-buffer
+	  "o" #'other-window
+	  "O" #'switch-window
+	  "l" #'ispell-buffer
+	  "L" '(lambda () (kbd "C-u C-u C-c C-x C-l"))
+	  "`" #'evil-invert-char
+	  "k" #'goto-last-change
+	  "j" #'goto-last-change-reverse
+	  "b" #'ido-switch-buffer
+	  "r" #'quickrun
+	  "x" #'execute-extended-command))
 
-(add-hook 'magit-mode-hook
-		  '(lambda ()
-			 (require 'evil-magit)
-			 (setq evil-magit-state 'motion)))
+  (use-package evil-mc ;;multiple cursors
+	:ensure t
+	:diminish evil-mc-mode
+	:init
+	(global-evil-mc-mode 1))
 
-(use-package evil-mc ;;multiple cursors
-  :ensure t
-  :diminish evil-mc-mode
-  :init
-  (global-evil-mc-mode 1))
-
-(use-package evil-smartparens
-  :ensure t
-  :diminish evil-smartparens-mode
-  :init
-  (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode))
+  (use-package evil-smartparens
+	:ensure t
+	:diminish evil-smartparens-mode
+	:init
+	(add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)))
 
 (use-package eww
   :bind
@@ -344,6 +346,10 @@
   :ensure t
   :init
   (setq magit-restore-window-configuration t)
+  (add-hook 'magit-mode-hook
+			'(lambda ()
+			   (require 'evil-magit)
+			   (setq evil-magit-state 'motion)))
   :bind
   ("s-g" . magit-status)
   ("C-x M-g" . magit-dispatch-popup))
@@ -504,6 +510,10 @@
   (setq verilog-linter "verilator --lint-only")
   (setq verilog-simulator "verilator")
   (setq verilog-compiler "verilator"))
+
+(use-package vc-check-status
+  :init
+  (vc-check-status-activate 1))
 
 (use-package wgrep
   :disabled t
