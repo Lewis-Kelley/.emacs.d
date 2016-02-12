@@ -28,17 +28,12 @@
 (global-set-key (kbd "C-x )") #'delete-window)
 
 ;; set up tab commands
-(define-key evil-normal-state-map (kbd "C-c 0") (lambda() (interactive) (elscreen-kill)))
-(define-key evil-normal-state-map (kbd "C-c 1") (lambda() (interactive) (elscreen-kill-others)))
-(define-key evil-normal-state-map (kbd "C-c 2") (lambda() (interactive) (elscreen-create)))
-(define-key evil-normal-state-map (kbd "C-c o") (lambda() (interactive) (elscreen-next)))
-(define-key evil-normal-state-map (kbd "C-c S-o") (lambda() (interactive) (elscreen-previous)))
-
-(define-key evil-insert-state-map (kbd "C-c 0") (lambda() (interactive) (elscreen-kill)))
-(define-key evil-insert-state-map (kbd "C-c 1") (lambda() (interactive) (elscreen-kill-others)))
-(define-key evil-insert-state-map (kbd "C-c 2") (lambda() (interactive) (elscreen-create)))
-(define-key evil-insert-state-map (kbd "C-c o") (lambda() (interactive) (elscreen-next)))
-(define-key evil-insert-state-map (kbd "C-c S-o") (lambda() (interactive) (elscreen-previous)))
+(global-set-key (kbd "C-c 0") (lambda () (interactive) (elscreen-kill)))
+(global-set-key  (kbd "C-c 1") (lambda () (interactive) (elscreen-kill-others)))
+(global-set-key  (kbd "C-c 2") (lambda () (interactive) (elscreen-create)))
+(global-set-key  (kbd "C-c o") (lambda () (interactive) (elscreen-next)))
+(global-set-key  (kbd "C-c h") (lambda () (interactive) (elscreen-previous)))
+(global-set-key (kbd "C-c s-o") (lambda () (interactive) (elscreen-goto)))
 
 ;; strengthen escape
 (define-key evil-normal-state-map [escape] 'keyboard-quit)
