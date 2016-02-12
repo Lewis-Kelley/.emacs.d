@@ -191,5 +191,62 @@ If it does, update the file.  If not, generate a new Doxyfile."
           'face (list :background (match-string-no-properties 0)))))))
   (font-lock-fontify-buffer))
 
+(defun colemak-evil-normal-state-remap ()
+  "Redo a lot of the normal state keys to accomodate Colemak layout."
+  ;; Motion (H is the same)
+  (define-key evil-normal-state-map (kbd "n") 'evil-next-line)
+  (define-key evil-normal-state-map (kbd "e") 'evil-previous-line)
+  (define-key evil-normal-state-map (kbd "i") 'evil-forward-char)
+
+  ;; Other
+  (define-key evil-normal-state-map (kbd "l") 'undo-tree-undo)
+  (define-key evil-normal-state-map (kbd "u") 'evil-insert)
+  (define-key evil-normal-state-map (kbd "k") 'evil-search-next)
+  (define-key evil-normal-state-map (kbd "K") 'evil-search-previous)
+  (define-key evil-normal-state-map (kbd "C-n") 'evil-scroll-down)
+	;; (lambda ()
+	;;   (interactive)
+	;;   (evil-scroll-up nil)))
+  (define-key evil-normal-state-map (kbd "C-e") (lambda ()
+  												  (interactive)
+  												  (evil-scroll-down nil))))
+
+(defun colemak-evil-visual-state-remap ()
+  "Redo a lot of the visual state keys to accomodate Colemak layout."
+  ;; Motion (H is the same)
+  (define-key evil-visual-state-map (kbd "n") 'evil-next-line)
+  (define-key evil-visual-state-map (kbd "e") 'evil-previous-line)
+  (define-key evil-visual-state-map (kbd "i") 'evil-forward-char)
+
+  ;; Other
+  (define-key evil-visual-state-map (kbd "l") 'undo-tree-undo)
+  (define-key evil-visual-state-map (kbd "u") 'evil-insert)
+  (define-key evil-visual-state-map (kbd "k") 'evil-search-next)
+  (define-key evil-visual-state-map (kbd "K") 'evil-search-previous)
+  (define-key evil-visual-state-map (kbd "C-n") (lambda ()
+  												  (interactive)
+  												  (evil-scroll-up)))
+  (define-key evil-visual-state-map (kbd "C-e") (lambda ()
+  												  (interactive)
+  												  (evil-scroll-down))))
+
+(defun colemak-evil-motion-state-remap ()
+  "Redo a lot of the visual state keys to accomodate Colemak layout."
+  ;; Motion (H is the same)
+  (define-key evil-motion-state-map (kbd "n") 'evil-next-line)
+  (define-key evil-motion-state-map (kbd "e") 'evil-previous-line)
+  (define-key evil-motion-state-map (kbd "i") 'evil-forward-char)
+
+  ;; Other
+  (define-key evil-motion-state-map (kbd "l") 'undo-tree-undo)
+  (define-key evil-motion-state-map (kbd "u") 'evil-insert)
+  (define-key evil-motion-state-map (kbd "k") 'evil-search-next)
+  (define-key evil-motion-state-map (kbd "K") 'evil-search-previous)
+  (define-key evil-motion-state-map (kbd "C-n") (lambda ()
+  												  (interactive)
+  												  (evil-scroll-up nil)))
+  (define-key evil-normal-state-map (kbd "C-e") (lambda ()
+  												  (interactive)
+  												  (evil-scroll-down nil))))
 (provide 'functions)
 ;;; functions.el ends here

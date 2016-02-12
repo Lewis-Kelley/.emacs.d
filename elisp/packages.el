@@ -16,7 +16,7 @@
   (add-hook 'cc-mode-hook 'aggressive-indent-mode)
   (add-hook 'java-mode-hook 'aggressive-indent-mode)
   (add-hook 'lisp-mode-hook 'aggressive-indent-mode)
-  (add-hook 'elisp-mode-hook 'aggressive-indent-mode-hook))
+  (add-hook 'elisp-mode-hook 'aggressive-indent-mode))
 
 (use-package bm ;;make bookmarks and cycle through them
   :ensure t
@@ -29,10 +29,17 @@
   :disabled t
   :ensure t
   :bind
-  ("C-S-j" . buf-move-down)
-  ("C-S-h" . buf-move-left)
-  ("C-S-k" . buf-move-up)
-  ("C-S-l" . buf-move-right))
+  (if (= flag-colemak 1)
+	  (progn
+		("C-S-n" . buf-move-down)
+		("C-S-h" . buf-move-left)
+		("C-S-e" . buf-move-up)
+		("C-S-i" . buf-move-right))
+	(progn
+	  ("C-S-j" . buf-move-down)
+	  ("C-S-h" . buf-move-left)
+	  ("C-S-k" . buf-move-up)
+	  ("C-S-l" . buf-move-right))))
 
 (use-package c-eldoc
   :disabled t
@@ -140,50 +147,17 @@
 (use-package evil ;;TODO Speed up
   :ensure t
   :config
-  (evil-set-initial-state 'xkcd-mode 'emacs)
   (evil-set-initial-state 'blackbox-mode 'emacs)
   (evil-set-initial-state 'package-menu-mode 'motion)
   (evil-set-initial-state 'org-agenda-mode 'motion)
-  (setq evil-move-cursor-back nil)
-  (define-key evil-normal-state-map (kbd "n") 'evil-next-line)
-  (define-key evil-normal-state-map (kbd "e") 'evil-previous-line)
-  (define-key evil-normal-state-map (kbd "i") 'evil-forward-char)
-  (define-key evil-normal-state-map (kbd "l") 'undo-tree-undo)
-  (define-key evil-normal-state-map (kbd "u") 'evil-insert)
-  (define-key evil-normal-state-map (kbd "k") 'evil-search-next)
-  (define-key evil-normal-state-map (kbd "K") 'evil-search-previous)
-  (define-key evil-normal-state-map (kbd "C-n") (lambda ()
-  												  (interactive)
-  												  (evil-scroll-up nil)))
-  (define-key evil-normal-state-map (kbd "C-e") (lambda ()
-  												  (interactive)
-  												  (evil-scroll-down nil)))
-  (define-key evil-visual-state-map (kbd "n") 'evil-next-line)
-  (define-key evil-visual-state-map (kbd "e") 'evil-previous-line)
-  (define-key evil-visual-state-map (kbd "i") 'evil-forward-char)
-  (define-key evil-visual-state-map (kbd "l") 'undo-tree-undo)
-  (define-key evil-visual-state-map (kbd "u") 'evil-insert)
-  (define-key evil-visual-state-map (kbd "k") 'evil-search-next)
-  (define-key evil-visual-state-map (kbd "K") 'evil-search-previous)
-  (define-key evil-visual-state-map (kbd "C-n") (lambda ()
-  												  (interactive)
-  												  (evil-scroll-up nil)))
-  (define-key evil-visual-state-map (kbd "C-e") (lambda ()
-  												  (interactive)
-  												  (evil-scroll-down nil)))
-  (define-key evil-motion-state-map (kbd "n") 'evil-next-line)
-  (define-key evil-motion-state-map (kbd "e") 'evil-previous-line)
-  (define-key evil-motion-state-map (kbd "i") 'evil-forward-char)
-  (define-key evil-motion-state-map (kbd "l") 'undo-tree-undo)
-  (define-key evil-motion-state-map (kbd "u") 'evil-insert)
-  (define-key evil-motion-state-map (kbd "k") 'evil-search-next)
-  (define-key evil-motion-state-map (kbd "K") 'evil-search-previous)
-  (define-key evil-motion-state-map (kbd "C-n") (lambda ()
-  												  (interactive)
-  												  (evil-scroll-up nil)))
-  (define-key evil-normal-state-map (kbd "C-e") (lambda ()
-  												  (interactive)
-  												  (evil-scroll-down nil)))
+  
+  (setq evil-move-cursor-back nil) ;; Make it so the cursor doesn't pop back when leaving insert mode.
+
+  (when (= flag-colemak 1)
+	(colemak-evil-normal-state-remap)
+	(colemak-evil-visual-state-remap)
+	(colemak-evil-motion-state-remap))
+
   (use-package alda-mode
 	:ensure t
 	:config
@@ -207,8 +181,6 @@
 	  "o" #'other-window
 	  "O" #'switch-window
 	  "l" #'ispell-buffer
-	  "L" '(lambda () (kbd "C-u C-u C-c C-x C-l"))
-	  "`" #'evil-invert-char
 	  "k" #'goto-last-change
 	  "j" #'goto-last-change-reverse
 	  "b" #'ido-switch-buffer
@@ -349,14 +321,10 @@
   (add-hook 'magit-mode-hook
 			'(lambda ()
 			   (require 'evil-magit)
-			   (setq evil-magit-state 'motion)))
+			   (evil-motion-state)))
   :bind
   ("s-g" . magit-status)
   ("C-x M-g" . magit-dispatch-popup))
-
-(use-package minimap ;;shows a miniature version of the current file
-  :disabled t
-  :ensure t)
 
 (use-package monokai-theme
   :ensure t
@@ -368,21 +336,6 @@
   :ensure t
   :init
   (multicolumn-global-mode 1))
-
-(use-package multi-line ;;Changes a list of comma-separated items to different formats
-  :disabled t
-  :ensure t
-  :bind
-  ("s-m" . multi-line))
-
-(use-package multiple-cursors
-  :disabled t
-  :ensure t
-  :init
-  (global-set-key (kbd "C-c j") 'mc/mark-next-like-this)
-  (global-set-key (kbd "C-c k") 'mc/mark-previous-like-this)
-  (global-set-key (kbd "s-m") 'mc/mark-all-like-this)
-  (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines))
 
 (use-package multi-term
   :ensure t
@@ -404,16 +357,17 @@
   (add-hook 'org-cdlatex-mode-hook (lambda () (diminish 'org-cdlatex-mode)))
   (add-hook 'org-indent-mode-hook (lambda () (diminish 'org-indent-mode)))
   (add-hook 'org-mode-hook (lambda () (local-set-key (kbd "C-c C-x M-l") (kbd "C-u C-u C-c C-x C-l"))))
+
+  (use-package org-bullets
+	:ensure t
+	:init
+	(setq org-bullets-bullet-list
+		  '("◉" "◎" "⚫" "○" "►" "◇"))
+	:config
+	(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+
   :bind
   ("C-c a" . org-agenda))
-
-(use-package org-bullets
-  :ensure t
-  :init
-  (setq org-bullets-bullet-list
-		'("◉" "◎" "⚫" "○" "►" "◇"))
-  :config
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
 (use-package prettify-symbols-mode
   :init

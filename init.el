@@ -23,6 +23,8 @@
                     :weight 'normal
                     :width 'normal)
 
+(setq flag-colemak 1) ;; Set to 0 to use QWERTY bindings
+
 ;; disable toolbar and the like
 (tool-bar-mode -1)
 (menu-bar-mode -1)
@@ -89,8 +91,8 @@
 (add-to-list 'load-path "~/.emacs.d/plugins/yasnippet")
 (add-to-list 'load-path "~/.emacs.d/plugins/evil-org-mode")
 (add-to-list 'load-path "~/.emacs.d/elisp")
-(load-library "packages")
 (load-library "functions")
+(load-library "packages")
 (load-library "minor-modes")
 (load-library "keys")
 
