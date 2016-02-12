@@ -203,10 +203,9 @@ If it does, update the file.  If not, generate a new Doxyfile."
   (define-key evil-normal-state-map (kbd "u") 'evil-insert)
   (define-key evil-normal-state-map (kbd "k") 'evil-search-next)
   (define-key evil-normal-state-map (kbd "K") 'evil-search-previous)
-  (define-key evil-normal-state-map (kbd "C-n") 'evil-scroll-down)
-	;; (lambda ()
-	;;   (interactive)
-	;;   (evil-scroll-up nil)))
+  (define-key evil-normal-state-map (kbd "C-n") (lambda ()
+												  (interactive)
+												  (evil-scroll-up nil)))
   (define-key evil-normal-state-map (kbd "C-e") (lambda ()
   												  (interactive)
   												  (evil-scroll-down nil))))
@@ -214,8 +213,8 @@ If it does, update the file.  If not, generate a new Doxyfile."
 (defun colemak-evil-visual-state-remap ()
   "Redo a lot of the visual state keys to accomodate Colemak layout."
   ;; Motion (H is the same)
-  (define-key evil-visual-state-map (kbd "n") 'evil-next-line)
-  (define-key evil-visual-state-map (kbd "e") 'evil-previous-line)
+  (define-key evil-visual-state-map (kbd "n") 'evil-next-visual-line)
+  (define-key evil-visual-state-map (kbd "e") 'evil-previous-visual-line)
   (define-key evil-visual-state-map (kbd "i") 'evil-forward-char)
 
   ;; Other
@@ -248,5 +247,16 @@ If it does, update the file.  If not, generate a new Doxyfile."
   (define-key evil-normal-state-map (kbd "C-e") (lambda ()
   												  (interactive)
   												  (evil-scroll-down nil))))
+
+(defun minibuffer-keyboard-quit ()
+  "Abort recursive edit.
+In Delete Selection mode, if the mark is active, just deactivate it;
+then it takes a second \\[keyboard-quit] to abort the minibuffer."
+  (interactive)
+  (if (and delete-selection-mode transient-mark-mode mark-active)
+      (setq deactivate-mark t)
+    (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
+    (abort-recursive-edit)))
+
 (provide 'functions)
 ;;; functions.el ends here

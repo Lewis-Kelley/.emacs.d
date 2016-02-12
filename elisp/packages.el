@@ -16,7 +16,7 @@
   (add-hook 'cc-mode-hook 'aggressive-indent-mode)
   (add-hook 'java-mode-hook 'aggressive-indent-mode)
   (add-hook 'lisp-mode-hook 'aggressive-indent-mode)
-  (add-hook 'elisp-mode-hook 'aggressive-indent-mode))
+  (add-hook 'emacs-lisp-mode-hook 'aggressive-indent-mode))
 
 (use-package bm ;;make bookmarks and cycle through them
   :ensure t
@@ -150,13 +150,17 @@
   (evil-set-initial-state 'blackbox-mode 'emacs)
   (evil-set-initial-state 'package-menu-mode 'motion)
   (evil-set-initial-state 'org-agenda-mode 'motion)
-  
+
   (setq evil-move-cursor-back nil) ;; Make it so the cursor doesn't pop back when leaving insert mode.
 
-  (when (= flag-colemak 1)
-	(colemak-evil-normal-state-remap)
-	(colemak-evil-visual-state-remap)
-	(colemak-evil-motion-state-remap))
+  (if (= flag-colemak 1)
+	  (progn
+		(colemak-evil-normal-state-remap)
+		(colemak-evil-visual-state-remap)
+		(colemak-evil-motion-state-remap))
+	(progn
+	  (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
+	  (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)))
 
   (use-package alda-mode
 	:ensure t
@@ -197,7 +201,13 @@
 	:ensure t
 	:diminish evil-smartparens-mode
 	:init
-	(add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)))
+	(add-hook 'smartparens-enabled-hook #'evil-smartparens-mode))
+
+  (use-package evil-tabs
+	:ensure t
+	:diminish evil-tabs-mode
+	:init
+	(global-evil-tabs-mode t)))
 
 (use-package eww
   :bind
@@ -464,10 +474,6 @@
   (setq verilog-linter "verilator --lint-only")
   (setq verilog-simulator "verilator")
   (setq verilog-compiler "verilator"))
-
-(use-package vc-check-status
-  :init
-  (vc-check-status-activate 1))
 
 (use-package wgrep
   :disabled t
