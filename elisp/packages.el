@@ -139,6 +139,11 @@
   :init
   (add-hook 'java-mode-hook 'dtrt-indent-mode))
 
+(use-package elscreen
+  :ensure t
+  :init
+  (elscreen-start))
+
 (use-package emacs-lisp
   :init
   (add-hook 'emacs-lisp-mode-hook 'flycheck-mode)
@@ -201,13 +206,7 @@
 	:ensure t
 	:diminish evil-smartparens-mode
 	:init
-	(add-hook 'smartparens-enabled-hook #'evil-smartparens-mode))
-
-  (use-package evil-tabs
-	:ensure t
-	:diminish evil-tabs-mode
-	:init
-	(global-evil-tabs-mode t)))
+	(add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)))
 
 (use-package eww
   :bind

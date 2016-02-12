@@ -194,8 +194,8 @@ If it does, update the file.  If not, generate a new Doxyfile."
 (defun colemak-evil-normal-state-remap ()
   "Redo a lot of the normal state keys to accomodate Colemak layout."
   ;; Motion (H is the same)
-  (define-key evil-normal-state-map (kbd "n") 'evil-next-line)
-  (define-key evil-normal-state-map (kbd "e") 'evil-previous-line)
+  (define-key evil-normal-state-map (kbd "n") 'evil-next-visual-line)
+  (define-key evil-normal-state-map (kbd "e") 'evil-previous-visual-line)
   (define-key evil-normal-state-map (kbd "i") 'evil-forward-char)
 
   ;; Other
@@ -232,8 +232,8 @@ If it does, update the file.  If not, generate a new Doxyfile."
 (defun colemak-evil-motion-state-remap ()
   "Redo a lot of the visual state keys to accomodate Colemak layout."
   ;; Motion (H is the same)
-  (define-key evil-motion-state-map (kbd "n") 'evil-next-line)
-  (define-key evil-motion-state-map (kbd "e") 'evil-previous-line)
+  (define-key evil-motion-state-map (kbd "n") 'evil-next-visual-line)
+  (define-key evil-motion-state-map (kbd "e") 'evil-previous-visual-line)
   (define-key evil-motion-state-map (kbd "i") 'evil-forward-char)
 
   ;; Other
