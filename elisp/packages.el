@@ -108,6 +108,30 @@
    :group 'Common
    :key (substitute-command-keys "\\[resize-window]")
    :description "Enter resize-window mode.")
+  (cheatsheet-add
+   :group 'Multiple-Cursors
+   :key (substitute-command-keys "\\[evil-mc-make-all-cursors]")
+   :description "Create cursors at all matching strings.")
+  (cheatsheet-add
+   :group 'Multiple-Cursors
+   :key (substitute-command-keys "\\[evil-mc-undo-all-cursors]")
+   :description "Remove all cursors.")
+  (cheatsheet-add
+   :group 'Multiple-Cursors
+   :key (substitute-command-keys "\\[evil-mc-make-cursor-here]")
+   :description "Create a cursor at the current location.")
+  (cheatsheet-add
+   :group 'Multiple-Cursors
+   :key (substitute-command-keys "\\[evil-mc-make-and-goto-next-match]")
+   :description "Make a new cursor at the current match and go to the next match.")
+  (cheatsheet-add
+   :group 'Multiple-Cursors
+   :key (substitute-command-keys "\\[evil-mc-skip-and-goto-next-match]")
+   :description "Go to the next match.")
+  (cheatsheet-add
+   :group 'Multiple-Cursors
+   :key (substitute-command-keys "\\[evil-mc-make-and-goto-prev-match]")
+   :description "Make a new cursor at the current match and go to the previous match.")
   :bind
   ("C-h h" . cheatsheet-show))
 
@@ -148,6 +172,10 @@
   :init
   (add-hook 'emacs-lisp-mode-hook 'flycheck-mode)
   (add-hook 'emacs-lisp-mode-hook #'yas-minor-mode))
+
+(use-package eshell
+  :init
+  (global-set-key (kbd "s-t") 'eshell))
 
 (use-package evil ;;TODO Speed up
   :ensure t
@@ -347,6 +375,7 @@
   (multicolumn-global-mode 1))
 
 (use-package multi-term
+  :disabled t
   :ensure t
   :init
   (setq multi-term-program "/bin/bash")
