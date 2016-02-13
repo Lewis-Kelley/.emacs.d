@@ -22,10 +22,17 @@
 (global-set-key (kbd "C-M-k") 'beginning-of-defun)
 (global-set-key (kbd "C-M-j") 'end-of-defun)
 
+;; shortcuts to common emacs programs
+(global-set-key (kbd "s-t") 'eshell)
+(global-set-key (kbd "s-b") 'eww)
+(global-set-key (kbd "s-c") 'calc)
+
 ;; miscellaneous
 (global-set-key (kbd "C-x h") 'previous-buffer)
 (global-set-key (kbd "C-x l") 'next-buffer)
 (global-set-key (kbd "C-x )") 'delete-window)
+
+
 
 ;; set up tab commands
 (global-set-key (kbd "C-c 0") 'elscreen-kill)
