@@ -4,10 +4,8 @@
 ;;; Code:
 (req-package aggressive-indent
   :init
-  (add-hook 'cc-mode-hook 'aggressive-indent-mode)
-  (add-hook 'java-mode-hook 'aggressive-indent-mode)
-  (add-hook 'lisp-mode-hook 'aggressive-indent-mode)
-  (add-hook 'emacs-lisp-mode-hook 'aggressive-indent-mode))
+  (unless (string-equal system-type "windows-nt") ;; aggressive indent kills the windows version a lot, so don't use it
+    (add-hook 'programming-mode-hook 'aggressive-indent-mode)))
 
 (req-package c-mode
   :init

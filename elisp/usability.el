@@ -105,6 +105,11 @@
   :init
   (global-git-gutter-mode 1))
 
+(req-package github-notifier
+  :init
+  (load (locate-user-emacs-file "github-notifier-key.el"))
+  (github-notifier-mode))
+
 (req-package magit ;;git porcelain
   :init
   (setq magit-restore-window-configuration t)
