@@ -34,6 +34,8 @@
   (evil-set-initial-state 'blackbox-mode 'emacs)
   (evil-set-initial-state 'package-menu-mode 'motion)
   (evil-set-initial-state 'org-agenda-mode 'motion)
+  (evil-set-initial-state 'elfeed-show-mode 'emacs)
+  (evil-set-initial-state 'elfeed-search-mode 'emacs)
 
   (setq evil-move-cursor-back nil) ;; Make it so the cursor doesn't pop back when leaving insert mode.
 
@@ -64,6 +66,7 @@
     "o" 'other-window
     "O" 'switch-window
     "l" 'ispell-buffer
+    "L" 'endless/ispell-word-then-abbrev
     "k" 'goto-last-change
     "j" 'goto-last-change-reverse
     "b" 'ido-switch-buffer

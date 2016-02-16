@@ -31,6 +31,8 @@
   (add-hook 'emacs-lisp-mode-hook 'flycheck-mode)
   (add-hook 'emacs-lisp-mode-hook 'yas-minor-mode))
 
+(req-package ess-site)
+
 (req-package fic-mode ;; hightlights certain keywords like todo
   :diminish fic-mode
   :config

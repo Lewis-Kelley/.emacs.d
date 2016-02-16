@@ -1,5 +1,6 @@
 ;;; init.el --- Initializes my emacs configs
 ;;; Commentary:
+;;; TODO http://orgmode.org/worg/org-contrib/babel/intro.html#literate-emacs-init
 
 ;;; Code:
 
@@ -29,7 +30,8 @@
  '(overflow-newline-into-fringe nil)
  '(package-selected-packages
    (quote
-    (github-notifier req-package alda-mode aggressive-indent evil-magit c-eldoc cheatsheet markdown-mode char-menu srefactor zone-rainbow org-bullets reykjavik-theme evil-smartparens slime slime-company fireplace dired-filetype-face ess 2048-game elisp--witness--lisp java-imports diredful resize-window elpy multi-line ggtags quickrun fic-mode evil-leader graphene-meta-theme wgrep chess irony emacs-eclim switch-window sublimity rainbow-delimiters evil-mc evil-easymotion company pacmacs puml-mode wsd-mode xkcd autotetris-mode buffer-move speed-type multiple-cursors mulitple-cursors flx-ido multicolumn company-c-headers seethru projectile magit powerline-evil monokai function-args arduino-mode package-build shut-up epl git commander f dash s gnuplot flycheck evil yasnippet monokai-theme use-package multi-term cdlatex))))
+    (fancy-battery elfeed-org elfeed req-package alda-mode aggressive-indent evil-magit c-eldoc cheatsheet markdown-mode char-menu srefactor zone-rainbow org-bullets evil-smartparens slime slime-company fireplace dired-filetype-face ess elisp--witness--lisp diredful resize-window elpy multi-line ggtags quickrun fic-mode evil-leader graphene-meta-theme wgrep chess irony emacs-eclim switch-window sublimity rainbow-delimiters evil-mc evil-easymotion company wsd-mode buffer-move multiple-cursors mulitple-cursors flx-ido multicolumn company-c-headers seethru projectile magit powerline-evil monokai function-args arduino-mode package-build shut-up epl git commander f dash s gnuplot flycheck evil yasnippet monokai-theme use-package multi-term cdlatex)))
+ '(powerline-height nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -59,17 +61,45 @@
   (setq diary-file "~/.emacs.d/diary")
   (setq-default tab-width 4 indent-tabs-mode nil)
   (setq default-input-method 'TeX)
+
   (setq redisplay-dont-pause t ;;Smooth scrolling
         scroll-margin 3
         scroll-step 1
         scroll-conservatively 10000
         scroll-preserve-screen-position 1)
+
+  ;; set the default font
   (set-face-attribute 'default nil
                       :family "DejaVu Sans Mono"
-                      ;; :family "Inconsolata"
-                      :height 100
-                      :weight 'normal
-                      :width 'normal)
+                      :height 90)
+
+  ;; ;; set the fall-back font
+  ;; ;; this is critical for displaying various unicode symbols, such as those used in my init-org.el settings
+  ;; ;; http://endlessparentheses.com/manually-choose-a-fallback-font-for-unicode.html
+  (set-fontset-font "fontset-default" nil
+                    (font-spec :size 20
+                               :name "Symbola"))
+
+  ;; ;; disable CJK coding/encoding (Chinese/Japanese/Korean characters)
+  ;; (setq utf-translate-cjk-mode nil)
+
+  ;; (set-language-environment 'utf-8)
+  ;; (setq locale-coding-system 'utf-8)
+
+  ;; ;; set the default encoding system
+  ;; (prefer-coding-system 'utf-8)
+  ;; (setq default-file-name-coding-system 'utf-8)
+  ;; (set-default-coding-systems 'utf-8)
+  ;; (set-terminal-coding-system 'utf-8)
+  ;; (set-keyboard-coding-system 'utf-8)
+  ;; ;; backwards compatibility as default-buffer-file-coding-system
+  ;; ;; is deprecated in 23.2.
+  ;; (if (boundp buffer-file-coding-system)
+  ;;     (setq buffer-file-coding-system 'utf-8)
+  ;;   (setq default-buffer-file-coding-system 'utf-8))
+
+  ;; ;; Treat clipboard input as UTF-8 string first; compound text next, etc.
+  ;; (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 
   (setq flag-colemak 1) ;; Set to 0 to use QWERTY bindings
 

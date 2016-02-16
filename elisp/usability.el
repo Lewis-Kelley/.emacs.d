@@ -65,6 +65,10 @@
    :group 'Multiple-Cursors
    :key (substitute-command-keys "\\[evil-mc-make-and-goto-prev-match]")
    :description "Make a new cursor at the current match and go to the previous match.")
+  (cheatsheet-add
+   :group 'Programming
+   :key (substitute-command-keys "\\[flycheck-next-error]")
+   :description "Go to the next error in this program.")
   (global-set-key (kbd "C-h h") 'cheatsheet-show))
 
 (req-package company ;;TODO Speed up
@@ -77,6 +81,20 @@
 (req-package diredful ;;colors files in dired mode according to type
   :config
   (diredful-mode 1))
+
+(req-package elfeed
+  :init
+  (global-set-key (kbd "s-l") 'elfeed))
+
+(req-package elfeed-goodies
+  :require elfeed
+  :init
+  (elfeed-goodies/setup))
+
+(req-package elfeed-org
+  :require elfeed
+  :init
+  (elfeed-org))
 
 (req-package flx-ido
   :init
@@ -105,11 +123,6 @@
   :init
   (global-git-gutter-mode 1))
 
-(req-package github-notifier
-  :init
-  (load (locate-user-emacs-file "github-notifier-key.el"))
-  (github-notifier-mode))
-
 (req-package magit ;;git porcelain
   :init
   (setq magit-restore-window-configuration t)
@@ -127,15 +140,21 @@
   (setq org-agenda-start-on-weekday nil)
   (setq org-ellipsis "…")
   (setq org-src-fontify-natively t)
+
   (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
   (add-hook 'org-mode-hook 'org-preview-latex-fragment)
   (add-hook 'org-cdlatex-mode-hook (lambda () (diminish 'org-cdlatex-mode)))
   (add-hook 'org-indent-mode-hook (lambda () (diminish 'org-indent-mode)))
   (add-hook 'org-mode-hook (lambda () (local-set-key (kbd "C-c C-x M-l") (kbd "C-u C-u C-c C-x C-l"))))
+
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((R . t)))
+
   (global-set-key (kbd "C-c a") 'org-agenda))
 
 (req-package resize-window
-  :bind
+  :init
   (global-set-key (kbd "C-S-r") 'resize-window))
 
 (req-package smartparens

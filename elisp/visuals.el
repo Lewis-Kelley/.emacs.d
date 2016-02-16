@@ -1,6 +1,9 @@
 ;;; visuals --- Summary: Uses the req-package package to neatly install and configure all packages used to make emacs look pretty.
 ;;; Commentary:
 ;;; Code:
+(req-package fancy-battery
+  (add-hook 'after-init-hook 'fancy-battery-mode))
+
 (req-package color-identifiers-mode
   :diminish color-identifiers-mode
   :config
