@@ -32,16 +32,6 @@
 (global-set-key (kbd "C-x l") 'next-buffer)
 (global-set-key (kbd "C-x )") 'delete-window)
 
-
-
-;; set up tab commands
-(global-set-key (kbd "C-c 0") 'elscreen-kill)
-(global-set-key  (kbd "C-c 1") 'elscreen-kill-others)
-(global-set-key  (kbd "C-c 2") 'elscreen-create)
-(global-set-key  (kbd "C-c o") 'elscreen-next)
-(global-set-key  (kbd "C-c h") 'elscreen-previous)
-(global-set-key (kbd "C-c s-o") 'elscreen-goto)
-
 ;; strengthen escape
 (define-key evil-normal-state-map [escape] 'keyboard-quit)
 (define-key evil-visual-state-map [escape] 'keyboard-quit)

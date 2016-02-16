@@ -1,1 +1,51 @@
 * Overview
+This is my personal setup for Emacs. Most everything should work right out of the box, but one may need to do some fanagling to get it to work the first time.
+This whole setup essentially hinges on req-package, use-package's slightly more robust sibling. \\
+One thing to note is that I use the Colemak keyboard layout, which means some of my keybindings may seem a little weird. I've thought of this and created a flag called
+=flag-colemak= in init.el. If you want to use more QWERTY bindings, set that to 0 instead of 1. These other bindings will be listed
+in [] next to the defaults. \\
+I also use the super key (s- ) in a lot of my bindings. If you want to use them as-is, you need to look into getting the key to work
+properly on your OS.
+* Package List
+** Control
+*** alda-mode 
+Here mostly just because I can. The idea is that this mode allows you to write and listen to music all inside of Emacs
+I'm currently having some issues getting it to work on my computer, so this may be leaving soon.
+- keybinds:
+  + 'g p' - play the region
+*** avy
+A magical package that let's you instantly jump to a spot onscreen using a few quick keystrokes. Note that I may start fiddling
+with this, as it uses lots of QWERTY bindings for the jumping.
+- keybinds:
+  + C-; - prompt for 2 characters, then start a branching sequence to jump to whichever instance you want
+  + C-M-; jump to whichever line you want
+*** bm
+An extremely simple yet really helpful package that allows you to mark multiple different positions in a file and cycle through
+them with ease. Really useful when you need to go looking for something but want to save your spot, or if you keep bouncing
+between a few spots in a file.
+- keybinds:
+  + s-d - toggle whether this line should be bookmarked or not
+  + s-n [s-j] - jump to the next bookmarked line
+  + s-e [s-k] - jump to the previous bookmarked line
+*** elscreen
+You know how Emacs does multiple windows? Poorly, in my opinion. Why would you ever want to deal with layers of windows you 
+can't see when you could just have different tabs that you can easily switch between that function identically to having
+separate windows? With this, you can very quickly tell what all you have open in your other tabs and quickly jump to whichever
+you want.
+- keybinds:
+  + C-c o - switch to the next screen
+  + C-c h - switch to the previous screen
+  + C-c s-o - prompt for a screen number, then jump to that screen
+  + C-c 0 - delete this screen
+  + C-c 1 - delete all other screens
+  + C-c 2 - create a new screen
+*** evil
+Gets me out of a lot of text editor wars and allows me to use slightly less insane bindings for moving around. I'm not going
+to list the keys, there are just too many.
+*** evil-leader
+Allows me to set a <leader> key, for me the spacebar, to use for another set of keybindings. Really useful for common operations
+I do a lot, like saving for instance. Again, I won't list the keybindings here since there are so many.
+*** evil-mc
+Turns all those sublime text user's principle argument against Emacs on it's head and gives Emacs multiple cursors.
+- keybindings
+  + 

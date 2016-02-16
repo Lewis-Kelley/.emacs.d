@@ -27,7 +27,15 @@
 (use-package elscreen ;; makes each window a set of tabs
   :ensure t ;; this has to be use-package to make it work for some reason
   :init
-  (elscreen-start))
+  (elscreen-start)
+  ;; set up tab commands
+  (global-set-key (kbd "C-c 0") 'elscreen-kill)
+  (global-set-key  (kbd "C-c 1") 'elscreen-kill-others)
+  (global-set-key  (kbd "C-c 2") 'elscreen-create)
+  (global-set-key  (kbd "C-c o") 'elscreen-next)
+  (global-set-key  (kbd "C-c h") 'elscreen-previous)
+  (global-set-key (kbd "C-c s-o") 'elscreen-goto))
+
 
 (req-package evil ;;TODO Speed up
   :config
