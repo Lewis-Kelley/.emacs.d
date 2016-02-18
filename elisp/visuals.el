@@ -1,13 +1,17 @@
 ;;; visuals --- Summary: Uses the req-package package to neatly install and configure all packages used to make emacs look pretty.
 ;;; Commentary:
 ;;; Code:
-(req-package fancy-battery
-  (add-hook 'after-init-hook 'fancy-battery-mode))
-
 (req-package color-identifiers-mode
   :diminish color-identifiers-mode
   :config
   (global-color-identifiers-mode))
+
+(req-package diredful ;;colors files in dired mode according to type
+  :config
+  (diredful-mode 1))
+
+(req-package fancy-battery
+  (add-hook 'after-init-hook 'fancy-battery-mode))
 
 (req-package monokai-theme
   :init

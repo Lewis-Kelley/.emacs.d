@@ -78,10 +78,6 @@
 
 (req-package diminish)
 
-(req-package diredful ;;colors files in dired mode according to type
-  :config
-  (diredful-mode 1))
-
 (req-package elfeed
   :init
   (global-set-key (kbd "s-l") 'elfeed))
