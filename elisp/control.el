@@ -44,6 +44,8 @@
   (evil-set-initial-state 'org-agenda-mode 'motion)
   (evil-set-initial-state 'elfeed-show-mode 'emacs)
   (evil-set-initial-state 'elfeed-search-mode 'emacs)
+  (evil-set-initial-state 'dired-mode 'emacs)
+  (evil-set-initial-state 'doc-view-mode 'emacs)
 
   (setq evil-move-cursor-back nil) ;; Make it so the cursor doesn't pop back when leaving insert mode.
 

@@ -170,10 +170,15 @@
 (req-package yasnippet
   :diminish yas-minor-mode
   :config
+  (defvar yas-loaded)
+  (setq yas-loaded 0)
+  (add-hook 'c-mode-hook 'yas-minor-mode)
+  (add-hook 'c++-mode-hook 'flycheck-mode)
   (add-hook 'prog-mode-hook
             '(lambda ()
-               (yas-reload-all)
-               (yas-minor-mode))))
+               (cond (= yas-loaded 0) ;; only load yassnippets when opening a prog file the first time
+                     (setq yas-loaded 1)
+                     (yas-reload-all)))))
 
 (provide 'usability)
 ;;; usability.el ends here

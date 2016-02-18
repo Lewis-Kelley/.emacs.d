@@ -11,14 +11,14 @@
   :init
   (setq-default c-basic-offset 4)
   :config
+  (add-hook 'c-mode-hook 'semantic-mode)
   (add-hook 'c-mode-hook 'flycheck-mode)
-  (add-hook 'c-mode-hook #'yas-minor-mode)
   (add-hook 'c-mode-common-hook '(lambda ()
                                    (add-to-list 'ac-sources 'ac-source-semantic))))
 
 (req-package c++-mode
   :config
-  (add-hook 'c++-mode-hook 'flycheck-mode)
+  (add-hook 'c++-mode-hook 'semantic-mode)
   (add-hook 'c++-mode-hook 'yas-minor-mode))
 
 (req-package company-c-headers
@@ -31,7 +31,7 @@
   (add-hook 'emacs-lisp-mode-hook 'flycheck-mode)
   (add-hook 'emacs-lisp-mode-hook 'yas-minor-mode))
 
-(req-package ess-site)
+(req-package ess-site) ;; emacs speaks statistics; currently used for R support
 
 (req-package fic-mode ;; hightlights certain keywords like todo
   :diminish fic-mode
