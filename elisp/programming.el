@@ -41,7 +41,7 @@
 (req-package flycheck
   :diminish flycheck-mode
   :init
-  (setq flycheck-gcc-args "-std=gnu99")
+  (setq flycheck-gcc-args "-std=gnu11")
   :config
   (add-hook 'prog-mode-hook 'flycheck-mode))
 

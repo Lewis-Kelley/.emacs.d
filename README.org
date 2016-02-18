@@ -46,6 +46,53 @@ to list the keys, there are just too many.
 Allows me to set a <leader> key, for me the spacebar, to use for another set of keybindings. Really useful for common operations
 I do a lot, like saving for instance. Again, I won't list the keybindings here since there are so many.
 *** evil-mc
-Turns all those sublime text user's principle argument against Emacs on it's head and gives Emacs multiple cursors.
+Turns all those sublime text users' principle argument against Emacs on it's head and gives Emacs multiple cursors.
+Some of these keybindings overwrite standard Emacs motion keys.
 - keybinds
-  + 
+  + g r h - create a new cursor at this location
+  + g r u - remove all cursors
+  + g r m - create cursors at all matching strings
+  + C-p - make a new cursor at the current match and go to the previous match
+  + C-t - go to next match
+  + C-n - make a new cursor at the current match and go to the next match
+*** evil-smartparens
+I use this package basically as smartparens with little bits to make evil commands play nice.
+*** ido
+Allows for more autocompletion when searching for files.
+** Programming
+*** aggressive-indent
+This automatically reindents everything all the time. It is currently disabled when in Windows, since it slows everything down
+terribly and sometimes causes a crash.
+*** company-c-headers
+An extension for company that allows for the autocompletion of c-headers.
+*** dtrt-indent
+This is an especially useful package when editing code that somebody else wrote, as it automatically detects what the
+indentation size is and sets yours to match.
+*** ess-site
+This probably won't be around for long; I'm really only using it for R support.
+*** fic-mode
+Another tiny yet remarkably helpful package that just highlights keywords like TODO or FIXME in comments.
+It is currently turned on in any prog-mode.
+*** flycheck
+A magic little syntax checker for various languages like C. It sets a compiler flag for gnu11, since my computer doesn't
+compile for loops and the like by default for some reason. Triggered in any prog-mode.
+*** TODO ggtags
+*** hs
+A very effective code folding package that is started in any prog-mode.
+- keybinds
+  + C-c C-f - toggle code folding
+*** TODO projectile
+*** TODO quickrun
+* Bucket List
+Things I'd like to fix/improve when I have the time and know-how.
+
+** Adjust More Bindings to Colemak
+- make C-n/C-e be page down/up
+- get avy-menu to use Colemak home row
+** Readable .emacs.d
+- basically the next step after this README:
+http://orgmode.org/worg/org-contrib/babel/intro.html#literate-emacs-init
+** Links to packages
+- provide links to each package's homepage, just to be nice
+** Java
+- find a nice syntax checker
