@@ -19,7 +19,7 @@ with this, as it uses lots of QWERTY bindings for the jumping.
 - keybinds:
   + C-; - prompt for 2 characters, then start a branching sequence to jump to whichever instance you want
   + C-M-; jump to whichever line you want
-*** bm
+*** [[https://github.com/joodland/bm][bm]]
 An extremely simple yet really helpful package that allows you to mark multiple different positions in a file and cycle through
 them with ease. Really useful when you need to go looking for something but want to save your spot, or if you keep bouncing
 between a few spots in a file.
@@ -27,7 +27,7 @@ between a few spots in a file.
   + s-d - toggle whether this line should be bookmarked or not
   + s-n [s-j] - jump to the next bookmarked line
   + s-e [s-k] - jump to the previous bookmarked line
-*** elscreen
+*** [[https://github.com/knu/elscreen][elscreen]]
 You know how Emacs does multiple windows? Poorly, in my opinion. Why would you ever want to deal with layers of windows you 
 can't see when you could just have different tabs that you can easily switch between that function identically to having
 separate windows? With this, you can very quickly tell what all you have open in your other tabs and quickly jump to whichever
@@ -39,13 +39,13 @@ you want.
   + C-c 0 - delete this screen
   + C-c 1 - delete all other screens
   + C-c 2 - create a new screen
-*** evil
+*** [[https://bitbucket.org/lyro/evil/wiki/Home][evil]]
 Gets me out of a lot of text editor wars and allows me to use slightly less insane bindings for moving around. I'm not going
 to list the keys, there are just too many.
-*** evil-leader
+*** [[https://github.com/cofi/evil-leader][evil-leader]]
 Allows me to set a <leader> key, for me the spacebar, to use for another set of keybindings. Really useful for common operations
 I do a lot, like saving for instance. Again, I won't list the keybindings here since there are so many.
-*** evil-mc
+*** [[https://github.com/gabesoft/evil-mc][evil-mc]]
 Turns all those sublime text users' principle argument against Emacs on it's head and gives Emacs multiple cursors.
 Some of these keybindings overwrite standard Emacs motion keys.
 - keybinds
@@ -55,9 +55,9 @@ Some of these keybindings overwrite standard Emacs motion keys.
   + C-p - make a new cursor at the current match and go to the previous match
   + C-t - go to next match
   + C-n - make a new cursor at the current match and go to the next match
-*** evil-smartparens
+*** [[https://github.com/expez/evil-smartparens][evil-smartparens]]
 I use this package basically as smartparens with little bits to make evil commands play nice.
-*** ido
+*** [[https://www.emacswiki.org/emacs/InteractivelyDoThings][ido]]
 Allows for more autocompletion when searching for files.
 ** Programming
 *** aggressive-indent
@@ -137,3 +137,7 @@ http://orgmode.org/worg/org-contrib/babel/intro.html#literate-emacs-init
 - figure out why it takes at least 10 seconds to start up
 ** Colored elscreen Tabs
 - I'm a sucker for colorful things
+** Clean Up Mode Line
+- there are currently lots of things that are smooshed to the right side, I'd like to make it a little prettier
+** Better IDE-style things?
+- maybe [[http://alexott.net/en/writings/emacs-devenv/EmacsCedet.html][CEDET]]?

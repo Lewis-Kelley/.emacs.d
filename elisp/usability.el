@@ -101,8 +101,7 @@
   (setq ido-enable-flex-matching t)
   (setq ido-use-faces nil))
 
-(req-package flyspell
-  :diminish flyspell-mode)
+(req-package flyspell)
 
 (req-package forecast
   :init
