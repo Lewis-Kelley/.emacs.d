@@ -60,55 +60,55 @@ I use this package basically as smartparens with little bits to make evil comman
 *** [[https://www.emacswiki.org/emacs/InteractivelyDoThings][ido]]
 Allows for more autocompletion when searching for files.
 ** Programming
-*** aggressive-indent
+*** [[https://github.com/Malabarba/aggressive-indent-mode][aggressive-indent-mode]]
 This automatically reindents everything all the time. It is currently disabled when in Windows, since it slows everything down
 terribly and sometimes causes a crash.
-*** company-c-headers
+*** [[https://github.com/randomphrase/company-c-headers][company-c-headers]]
 An extension for company that allows for the autocompletion of c-headers.
-*** dtrt-indent
+*** [[https://github.com/jscheid/dtrt-indent][dtrt-indent]]
 This is an especially useful package when editing code that somebody else wrote, as it automatically detects what the
 indentation size is and sets yours to match.
-*** ess-site
+*** [[http://ess.r-project.org/][ess-site]]
 This probably won't be around for long; I'm really only using it for R support.
-*** fic-mode
+*** [[https://github.com/lewang/fic-mode][fic-mode]]
 Another tiny yet remarkably helpful package that just highlights keywords like TODO or FIXME in comments.
 It is currently turned on in any prog-mode.
-*** flycheck
+*** [[https://github.com/flycheck/flycheck][flycheck]]
 A magic little syntax checker for various languages like C. It sets a compiler flag for gnu11, since my computer doesn't
 compile for loops and the like by default for some reason. Triggered in any prog-mode.
-*** ggtags
+*** [[https://github.com/leoliu/ggtags][ggtags]]
 C/C++ program tagging. This allows one to easily jump around a program to definitions and usages of variables and functions.
 - keybinds:
   + M-g M-g - go to either the definition or usage of the symbol at point
   + M-g r - return to the last point jumped from
-*** hs
+*** [[https://www.emacswiki.org/emacs/HideShow][hs]]
 A very effective code folding package that is started in any prog-mode.
 - keybinds:
   + C-c C-f - toggle code folding
-*** projectile
+*** [[https://github.com/bbatsov/projectile][projectile]]
 Helps finding files in a given project. I'm not entirely sure if or how this is working, so I'll fiddle around with it.
-*** quickrun
+*** [[https://github.com/syohex/emacs-quickrun][quickrun]]
 Ever wanted to just compile and run a program with one short keystroke? This allows you to do just that.
 - keybinds:
   + <SPC> r - compile and run the current program
 ** Usability
-*** cdlatex
+*** [[https://github.com/cdominik/cdlatex][cdlatex]]
 Provides quick shortcuts for lots of long latex symbols. For example, `a turns into =\alpha=.
-*** char-menu
+*** [[https://github.com/mrkkrp/char-menu][char-menu]]
 Allows you to build your own tree of special characters that can be accessed via an avy-menu...menu.
 - keybinds:
   + M-i - pull up the special character menu
-*** cheatsheet
+*** [[https://github.com/darksmile/cheatsheet/][cheatsheet]]
 Just shows a quick list of handwritten keybindings and descriptions that you can pull up whenever you want. This section
 makes heavy usage of the =(substitute-command-keys)= function, which looks to see whatever the command is currently bound
 to and uses its string. This means I don't have to rewrite this whenever I rebind keys.
 - keybinds:
   + C-h h - show the cheatsheet list
-*** company
+*** [[https://github.com/company-mode/company-mode][company]]
 Autocomplete that goes with just about everything. This is currently enabled globally.
-*** diminish
+*** [[https://github.com/myrjola/diminish.el][diminish]]
 Allows you to stop showing the name of specific minor modes.
-*** elfeed
+*** [[https://github.com/skeeto/elfeed][elfeed]]
 An RSS reader that loads from elfeed.org. Basically I use it to check GitHub and various Emacs sites.
 - keybinds:
   + s-l - launch elfeed
@@ -126,8 +126,6 @@ Things I'd like to fix/improve when I have the time and know-how.
 ** Readable .emacs.d
 - basically the next step after this README:
 http://orgmode.org/worg/org-contrib/babel/intro.html#literate-emacs-init
-** Links to packages
-- provide links to each package's homepage, just to be nice
 ** Java
 - find a nice syntax checker
 ** Email
