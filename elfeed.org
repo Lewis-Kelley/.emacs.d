@@ -4,5 +4,7 @@
 *** http://nullprogram.com/feed
 *** http://planet.emacsen.org/atom.xml
 *** http://endlessparentheses.com/atom.xml
-** GitHub
+** GitHub :coding:
 *** https://github.com/Lewis-Kelley.private.atom?token=AF041q-CX3DN2BDZIiv5plCcm0bQGJmXks60zOc6wA==
+** Games :games:
+*** http://www.teamfortress.com/rss.xml

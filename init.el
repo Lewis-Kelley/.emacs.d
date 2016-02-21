@@ -1,6 +1,5 @@
 ;;; init.el --- Initializes my emacs configs
 ;;; Commentary:
-;;; TODO http://orgmode.org/worg/org-contrib/babel/intro.html#literate-emacs-init
 
 ;;; Code:
 
@@ -26,11 +25,11 @@
  '(monokai-use-variable-pitch t)
  '(org-agenda-files
    (quote
-    ("~/notes/MA381.org" "~/homework/CSSE232.org" "~/homework/CSSE230.org" "~/homework/MA275.org" "~/homework/MA381.org" "~/schedules/Y1/Q2.org" "~/planner.org")))
+    ("~/notes/MA381.org" "~/homework/CSSE232.org" "~/homework/CSSE230.org" "~/homework/MA275.org" "~/homework/MA381.org" "~/planner.org")))
  '(overflow-newline-into-fringe nil)
  '(package-selected-packages
    (quote
-    (fancy-battery elfeed-org elfeed req-package alda-mode aggressive-indent evil-magit c-eldoc cheatsheet markdown-mode char-menu srefactor zone-rainbow org-bullets evil-smartparens slime slime-company fireplace dired-filetype-face ess elisp--witness--lisp diredful resize-window elpy multi-line ggtags quickrun fic-mode evil-leader graphene-meta-theme wgrep chess irony emacs-eclim switch-window sublimity rainbow-delimiters evil-mc evil-easymotion company wsd-mode buffer-move multiple-cursors mulitple-cursors flx-ido multicolumn company-c-headers seethru projectile magit powerline-evil monokai function-args arduino-mode package-build shut-up epl git commander f dash s gnuplot flycheck evil yasnippet monokai-theme use-package multi-term cdlatex)))
+    (alda-mode fancy-battery elfeed-org elfeed req-package aggressive-indent evil-magit c-eldoc cheatsheet markdown-mode char-menu srefactor zone-rainbow org-bullets evil-smartparens slime slime-company fireplace dired-filetype-face ess elisp--witness--lisp diredful resize-window elpy multi-line ggtags quickrun fic-mode evil-leader graphene-meta-theme wgrep chess irony emacs-eclim switch-window sublimity rainbow-delimiters evil-mc evil-easymotion company wsd-mode buffer-move multiple-cursors mulitple-cursors flx-ido multicolumn company-c-headers seethru projectile magit powerline-evil monokai function-args arduino-mode package-build shut-up epl git commander f dash s gnuplot flycheck evil yasnippet monokai-theme use-package multi-term cdlatex)))
  '(powerline-height nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -120,6 +119,11 @@
 
   (package-initialize)
 
+  ;; Load up Org Mode and (now included) Org Babel for elisp embedded in Org Mode files
+  ;; load up Org-mode and Org-babel
+  (require 'org-install)
+  (require 'ob-tangle)
+
   ;;
   ;; load external files
   ;;
@@ -127,14 +131,14 @@
   (require 'cc-mode)
   (require 'semantic)
   (require 'req-package)
+  (require 'use-package)
+
+  ;; load up all literate org-mode files in this directory
+  (org-babel-load-file "~/.emacs.d/emacs.org")
 
   (add-to-list 'load-path "~/.emacs.d/plugins/yasnippet")
   (add-to-list 'load-path "~/.emacs.d/plugins/evil-org-mode")
   (add-to-list 'load-path "~/.emacs.d/elisp")
-  (load-library "control")
-  (load-library "programming")
-  (load-library "usability")
-  (load-library "visuals")
   (load-library "functions")
   (req-package-finish)
   (load-library "minor-modes")

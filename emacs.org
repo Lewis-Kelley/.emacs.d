@@ -1,0 +1,594 @@
+* Overview
+This is my personal setup for Emacs. Most everything should work right out of the box, but one may need to do some fanagling to get it to work the first time.
+This whole setup essentially hinges on req-package, use-package's slightly more robust sibling. \\
+One thing to note is that I use the Colemak keyboard layout, which means some of my keybindings may seem a little weird. I've thought of this and created a flag called
+=flag-colemak= in init.el. If you want to use more QWERTY bindings, set that to 0 instead of 1. These other bindings will be listed
+in [ ] next to the defaults. \\
+I also use the super key (s- ) in a lot of my bindings. If you want to use them as-is, you need to look into getting the key to work
+properly on your OS.
+* Package List
+** Control
+*** [[https://github.com/joodland/bm][bm]]
+An extremely simple yet really helpful package that allows you to mark multiple different positions in a file and cycle through
+them with ease. Really useful when you need to go looking for something but want to save your spot, or if you keep bouncing
+between a few spots in a file.
+#+BEGIN_SRC emacs-lisp
+  (req-package bm ;;make bookmarks and cycle through them
+    :config
+    (global-set-key (kbd "s-d") 'bm-toggle)
+    (if (= flag-colemak 1)
+        (progn
+          (global-set-key (kbd "s-n") 'bm-next)
+          (global-set-key (kbd "s-e") 'bm-previous))
+      (progn
+        (global-set-key (kbd "s-j") 'bm-next)
+        (global-set-key (kbd "s-k") 'bm-previous))))
+#+END_SRC    
+*** [[https://github.com/knu/elscreen][elscreen]]
+You know how Emacs does multiple windows? Poorly, in my opinion. Why would you ever want to deal with layers of windows you 
+can't see when you could just have different tabs that you can easily switch between that function identically to having
+separate windows? With this, you can very quickly tell what all you have open in your other tabs and quickly jump to whichever
+you want.
+#+BEGIN_SRC emacs-lisp
+  (use-package elscreen
+    :ensure t ;; this has to be use-package to make it work for some reason
+    :init
+    (elscreen-start)
+    ;; set up tab commands
+    (global-set-key (kbd "C-c 0") 'elscreen-kill)
+    (global-set-key  (kbd "C-c 1") 'elscreen-kill-others)
+    (global-set-key  (kbd "C-c 2") 'elscreen-create)
+    (global-set-key  (kbd "C-c o") 'elscreen-next)
+    (global-set-key  (kbd "C-c h") 'elscreen-previous)
+    (global-set-key (kbd "C-c s-o") 'elscreen-goto))
+#+END_SRC
+*** [[https://bitbucket.org/lyro/evil/wiki/Home][evil]]
+Gets me out of a lot of text editor wars and allows me to use slightly less insane bindings for moving around.
+
+#+BEGIN_SRC emacs-lisp
+    (req-package evil ;;TODO Speed up
+      :config
+      (evil-set-initial-state 'blackbox-mode 'emacs)
+      (evil-set-initial-state 'package-menu-mode 'motion)
+      (evil-set-initial-state 'org-agenda-mode 'motion)
+      (evil-set-initial-state 'elfeed-show-mode 'emacs)
+      (evil-set-initial-state 'elfeed-search-mode 'emacs)
+      (evil-set-initial-state 'dired-mode 'emacs)
+      (evil-set-initial-state 'doc-view-mode 'emacs)
+      (add-hook 'forecast-mode-hook 'evil-emacs-state)
+
+      (setq evil-move-cursor-back nil) ;; Make it so the cursor doesn't pop back when leaving insert mode.
+
+      (if (= flag-colemak 1)
+          (progn
+            (colemak-evil-normal-state-remap)
+            (colemak-evil-visual-state-remap)
+            (colemak-evil-motion-state-remap))
+        (progn
+          (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
+          (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line))))
+#+END_SRC
+*** [[https://github.com/cofi/evil-leader][evil-leader]]
+Allows me to set a <leader> key, for me the spacebar, to use for another set of keybindings. Really useful for common operations
+I do a lot, like saving for instance.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package evil-leader
+    :require evil
+    :init
+    (setq evil-leader/in-all-states 1)
+    (global-evil-leader-mode)
+    :config
+    (evil-leader/set-leader "SPC")
+    (evil-leader/set-key
+      "0" 'delete-window
+      "1" 'delete-other-windows
+      "2" 'split-window-below
+      "3" 'split-window-right
+      "f" 'find-file
+      "d" 'divide-evenly
+      "s" 'save-buffer
+      "o" 'other-window
+      "O" 'switch-window
+      "l" 'ispell-buffer
+      "L" 'endless/ispell-word-then-abbrev
+      "k" 'goto-last-change
+      "j" 'goto-last-change-reverse
+      "b" 'ido-switch-buffer
+      "r" 'quickrun
+      "x" 'execute-extended-command))
+#+END_SRC
+*** [[https://github.com/gabesoft/evil-mc][evil-mc]]
+Turns all those sublime text users' principle argument against Emacs on it's head and gives Emacs multiple cursors.
+Some of these keybindings overwrite standard Emacs motion keys.
+- keybinds
+  + g r h - create a new cursor at this location
+  + g r u - remove all cursors
+  + g r m - create cursors at all matching strings
+  + C-p - make a new cursor at the current match and go to the previous match
+  + C-t - go to next match
+  + C-n - make a new cursor at the current match and go to the next match
+    
+#+BEGIN_SRC emacs-lisp
+  (req-package evil-mc
+    :require evil
+    :diminish evil-mc-mode
+    :init
+    (global-evil-mc-mode 1))
+#+END_SRC
+*** [[https://www.emacswiki.org/emacs/InteractivelyDoThings][ido]]
+Allows for more autocompletion when searching for files.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package ido
+    :init
+    (ido-mode t))
+#+END_SRC
+** Programming
+*** [[https://www.emacswiki.org/emacs/CcMode][cc-mode]]
+Built into Emacs. I'm just putting this here to establish a few start up hooks.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package cc-mode
+    :init
+    (setq-default c-basic-offset 4)
+    :config
+    (add-hook 'cc-mode-hook 'semantic-mode)
+    (add-hook 'cc-mode-common-hook '(lambda ()
+                                     (add-to-list 'ac-sources 'ac-source-semantic))))
+#+END_SRC
+*** [[https://github.com/jscheid/dtrt-indent][dtrt-indent]]
+This is an especially useful package when editing code that somebody else wrote, as it automatically detects what the
+indentation size is and sets yours to match.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package dtrt-indent)
+#+END_SRC
+*** [[https://github.com/lewang/fic-mode][fic-mode]]
+Another tiny yet remarkably helpful package that just highlights keywords like TODO or FIXME in comments.
+It is currently turned on in any prog-mode. Someday I should just write something like this myself, both for experience
+and so that this doesn't keep slowing down my boot up time.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package fic-mode
+    :diminish fic-mode
+    :config
+    (add-hook 'prog-mode-hook 'turn-on-fic-mode))
+#+END_SRC
+*** [[https://github.com/flycheck/flycheck][flycheck]]
+A magic little syntax checker for various languages like C. It sets a compiler flag for gnu11, since my computer doesn't
+compile for loops and the like by default for some reason. Triggered in any prog-mode.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package flycheck
+    :diminish flycheck-mode
+    :init
+    (setq flycheck-gcc-args "-std=gnu11")
+    :config
+    (add-hook 'prog-mode-hook 'flycheck-mode))
+#+END_SRC
+*** [[https://github.com/leoliu/ggtags][ggtags]]
+C/C++ program tagging. This allows one to easily jump around a program to definitions and usages of variables and functions.
+- keybinds:
+  + M-g M-g - go to either the definition or usage of the symbol at point
+  + M-g r - return to the last point jumped from
+    
+#+BEGIN_SRC emacs-lisp
+(req-package ggtags
+  :diminish ggtags-mode
+  :config
+  (add-hook 'cc-mode-hook #'ggtags-mode)
+  (add-hook 'java-mode-hook #'ggtags-mode)
+  (add-hook 'asm-mode-hook #'ggtags-mode)
+  (define-key ggtags-mode-map (kbd "M-g M-g") #'ggtags-find-tag-dwim)
+  (define-key ggtags-mode-map (kbd "M-g r") #'ggtags-prev-mark))
+#+END_SRC
+*** [[https://www.emacswiki.org/emacs/HideShow][hs]]
+A very effective code folding package that is started in any prog-mode.
+    
+#+BEGIN_SRC emacs-lisp
+  (req-package hs
+    :init
+    (add-hook 'hs-minor-mode-hook '(lambda () (diminish 'hs-minor-mode)))
+    (add-hook 'prog-mode-hook 'hs-minor-mode)
+    (global-set-key (kbd "C-c C-f") 'hs-toggle-hiding))
+#+END_SRC
+*** [[https://www.emacswiki.org/emacs/MakefileMode][makefile-mode]]
+Built into Emacs by default. I'm just adding Doxyfiles to make them more readable.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package makefile-mode
+    :init
+    (add-to-list 'auto-mode-alist '("Doxyfile" . makefile-mode)))
+#+END_SRC
+*** [[https://github.com/bbatsov/projectile][projectile]]
+Helps finding files in a given project. I'm not entirely sure if or how this is working, so I'll fiddle around with it.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package projectile
+    :diminish projectile-mode
+    :init
+    (projectile-global-mode)
+    (setq projectile-enable-caching t))
+#+END_SRC
+*** [[https://github.com/syohex/emacs-quickrun][quickrun]]
+Ever wanted to just compile and run a program with one short keystroke? This allows you to do just that.
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'prog-mode-hook
+            '(lambda ()
+               (require 'quickrun)
+               (quickrun-add-command "c/gcc"
+                                     '((:command . "gcc")
+                                       (:exec . ("%c %o -std=gnu11 -o %e %s" "%e")))
+                                     :override t)))
+#+END_SRC
+*** [[http://www.gnu.org/software/emacs/manual/html_node/semantic/index.html][semantic]]
+Built into Emacs by default. Sets the refresh time and some keybinds.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package semantic
+    :init
+    (global-semanticdb-minor-mode 1)
+    (global-semantic-idle-scheduler-mode 1)
+    (add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode)
+    (global-set-key (kbd "M-g TAB") 'semantic-complete-analyze-inline)
+    (global-set-key (kbd "M-g g") 'semantic-complete-jump-local))
+#+END_SRC
+** Usability
+*** [[https://github.com/cdominik/cdlatex][cdlatex]]
+Provides quick shortcuts for lots of long latex symbols. For example, `a turns into =\alpha=.
+
+#+BEGIN_SRC emacs-lisp
+(req-package cdlatex
+  :diminish cdlatex-mode
+  :require auctex)
+#+END_SRC
+*** [[https://github.com/mrkkrp/char-menu][char-menu]]
+Allows you to build your own tree of special characters that can be accessed via an avy-menu...menu.
+    
+#+BEGIN_SRC emacs-lisp
+  (req-package char-menu
+    :init
+    (setq char-menu '("‘’" "“”" "…" "⌊⌋" "⋀" "⋁" "√"))
+    (global-set-key (kbd "M-i") 'char-menu))
+#+END_SRC
+*** [[https://github.com/darksmile/cheatsheet/][cheatsheet]]
+Just shows a quick list of handwritten keybindings and descriptions that you can pull up whenever you want. This section
+makes heavy usage of the =(substitute-command-keys)= function, which looks to see whatever the command is currently bound
+to and uses its string. This means I don't have to rewrite this whenever I rebind keys.
+    
+#+BEGIN_SRC emacs-lisp
+  (req-package cheatsheet ;;Allows you to make a small cheatsheet of different keyboard shortcuts.
+    :requires avy semantic hs resize-window evil-mc flycheck
+    :config
+    (cheatsheet-add
+     :group 'Motion
+     :key (substitute-command-keys "\\[avy-goto-char-2]")
+     :description "Jump to a 2-character sequence.")
+    (cheatsheet-add
+     :group 'Motion
+     :key (substitute-command-keys "\\[avy-goto-line]")
+     :description "Jump to a line.")
+    (cheatsheet-add
+     :group 'Tags
+     :key "M-g M-g"
+     :description "Jump to the definition of the symbol under the cursor.")
+    (cheatsheet-add
+     :group 'Tags
+     :key "M-g r"
+     :description "Jump back to the previous jump origin.")
+    (cheatsheet-add
+     :group 'Tags
+     :key (substitute-command-keys "\\[semantic-complete-jump-local]")
+     :description "Prompt for a function, then jump to the definition.")
+    (cheatsheet-add
+     :group 'Programming
+     :key (substitute-command-keys "\\[hs-toggle-hiding]")
+     :description "Toggle code folding.")
+    (cheatsheet-add
+     :group 'Common
+     :key (substitute-command-keys "\\[resize-window]")
+     :description "Enter resize-window mode.")
+    (cheatsheet-add
+     :group 'Multiple-Cursors
+     :key (substitute-command-keys "\\[evil-mc-make-all-cursors]")
+     :description "Create cursors at all matching strings.")
+    (cheatsheet-add
+     :group 'Multiple-Cursors
+     :key (substitute-command-keys "\\[evil-mc-undo-all-cursors]")
+     :description "Remove all cursors.")
+    (cheatsheet-add
+     :group 'Multiple-Cursors
+     :key (substitute-command-keys "\\[evil-mc-make-cursor-here]")
+     :description "Create a cursor at the current location.")
+    (cheatsheet-add
+     :group 'Multiple-Cursors
+     :key (substitute-command-keys "\\[evil-mc-make-and-goto-next-match]")
+     :description "Make a new cursor at the current match and go to the next match.")
+    (cheatsheet-add
+     :group 'Multiple-Cursors
+     :key (substitute-command-keys "\\[evil-mc-skip-and-goto-next-match]")
+     :description "Go to the next match.")
+    (cheatsheet-add
+     :group 'Multiple-Cursors
+     :key (substitute-command-keys "\\[evil-mc-make-and-goto-prev-match]")
+     :description "Make a new cursor at the current match and go to the previous match.")
+    (cheatsheet-add
+     :group 'Programming
+     :key (substitute-command-keys "\\[flycheck-next-error]")
+     :description "Go to the next error in this program.")
+    (cheatsheet-add
+     :group 'Common
+     :key (substitute-command-keys "\\[flyspell-mode]")
+     :description "Toggle flyspell mode in this buffer.")
+    (global-set-key (kbd "C-h h") 'cheatsheet-show))
+#+END_SRC
+*** [[https://github.com/company-mode/company-mode][company]]
+Autocomplete that goes with just about everything. This is currently enabled globally.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package company ;;TODO Speed up
+    :diminish company-mode
+    :config
+    (global-company-mode))
+#+END_SRC
+*** [[https://github.com/myrjola/diminish.el][diminish]]
+Allows you to stop showing the name of specific minor modes.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package diminish)
+#+END_SRC
+*** [[https://github.com/skeeto/elfeed][elfeed]]
+An RSS reader that loads from elfeed.org. Basically I use it to check GitHub and various Emacs sites.
+- keybinds:
+  + g - (in elfeed mode) refresh the feed
+  + r - (in elfeed mode) mark as read
+  + u - (in elfeed mode) mark as unread
+    
+#+BEGIN_SRC emacs-lisp
+  (req-package elfeed
+    :init
+    (global-set-key (kbd "s-l") 'elfeed))
+#+END_SRC
+*** [[https://github.com/remyhonig/elfeed-org][elfeed-org]]
+Allows you to define your RSS feeds in an org file, which makes it so much more readable.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package elfeed-org
+    :require elfeed
+    :init
+    (elfeed-org))
+#+END_SRC
+*** [[https://github.com/lewang/flx][flx-ido]]
+Does some nice fuzzy matching when looking for files or buffers.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package flx-ido
+    :init
+    (ido-mode 1)
+    (ido-everywhere 1)
+    (flx-ido-mode 1)
+    ;; disable ido faces to see flx highlights.
+    (setq ido-enable-flex-matching t)
+    (setq ido-use-faces nil))
+#+END_SRC
+
+*** [[https://www.emacswiki.org/emacs/FlySpell][flyspell]]
+Built into Emacs by default. I only take this opportunity to set a quick keybind.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package flyspell
+    (global-set-key (kbd "C-c l") 'flyspell-mode))
+#+END_SRC
+
+*** [[https://github.com/cadadr/forecast.el][forecast]]
+Shows the forecast for the next week in a new buffer. Perfect for when you haven't seen the light of day for a week.
+This does need an API key that I have stored in another file (no, you can't have it).
+
+#+BEGIN_SRC emacs-lisp
+    (req-package forecast
+      :init
+      (setq forecast-latitude 39.4665
+            forecast-longitude -87.4132
+            forecast-city "Terre Haute"
+            forecast-country "USA"
+            forecast-units 'us)
+      (load (locate-user-emacs-file "forecast-api-key.el"))
+      (global-set-key (kbd "s-f") 'forecast))
+#+END_SRC
+
+*** [[https://github.com/syohex/emacs-git-gutter-fringe][git-gutter-fringe]]
+When editing a file under version control, this shows little markers indicating if a line has been added, modified, or deleted.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package git-gutter-fringe
+    :diminish git-gutter-mode
+    :init
+    (global-git-gutter-mode 1))
+#+END_SRC
+
+*** [[https://github.com/magit/magit][magit]]
+The best way to use git with Emacs. This also hooks into [[https://github.com/justbur/evil-magit][evil-magit]], which I may end up removing soon; it isn't working too well
+with the Colemak layout.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package magit ;;git porcelain
+    :init
+    (setq magit-restore-window-configuration t)
+    (add-hook 'magit-mode-hook
+              '(lambda ()
+                 (require 'evil-magit)
+                 (evil-motion-state)))
+    (global-set-key (kbd "s-g") 'magit-status)
+    (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup))
+#+END_SRC
+*** [[http://orgmode.org/][org-mode]]
+Built into Emacs by default, but I need to configure some of it, especially how the agenda works.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package org-mode
+    :init
+    (setq org-startup-indented t)
+    (setq org-agenda-include-diary t)
+    (setq org-agenda-start-on-weekday nil)
+    (setq org-ellipsis "…")
+    (setq org-src-fontify-natively t)
+
+    (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
+    (add-hook 'org-mode-hook 'org-preview-latex-fragment)
+    (add-hook 'org-cdlatex-mode-hook (lambda () (diminish 'org-cdlatex-mode)))
+    (add-hook 'org-indent-mode-hook (lambda () (diminish 'org-indent-mode)))
+    (add-hook 'org-mode-hook (lambda () (local-set-key (kbd "C-c C-x M-l") (kbd "C-u C-u C-c C-x C-l"))))
+
+    (global-set-key (kbd "C-c a") 'org-agenda))
+#+END_SRC
+*** [[https://github.com/dpsutton/resize-window][resize-window]]
+Creates a new special mode where you can quickly resize any window using n-p-f-b. Makes it a lot easier to readjust things.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package resize-window
+    :init
+    (global-set-key (kbd "C-S-r") 'resize-window))
+#+END_SRC
+*** [[https://github.com/Fuco1/smartparens][smartparens]]
+Autobalances your parentheses as you type them. Great for Lisp programming.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package smartparens
+    :init
+    (add-hook 'prog-mode-hook '(lambda ()
+                                 (smartparens-mode 1))))
+#+END_SRC
+*** [[https://github.com/dimitri/switch-window][switch-window]]
+Makes life so much easier when you have multiple windows open. Just hit one keyboard shortcut, press the number screen you want,
+and you're there.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package switch-window
+    (global-set-key (kbd "s-o") 'switch-window))
+#+END_SRC
+*** [[https://www.emacswiki.org/emacs/UndoTree][undo-tree]]
+Shows a visual representation of your undo history as an easily navigable tree.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package undo-tree
+    :diminish undo-tree-mode)
+#+END_SRC
+*** [[https://github.com/capitaomorte/yasnippet][yasnippet]]
+The basically necessary snippet package. Allows you to use little snippets that expand out to save a lot of typing.
+I have yasnippet to load only when opening this session's first programming file, since it takes quite a while to load on
+start up.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package yasnippet
+    :diminish yas-minor-mode
+    :config
+    (defvar yas-loaded 0)
+    (add-hook 'prog-mode-hook 'yas-minor-mode)
+    (add-hook 'prog-mode-hook
+              '(lambda ()
+                 (when (= yas-loaded 1)
+                       (setq yas-loaded 1)
+                       (yas-reload-all)))))
+#+END_SRC
+** Visuals
+*** [[https://github.com/ankurdave/color-identifiers-mode][color-identifiers-mode]]
+This makes programming files so much prettier and colorful, as it extrapolates colors from your current theme and color codes
+all of your defined variables accordingly. This makes it easier to see where things are being used as well as a good syntax
+checker to show that you spelled the variable correctly.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package color-identifiers-mode
+    :diminish color-identifiers-mode
+    :config
+    (global-color-identifiers-mode))
+#+END_SRC
+*** [[https://github.com/lunaryorn/fancy-battery.el][fancy-battery]]
+Shows the current battery level as colored text in the mode line. Really nice since I start Emacs full screen and can't see
+the OS's battery display.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package fancy-battery
+    (add-hook 'after-init-hook 'fancy-battery-mode))
+#+END_SRC
+*** [[https://github.com/oneKelvinSmith/monokai-emacs][monokai-theme]]
+My personal theme of choice.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package monokai-theme
+    :init
+    (load-theme 'monokai))
+#+END_SRC
+*** [[https://github.com/sabof/org-bullets][org-bullets]]
+Turn org-mode bullets into fancy utf-8 symbols that make them look so much prettier. Sorry if your browser can't see some
+of the beautiful symbols. Take my word for it, they're just fancy bullets.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package org-bullets
+    :init
+    (setq org-bullets-bullet-list
+          '("◉" "◎" "⚫" "○" "►" "◇"))
+    :config
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+#+END_SRC
+*** [[https://www.emacswiki.org/emacs/PrettySymbol][prettify-symbols-mode]]
+Built into Emacs by default. This essentially changes a few keywords into pretty symbols, like changing lambda to λ in Lisp.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package prettify-symbols-mode
+    :init
+    (global-prettify-symbols-mode 1))
+#+END_SRC
+*** [[https://github.com/raugturi/powerline-evil][powerline-evil]]
+Makes the mode line look better as well as makes it so much easier to tell which evil state I'm in.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package powerline-evil
+    :init
+    (powerline-evil-center-color-theme)
+    (setq powerline-default-separator nil)
+    (display-time-mode nil))
+#+END_SRC
+*** [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimeters]]
+This package recolors parentheses, braces, and brackets in matching pairs. This makes programming so much eaier and prettier.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package rainbow-delimiters
+    :ensure t
+    :config
+    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+#+END_SRC
+*** [[https://github.com/Benaiah/seethru][seethru]]
+Allows easy and quick changes to a frame's transparency. I can probably reverse engineer this to avoid the overhead of
+the full package.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package seethru
+    :init
+    (seethru 90))
+#+END_SRC
+* Bucket List
+Things I'd like to fix/improve when I have the time and know-how.
+
+** Finish this README
+- someday
+** Adjust More Bindings to Colemak
+- make C-n/C-e be page down/up
+- get avy-menu to use Colemak home row
+** Readable .emacs.d
+- basically the next step after this README:
+http://orgmode.org/worg/org-contrib/babel/intro.html#literate-emacs-init
+** Java
+- find a nice syntax checker
+** Email
+- it would be nice to check email in emacs; I'm currently looking at mu4e
+- assuming I go with that, remember packages evil-mu4e and org-mu4e
+** Loadup Speed
+- figure out why it takes at least 10 seconds to start up
+** Colored elscreen Tabs
+- I'm a sucker for colorful things
+** Clean Up Mode Line
+- there are currently lots of things that are smooshed to the right side, I'd like to make it a little prettier
+** Better IDE-style things?
+- maybe [[http://alexott.net/en/writings/emacs-devenv/EmacsCedet.html][CEDET]]?
