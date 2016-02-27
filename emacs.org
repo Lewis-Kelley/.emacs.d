@@ -126,7 +126,8 @@ Allows for more autocompletion when searching for files.
 #+END_SRC
 ** Programming
 *** [[https://www.emacswiki.org/emacs/CcMode][cc-mode]]
-Built into Emacs. I'm just putting this here to establish a few start up hooks.
+Built into Emacs. I'm just putting this here to establish a few start up hooks. I have individual setups for each C-type mode,
+just so that they actually work.
 
 #+BEGIN_SRC emacs-lisp
   (req-package cc-mode
@@ -135,7 +136,21 @@ Built into Emacs. I'm just putting this here to establish a few start up hooks.
     :config
     (add-hook 'cc-mode-hook 'semantic-mode)
     (add-hook 'cc-mode-common-hook '(lambda ()
+                                      (add-to-list 'ac-sources 'ac-source-semantic))))
+  (req-package c-mode
+    :init
+    (setq-default c-basic-offset 4)
+    :config
+    (add-hook 'c-mode-hook 'semantic-mode)
+    (add-hook 'c-mode-common-hook '(lambda ()
                                      (add-to-list 'ac-sources 'ac-source-semantic))))
+  (req-package c++-mode
+    :init
+    (setq-default c++-basic-offset 4)
+    :config
+    (add-hook 'c++-mode-hook 'semantic-mode)
+    (add-hook 'c++-mode-common-hook '(lambda ()
+                                       (add-to-list 'ac-sources 'ac-source-semantic))))
 #+END_SRC
 *** [[https://github.com/jscheid/dtrt-indent][dtrt-indent]]
 This is an especially useful package when editing code that somebody else wrote, as it automatically detects what the
@@ -177,6 +192,8 @@ C/C++ program tagging. This allows one to easily jump around a program to defini
 (req-package ggtags
   :diminish ggtags-mode
   :config
+  (add-hook 'c-mode-hook #'ggtags-mode)
+  (add-hook 'c++-mode-hook #'ggtags-mode)
   (add-hook 'cc-mode-hook #'ggtags-mode)
   (add-hook 'java-mode-hook #'ggtags-mode)
   (add-hook 'asm-mode-hook #'ggtags-mode)
@@ -408,6 +425,23 @@ When editing a file under version control, this shows little markers indicating 
     (global-git-gutter-mode 1))
 #+END_SRC
 
+*** [[https://github.com/dacap/keyfreq][keyfreq]]
+Keeps track of all the commands you've used by frequency.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package keyfreq
+    :config
+    (keyfreq-mode 1)
+    (keyfreq-autosave-mode 1)
+    (setq keyfreq-excluded-commands
+          '(evil-next-visual-line
+            evil-previous-visual-line
+            evil-insert
+            evil-normal-state
+            evil-forward-char
+            evil-backward-char
+            save-buffer)))
+#+END_SRC
 *** [[https://github.com/magit/magit][magit]]
 The best way to use git with Emacs. This also hooks into [[https://github.com/justbur/evil-magit][evil-magit]], which I may end up removing soon; it isn't working too well
 with the Colemak layout.
@@ -571,14 +605,14 @@ the full package.
 * Bucket List
 Things I'd like to fix/improve when I have the time and know-how.
 
-** Finish this README
-- someday
+** Cool Packages
+- https://github.com/hlissner/evil-multiedit
+  - alternative to evil-mc that may be better
+- https://github.com/noctuid/general.el
+  - alternative to evil-leader that has more flexibility and isn't tied to evil
 ** Adjust More Bindings to Colemak
 - make C-n/C-e be page down/up
 - get avy-menu to use Colemak home row
-** Readable .emacs.d
-- basically the next step after this README:
-http://orgmode.org/worg/org-contrib/babel/intro.html#literate-emacs-init
 ** Java
 - find a nice syntax checker
 ** Email
@@ -591,4 +625,4 @@ http://orgmode.org/worg/org-contrib/babel/intro.html#literate-emacs-init
 ** Clean Up Mode Line
 - there are currently lots of things that are smooshed to the right side, I'd like to make it a little prettier
 ** Better IDE-style things?
-- maybe [[http://alexott.net/en/writings/emacs-devenv/EmacsCedet.html][CEDET]]?
+- maybe [[http://alexott.net/en/writings/emacs-devenv/EmacsCedet.html][CEDET]] or irony?
