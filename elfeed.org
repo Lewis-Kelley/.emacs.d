@@ -8,3 +8,8 @@
 *** https://github.com/Lewis-Kelley.private.atom?token=AF041q-CX3DN2BDZIiv5plCcm0bQGJmXks60zOc6wA==
 ** Games :games:
 *** http://www.teamfortress.com/rss.xml
+** Prep News :news:
+*** http://student.sluh.org/prepnews/index.php/news2?format=feed
+*** http://student.sluh.org/prepnews/index.php/features2?format=feed
+*** http://student.sluh.org/prepnews/index.php/sports2
+*** http://student.sluh.org/prepnews/index.php/opinions2

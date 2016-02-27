@@ -124,6 +124,15 @@ Allows for more autocompletion when searching for files.
     :init
     (ido-mode t))
 #+END_SRC
+*** [[https://github.com/nonsequitur/smex][smex]]
+Uses ido completion when using M-x.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package smex
+    :config
+    (smex-initialize)
+    (global-set-key (kbd "M-x") 'smex))
+#+END_SRC
 ** Programming
 *** [[https://www.emacswiki.org/emacs/CcMode][cc-mode]]
 Built into Emacs. I'm just putting this here to establish a few start up hooks. I have individual setups for each C-type mode,
