@@ -13,3 +13,5 @@
 *** http://student.sluh.org/prepnews/index.php/features2?format=feed
 *** http://student.sluh.org/prepnews/index.php/sports2
 *** http://student.sluh.org/prepnews/index.php/opinions2
+** Jobs :jobs:
+*** https://chm.tbe.taleo.net/chm03/ats/servlet/Rss?org=WWT&cws=1&WebPage=SRCHR&WebVersion=0&_rss_version=2&department=13

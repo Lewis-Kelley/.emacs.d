@@ -96,7 +96,7 @@ I do a lot, like saving for instance.
       "j" 'goto-last-change-reverse
       "b" 'ido-switch-buffer
       "r" 'quickrun
-      "x" 'execute-extended-command))
+      "x" 'smex))
 #+END_SRC
 *** [[https://github.com/gabesoft/evil-mc][evil-mc]]
 Turns all those sublime text users' principle argument against Emacs on it's head and gives Emacs multiple cursors.
@@ -139,27 +139,20 @@ Built into Emacs. I'm just putting this here to establish a few start up hooks. 
 just so that they actually work.
 
 #+BEGIN_SRC emacs-lisp
-  (req-package cc-mode
-    :init
-    (setq-default c-basic-offset 4)
-    :config
-    (add-hook 'cc-mode-hook 'semantic-mode)
-    (add-hook 'cc-mode-common-hook '(lambda ()
-                                      (add-to-list 'ac-sources 'ac-source-semantic))))
-  (req-package c-mode
-    :init
-    (setq-default c-basic-offset 4)
-    :config
-    (add-hook 'c-mode-hook 'semantic-mode)
-    (add-hook 'c-mode-common-hook '(lambda ()
-                                     (add-to-list 'ac-sources 'ac-source-semantic))))
-  (req-package c++-mode
-    :init
-    (setq-default c++-basic-offset 4)
-    :config
-    (add-hook 'c++-mode-hook 'semantic-mode)
-    (add-hook 'c++-mode-common-hook '(lambda ()
-                                       (add-to-list 'ac-sources 'ac-source-semantic))))
+  (setq-default c-basic-offset 4)
+  (setq-default c++-basic-offset 4)
+
+  (add-hook 'cc-mode-common-hook '(lambda ()
+                                    (add-to-list 'ac-sources 'ac-source-semantic)))
+  (add-hook 'c-mode-common-hook '(lambda ()
+                                   (add-to-list 'ac-sources 'ac-source-semantic)))
+  (add-hook 'c++-mode-common-hook '(lambda ()
+                                       (add-to-list 'ac-sources 'ac-source-semantic)))
+
+  (add-hook 'cc-mode-hook 'semantic-mode)
+  (add-hook 'c-mode-hook 'semantic-mode)
+  (add-hook 'c++-mode-hook 'semantic-mode)
+
 #+END_SRC
 *** [[https://github.com/jscheid/dtrt-indent][dtrt-indent]]
 This is an especially useful package when editing code that somebody else wrote, as it automatically detects what the
@@ -213,19 +206,21 @@ C/C++ program tagging. This allows one to easily jump around a program to defini
 A very effective code folding package that is started in any prog-mode.
     
 #+BEGIN_SRC emacs-lisp
-  (req-package hs
-    :init
-    (add-hook 'hs-minor-mode-hook '(lambda () (diminish 'hs-minor-mode)))
-    (add-hook 'prog-mode-hook 'hs-minor-mode)
-    (global-set-key (kbd "C-c C-f") 'hs-toggle-hiding))
+  (add-hook 'hs-minor-mode-hook '(lambda () (diminish 'hs-minor-mode)))
+  (add-hook 'prog-mode-hook 'hs-minor-mode)
+  (global-set-key (kbd "C-c C-f") 'hs-toggle-hiding)
+#+END_SRC
+*** lisp-mode
+Built into Emacs (or more specifically, builds Emacs) by default. Right now I'm just specifying .stumpwmrc should be in lisp mode.
+
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'auto-mode-alist '(".stumpwmrc" . lisp-mode))
 #+END_SRC
 *** [[https://www.emacswiki.org/emacs/MakefileMode][makefile-mode]]
 Built into Emacs by default. I'm just adding Doxyfiles to make them more readable.
 
 #+BEGIN_SRC emacs-lisp
-  (req-package makefile-mode
-    :init
-    (add-to-list 'auto-mode-alist '("Doxyfile" . makefile-mode)))
+  (add-to-list 'auto-mode-alist '("Doxyfile" . makefile-mode))
 #+END_SRC
 *** [[https://github.com/bbatsov/projectile][projectile]]
 Helps finding files in a given project. I'm not entirely sure if or how this is working, so I'll fiddle around with it.
@@ -260,6 +255,14 @@ Built into Emacs by default. Sets the refresh time and some keybinds.
     (add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode)
     (global-set-key (kbd "M-g TAB") 'semantic-complete-analyze-inline)
     (global-set-key (kbd "M-g g") 'semantic-complete-jump-local))
+#+END_SRC
+*** stumpwm-mode
+Since I use StumpWM, this should come in handy.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package stumpwm-mode
+    :config
+    (add-to-list 'auto-mode-alist '(".stumpwmrc" . stumpwm-mode)))
 #+END_SRC
 ** Usability
 *** [[https://github.com/cdominik/cdlatex][cdlatex]]

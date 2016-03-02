@@ -106,7 +106,7 @@
   (tool-bar-mode -1)
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
-  (toggle-frame-fullscreen)
+;;  (toggle-frame-fullscreen)
 
   (require 'package)
   (add-to-list 'package-archives
