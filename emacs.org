@@ -454,18 +454,19 @@ When editing a file under version control, this shows little markers indicating 
 Keeps track of all the commands you've used by frequency.
 
 #+BEGIN_SRC emacs-lisp
-  (req-package keyfreq
-    :config
-    (keyfreq-mode 1)
-    (keyfreq-autosave-mode 1)
-    (setq keyfreq-excluded-commands
-          '(evil-next-visual-line
-            evil-previous-visual-line
-            evil-insert
-            evil-normal-state
-            evil-forward-char
-            evil-backward-char
-            save-buffer)))
+    (req-package keyfreq
+      :config
+      (keyfreq-mode 1)
+      (keyfreq-autosave-mode 1)
+      (setq keyfreq-excluded-commands
+            '(evil-next-visual-line
+              evil-previous-visual-line
+              evil-insert
+              evil-normal-state
+              evil-forward-char
+              evil-backward-char
+              save-buffer
+              self-insert-command)))
 #+END_SRC
 *** [[https://github.com/magit/magit][magit]]
 The best way to use git with Emacs. This also hooks into [[https://github.com/justbur/evil-magit][evil-magit]], which I may end up removing soon; it isn't working too well
