@@ -6,6 +6,19 @@ One thing to note is that I use the Colemak keyboard layout, which means some of
 in [ ] next to the defaults. \\
 I also use the super key (s- ) in a lot of my bindings. If you want to use them as-is, you need to look into getting the key to work
 properly on your OS.
+* General Initialization
+** Emacsclient Support For StumpWM
+This was taken from https://github.com/stumpwm/stumpwm/wiki/WorkWithEmacsclient. It is set up to be triggered only on my
+Gentoo setup, so if you're using this you will definitely need to change things.
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'after-init-hook 'server-start)
+  (setq server-raise-frame t)
+
+  ;(if (and window-system (string-equal system-name "kelleyld-w541"))
+  ;    (add-hook 'server-done-hook
+  ;              (lambda () (shell-command "stumpish 'eval (stumpwm::return-es-called-win stumpwm::*es-win*)'"))))
+#+END_SRC
 * Package List
 ** Control
 *** [[https://github.com/joodland/bm][bm]]
@@ -236,13 +249,13 @@ Helps finding files in a given project. I'm not entirely sure if or how this is 
 Ever wanted to just compile and run a program with one short keystroke? This allows you to do just that.
 
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'prog-mode-hook
-            '(lambda ()
-               (require 'quickrun)
-               (quickrun-add-command "c/gcc"
-                                     '((:command . "gcc")
-                                       (:exec . ("%c %o -std=gnu11 -o %e %s" "%e")))
-                                     :override t)))
+   (add-hook 'prog-mode-hook
+             '(lambda ()
+                (require 'quickrun)
+                (quickrun-add-command "c/gcc"
+                                      '((:command . "gcc")
+                                        (:exec . ("%c %o -std=gnu11 -o %e %s" "%e")))
+                                      :override t)))
 #+END_SRC
 *** [[http://www.gnu.org/software/emacs/manual/html_node/semantic/index.html][semantic]]
 Built into Emacs by default. Sets the refresh time and some keybinds.
