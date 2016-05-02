@@ -1,4 +1,4 @@
-* Overview
+﻿* Overview
 This is my personal setup for Emacs. Most everything should work right out of the box, but one may need to do some fanagling to get it to work the first time.
 This whole setup essentially hinges on req-package, use-package's slightly more robust sibling. \\
 One thing to note is that I use the Colemak keyboard layout, which means some of my keybindings may seem a little weird. I've thought of this and created a flag called
@@ -6,8 +6,48 @@ One thing to note is that I use the Colemak keyboard layout, which means some of
 in [ ] next to the defaults. \\
 I also use the super key (s- ) in a lot of my bindings. If you want to use them as-is, you need to look into getting the key to work
 properly on your OS.
+* General Settings
+** Hide Make Buffers
+I don't really like having a new window pop up to tell me what happened during a make.
+This makes it so that the minibuffer tells you whether the compilation succeeded or failed.
+
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'display-buffer-alist '("*compilation*" . (display-buffer-no-window)))
+#+END_SRC
+** Make Magit Buffer Big
+When calling Magit status, usually the buffer only takes up half the screen, which isn't really pretty.
+This makes it so that doesn't happen.
+This is taken from http://www.lunaryorn.com/2016/04/28/fullscreen-magit-status.html.
+
+#+BEGIN_SRC emacs-lisp
+  (defun my-display-buffer-fullframe (buffer alist)
+    "Display BUFFER in fullscreen.
+  ALIST is a 'display-buffer' ALIST."
+    (let ((window (or (display-buffer-use-some-window buffer alist)
+                      (display-buffer-pop-up-window buffer alist))))
+      (when window
+        (delete-other-windows window)
+        window)))
+
+  (add-to-list 'display-buffer-alist
+               `(,(rx "*magit: ")
+                 (my-display-buffer-fullframe)
+                 (reusable-frames . nil)))
+#+END_SRC
 * Package List
 ** Control
+*** avy
+A lovely package that allows you to quickly jump to wherever you want to go practically instantly.
+- keybinds:
+  + M-s - use avy with one word
+  + M-l - use avy to go to a line
+#+BEGIN_SRC emacs-lisp
+  (req-package avy
+    :bind
+    (("M-s" . avy-goto-word-1)
+     ("M-S-s" . avy-goto-char-2)
+     ("M-l" . avy-goto-line)))
+#+END_SRC
 *** [[https://github.com/joodland/bm][bm]]
 An extremely simple yet really helpful package that allows you to mark multiple different positions in a file and cycle through
 them with ease. Really useful when you need to go looking for something but want to save your spot, or if you keep bouncing
@@ -31,9 +71,10 @@ separate windows? With this, you can very quickly tell what all you have open in
 you want.
 #+BEGIN_SRC emacs-lisp
   (use-package elscreen
+    :disabled t
     :ensure t ;; this has to be use-package to make it work for some reason
     :init
-    (elscreen-start)
+    ;;(elscreen-start)
     ;; set up tab commands
     (global-set-key (kbd "C-c 0") 'elscreen-kill)
     (global-set-key  (kbd "C-c 1") 'elscreen-kill-others)
@@ -74,7 +115,7 @@ I do a lot, like saving for instance.
 
 #+BEGIN_SRC emacs-lisp
   (req-package evil-leader
-    :require evil
+    :require evil quickrun
     :init
     (setq evil-leader/in-all-states 1)
     (global-evil-leader-mode)
@@ -86,7 +127,8 @@ I do a lot, like saving for instance.
       "2" 'split-window-below
       "3" 'split-window-right
       "f" 'find-file
-      "d" 'divide-evenly
+      "D" 'divide-evenly
+      "d" 'ido-dired
       "s" 'save-buffer
       "o" 'other-window
       "O" 'switch-window
@@ -120,9 +162,10 @@ Some of these keybindings overwrite standard Emacs motion keys.
 Allows for more autocompletion when searching for files.
 
 #+BEGIN_SRC emacs-lisp
-  (req-package ido
-    :init
-    (ido-mode t))
+    (req-package ido
+      :init
+      (ido-mode t)
+      (setq ido-default-buffer-method 'selected-window))
 #+END_SRC
 *** [[https://github.com/nonsequitur/smex][smex]]
 Uses ido completion when using M-x.
@@ -139,8 +182,8 @@ Built into Emacs. I'm just putting this here to establish a few start up hooks. 
 just so that they actually work.
 
 #+BEGIN_SRC emacs-lisp
-  (setq-default c-basic-offset 4)
-  (setq-default c++-basic-offset 4)
+  (setq-default c-basic-offset 2)
+  (setq-default c++-basic-offset 2)
 
   (add-hook 'cc-mode-common-hook '(lambda ()
                                     (add-to-list 'ac-sources 'ac-source-semantic)))
@@ -170,18 +213,43 @@ and so that this doesn't keep slowing down my boot up time.
   (req-package fic-mode
     :diminish fic-mode
     :config
-    (add-hook 'prog-mode-hook 'turn-on-fic-mode))
+    (add-hook 'prog-mode-hook 'fic-mode))
 #+END_SRC
 *** [[https://github.com/flycheck/flycheck][flycheck]]
 A magic little syntax checker for various languages like C. It sets a compiler flag for gnu11, since my computer doesn't
 compile for loops and the like by default for some reason. Triggered in any prog-mode.
 
 #+BEGIN_SRC emacs-lisp
+  (defun setup-flycheck-rtags ()
+    (interactive)
+    "Stolen from https://vxlabs.com/tag/rtags/."
+    (flycheck-select-checker 'rtags)
+    (setq-local flycheck-highlighting-mode nil)
+    (setq-local flycheck-check-syntax-automatically nil))
+
   (req-package flycheck
-    :diminish flycheck-mode
-    :init
-    (setq flycheck-gcc-args "-std=gnu11")
+    :require rtags
     :config
+    (flycheck-set-checker-executable 'c/c++-gcc "/usr/bin/gcc")
+    (setq flycheck-gcc-args "-std=gnu11")
+
+    (when (require 'rtags nil :noerror)
+      (require 'company)
+      (define-key c-mode-base-map (kbd "s-n")
+        (function rtags-find-symbol-at-point))
+      (define-key c-mode-base-map (kbd "s-k")
+        (function rtags-find-references-at-point))
+      (rtags-enable-standard-keybindings)
+      (setq rtags-autostart-diagnostics t)
+      (rtags-diagnostics)
+      (setq rtags-completions-enabled t)
+      (push 'company-rtags company-backends)
+      (global-company-mode t)
+      (define-key c-mode-base-map (kbd "<C-tab>")
+        (function company-complete))
+      (require 'flycheck-rtags)
+      (add-hook 'c-mode-common-hook #'setup-flycheck-rtags))
+
     (add-hook 'prog-mode-hook 'flycheck-mode))
 #+END_SRC
 *** [[https://github.com/leoliu/ggtags][ggtags]]
@@ -243,6 +311,47 @@ Ever wanted to just compile and run a program with one short keystroke? This all
                                      '((:command . "gcc")
                                        (:exec . ("%c %o -std=gnu11 -o %e %s" "%e")))
                                      :override t)))
+#+END_SRC
+*** scheme-mode
+A lot of these settings are from the default config for my CSSE304 class.
+I am using petite chez as my interpereter, as it is required for the class.
+
+#+BEGIN_SRC emacs-lisp
+  (setq auto-mode-alist (cons '("\\.ss" . scheme-mode) auto-mode-alist))
+  (setq scheme-program-name "petite")
+
+  (put 'eval-when     'scheme-indent-function 1)
+  (put 'set!          'scheme-indent-function 1)
+  (put 'when          'scheme-indent-function 1)
+  (put 'unless        'scheme-indent-function 1)
+  (put 'record-case   'scheme-indent-function 1)
+  (put 'c-record-case 'scheme-indent-function 1)
+  (put 'variant-case  'scheme-indent-function 1)
+  (put 'parameterize  'scheme-indent-function 1)
+  (put 'call-with-values 'scheme-indent-function 1)
+  (put 'extend-syntax 'scheme-indent-function 1)
+  (put 'with          'scheme-indent-function 1)
+  (put 'let        'scheme-indent-function 1)
+  (put 'let-syntax    'scheme-indent-function 1)
+  (put 'letrec-syntax 'scheme-indent-function 1)
+  (put 'with-syntax   'scheme-indent-function 1)
+  (put 'syntax-case   'scheme-indent-function 2)
+  (put 'syntax  'scheme-indent-function 1)
+  (put 'syntax-rules  'scheme-indent-function 1)
+  (put 'foreign-procedure 'scheme-indent-function 1)
+  (put 'set-top-level-value! 'scheme-indent-function 1)
+  (put 'make-parameter 'scheme-indent-function 1)
+  (put 'decompose     'scheme-indent-function 2)
+  (put 'mvlet         'scheme-indent-function 1)
+  (put 'mvlet*        'scheme-indent-function 1)
+  (put 'state-case    'scheme-indent-function 1)
+  (put 'foreach       'scheme-indent-function 1)
+  (put 'vector-foreach 'scheme-indent-function 1)
+  (put 'assert        'scheme-indent-function 1)
+  (put 'fold-list     'scheme-indent-function 2)
+  (put 'fold-vector   'scheme-indent-function 2)
+  (put 'fold-count    'scheme-indent-function 2)
+  (put 'on-error      'scheme-indent-function 1)
 #+END_SRC
 *** [[http://www.gnu.org/software/emacs/manual/html_node/semantic/index.html][semantic]]
 Built into Emacs by default. Sets the refresh time and some keybinds.
@@ -377,7 +486,7 @@ An RSS reader that loads from elfeed.org. Basically I use it to check GitHub and
     
 #+BEGIN_SRC emacs-lisp
   (req-package elfeed
-    :init
+    :config
     (global-set-key (kbd "s-l") 'elfeed))
 #+END_SRC
 *** [[https://github.com/remyhonig/elfeed-org][elfeed-org]]
@@ -386,7 +495,7 @@ Allows you to define your RSS feeds in an org file, which makes it so much more 
 #+BEGIN_SRC emacs-lisp
   (req-package elfeed-org
     :require elfeed
-    :init
+    :config
     (elfeed-org))
 #+END_SRC
 *** [[https://github.com/lewang/flx][flx-ido]]
@@ -470,25 +579,60 @@ with the Colemak layout.
     (global-set-key (kbd "s-g") 'magit-status)
     (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup))
 #+END_SRC
+*** mu4e
+Email manager.
+#+BEGIN_SRC emacs-lisp
+  (setq mu4e-sent-messages-behavior 'sent
+        mu4e-get-mail-command "fetchmail -d0"
+        message-kill-buffer-on-exit t
+        mu4e-view-show-images t
+        mu4e-show-images t
+        mu4e-view-image-max-width 800)
+
+
+  ;; (setq mu4e-html2text-command "html2text -utf8 -width 72") ;; nil "Shel command that converts HTML
+  ;; ref: http://emacs.stackexchange.com/questions/3051/how-can-i-use-eww-as-a-renderer-for-mu4e
+  (defun my-render-html-message ()
+    (let ((dom (libxml-parse-html-region (point-min) (point-max))))
+      (erase-buffer)
+      (shr-insert-document dom)
+      (goto-char (point-min))))
+
+  (setq mu4e-html2text-command 'my-render-html-message
+        mu4e-view-prefer-html t
+        message-send-mail-function 'smtpmail-send-it
+        smtpmail-stream-type 'starttls
+        smtpmail-starttls-credentials '(("exchange.rose-hulman.edu" 587 nil nil))
+        smtpmail-default-smtp-server "exchange.rose-hulman.edu"
+        smtpmail-smtp-server "exchange.rose-hulman.edu"
+        smtpmail-smtp-service 587
+        smtpmail-debug-info t)
+#+END_SRC
 *** [[http://orgmode.org/][org-mode]]
+:PROPERTIES:
+:ORDERED:  t
+:END:
 Built into Emacs by default, but I need to configure some of it, especially how the agenda works.
 
 #+BEGIN_SRC emacs-lisp
-  (req-package org-mode
-    :init
-    (setq org-startup-indented t)
-    (setq org-agenda-include-diary t)
-    (setq org-agenda-start-on-weekday nil)
-    (setq org-ellipsis "…")
-    (setq org-src-fontify-natively t)
+  (setq org-startup-indented t)
+  (setq org-agenda-include-diary t)
+  (setq org-agenda-start-on-weekday nil)
+  (setq org-ellipsis "…")
+  (setq org-src-fontify-natively t)
 
-    (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
-    (add-hook 'org-mode-hook 'org-preview-latex-fragment)
-    (add-hook 'org-cdlatex-mode-hook (lambda () (diminish 'org-cdlatex-mode)))
-    (add-hook 'org-indent-mode-hook (lambda () (diminish 'org-indent-mode)))
-    (add-hook 'org-mode-hook (lambda () (local-set-key (kbd "C-c C-x M-l") (kbd "C-u C-u C-c C-x C-l"))))
+  (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
+  (add-hook 'org-mode-hook 'org-preview-latex-fragment)
+  (add-hook 'org-cdlatex-mode-hook (lambda () (diminish 'org-cdlatex-mode)))
+  (add-hook 'org-indent-mode-hook (lambda () (diminish 'org-indent-mode)))
+  (add-hook 'org-mode-hook (lambda () (local-set-key (kbd "C-c C-x M-l") (kbd "C-u C-u C-c C-x C-l"))))
 
-    (global-set-key (kbd "C-c a") 'org-agenda))
+  (global-set-key (kbd "C-c a") 'org-agenda)
+
+  (setq org-agenda-files (list "~/homework/CSSE304.org" "~/homework/CSSE335.org" "~/homework/MA375.org" "~/homework/ECE332.org" "~/schedules/Y1/Q3.org" "~/planner.org"))
+
+  (setq geiser-default-implementation 'petite)
+  (org-babel-do-load-languages 'org-babel-load-languages '((scheme . t)))
 #+END_SRC
 *** [[https://github.com/dpsutton/resize-window][resize-window]]
 Creates a new special mode where you can quickly resize any window using n-p-f-b. Makes it a lot easier to readjust things.
@@ -556,14 +700,14 @@ Shows the current battery level as colored text in the mode line. Really nice si
 the OS's battery display.
 
 #+BEGIN_SRC emacs-lisp
-  (req-package fancy-battery
-    (add-hook 'after-init-hook 'fancy-battery-mode))
+  (req-package fancy-battery)
 #+END_SRC
 *** [[https://github.com/oneKelvinSmith/monokai-emacs][monokai-theme]]
 My personal theme of choice.
 
 #+BEGIN_SRC emacs-lisp
   (req-package monokai-theme
+    :require fic-mode
     :init
     (load-theme 'monokai))
 #+END_SRC
@@ -602,7 +746,6 @@ This package recolors parentheses, braces, and brackets in matching pairs. This 
 
 #+BEGIN_SRC emacs-lisp
   (req-package rainbow-delimiters
-    :ensure t
     :config
     (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 #+END_SRC
@@ -628,9 +771,6 @@ Things I'd like to fix/improve when I have the time and know-how.
 - get avy-menu to use Colemak home row
 ** Java
 - find a nice syntax checker
-** Email
-- it would be nice to check email in emacs; I'm currently looking at mu4e
-- assuming I go with that, remember packages evil-mu4e and org-mu4e
 ** Loadup Speed
 - figure out why it takes at least 10 seconds to start up
 ** Colored elscreen Tabs
@@ -639,3 +779,4 @@ Things I'd like to fix/improve when I have the time and know-how.
 - there are currently lots of things that are smooshed to the right side, I'd like to make it a little prettier
 ** Better IDE-style things?
 - maybe [[http://alexott.net/en/writings/emacs-devenv/EmacsCedet.html][CEDET]] or irony?
+  

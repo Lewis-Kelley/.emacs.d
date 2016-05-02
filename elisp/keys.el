@@ -5,13 +5,13 @@
 
 ;; various custom functions and frequently
 ;; used programs
-(global-set-key (kbd "s-e") 'event)
-(global-set-key (kbd "s-n") 'notes)
+;;(global-set-key (kbd "s-e") 'event)
+;;(global-set-key (kbd "s-n") 'notes)
 (global-set-key (kbd "s-r") 'clean-buffer)
 
 ;; custom desktop save/load commands
-(global-set-key (kbd "C-c d") 'my-desktop-save)
-(global-set-key (kbd "C-c r") 'desktop-read)
+;;(global-set-key (kbd "C-c d") 'my-desktop-save)
+;;(global-set-key (kbd "C-c r") 'desktop-read)
 (global-set-key (kbd "C-x x") 'desktop-save-and-close)
 (global-set-key (kbd "C-x C-0") 'toggle-windows-split)
 

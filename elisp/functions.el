@@ -242,10 +242,10 @@ abort completely with `C-g'."
   (define-key evil-normal-state-map (kbd "K") 'evil-search-previous)
   (define-key evil-normal-state-map (kbd "C-n") (lambda ()
 												  (interactive)
-												  (evil-scroll-up nil)))
+												  (evil-scroll-down nil)))
   (define-key evil-normal-state-map (kbd "C-e") (lambda ()
   												  (interactive)
-  												  (evil-scroll-down nil))))
+  												  (evil-scroll-up nil))))
 
 (defun colemak-evil-visual-state-remap ()
   "Redo a lot of the visual state keys to accomodate Colemak layout."
@@ -261,10 +261,10 @@ abort completely with `C-g'."
   (define-key evil-visual-state-map (kbd "K") 'evil-search-previous)
   (define-key evil-visual-state-map (kbd "C-n") (lambda ()
   												  (interactive)
-  												  (evil-scroll-up)))
+  												  (evil-scroll-down)))
   (define-key evil-visual-state-map (kbd "C-e") (lambda ()
   												  (interactive)
-  												  (evil-scroll-down))))
+  												  (evil-scroll-up))))
 
 (defun colemak-evil-motion-state-remap ()
   "Redo a lot of the visual state keys to accomodate Colemak layout."
@@ -280,10 +280,10 @@ abort completely with `C-g'."
   (define-key evil-motion-state-map (kbd "K") 'evil-search-previous)
   (define-key evil-motion-state-map (kbd "C-n") (lambda ()
   												  (interactive)
-  												  (evil-scroll-up nil)))
+  												  (evil-scroll-down nil)))
   (define-key evil-normal-state-map (kbd "C-e") (lambda ()
   												  (interactive)
-  												  (evil-scroll-down nil))))
+  												  (evil-scroll-up nil))))
 
 (defun minibuffer-keyboard-quit ()
   "Abort recursive edit.
