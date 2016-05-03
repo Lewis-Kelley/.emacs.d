@@ -54,6 +54,7 @@ them with ease. Really useful when you need to go looking for something but want
 between a few spots in a file.
 #+BEGIN_SRC emacs-lisp
   (req-package bm ;;make bookmarks and cycle through them
+    :disabled t
     :config
     (global-set-key (kbd "s-d") 'bm-toggle)
     (if (= flag-colemak 1)
@@ -89,6 +90,7 @@ Gets me out of a lot of text editor wars and allows me to use slightly less insa
 #+BEGIN_SRC emacs-lisp
     (req-package evil ;;TODO Speed up
       :config
+      (global-set-key (kbd "s-e") 'evil-mode)
       (evil-set-initial-state 'blackbox-mode 'emacs)
       (evil-set-initial-state 'package-menu-mode 'motion)
       (evil-set-initial-state 'org-agenda-mode 'motion)
@@ -154,9 +156,7 @@ Some of these keybindings overwrite standard Emacs motion keys.
 #+BEGIN_SRC emacs-lisp
   (req-package evil-mc
     :require evil
-    :diminish evil-mc-mode
-    :init
-    (global-evil-mc-mode 1))
+    :diminish evil-mc-mode)
 #+END_SRC
 *** [[https://www.emacswiki.org/emacs/InteractivelyDoThings][ido]]
 Allows for more autocompletion when searching for files.
@@ -166,6 +166,39 @@ Allows for more autocompletion when searching for files.
       :init
       (ido-mode t)
       (setq ido-default-buffer-method 'selected-window))
+#+END_SRC
+*** [[https://github.com/abo-abo/hydra][hydra]]
+This lovely package allows for improved use of chaining similar commands.
+I'll be trying to use it to wean myself off of some of the features
+of evil-mode, but I'm sure I'll keep both installed for a while.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package hydra
+    :init
+    (global-set-key (kbd "C-n")
+                    (if (= flag-colemak 1)
+                        (defhydra hydra-motion ()
+                          "motion"
+                          ("h" backward-char)
+                          ("n" next-line)
+                          ("e" previous-line)
+                          ("i" forward-char)
+                          ("r" beginning-of-line)
+                          ("t" move-end-of-line)
+                          ("E" scroll-down-command)
+                          ("N" scroll-up-command)
+                          ("l" recenter-top-bottom))
+                      (defhydra hydra-motion ()
+                        "motion"
+                        ("h" backward-char)
+                        ("j" next-line)
+                        ("k" previous-line)
+                        ("l" forward-char)
+                        ("s" beginning-of-line)
+                        ("f" move-end-of-line)
+                        ("K" scroll-down-command)
+                        ("J" scroll-up-command)
+                        ("l" recenter-top-bottom)))))
 #+END_SRC
 *** [[https://github.com/nonsequitur/smex][smex]]
 Uses ido completion when using M-x.

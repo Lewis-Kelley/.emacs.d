@@ -151,7 +151,7 @@
   ;;
 
   (show-paren-mode)
-  (evil-mode)
+  ;(evil-mode)
 
   ;; turn off garbage collection when using minibuffer
   ;; this may not be working (http://bling.github.io/blog/2016/01/18/why-are-you-changing-gc-cons-threshold/)
