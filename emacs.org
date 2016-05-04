@@ -175,30 +175,38 @@ of evil-mode, but I'm sure I'll keep both installed for a while.
 #+BEGIN_SRC emacs-lisp
   (req-package hydra
     :init
-    (global-set-key (kbd "C-n")
-                    (if (= flag-colemak 1)
-                        (defhydra hydra-motion ()
-                          "motion"
-                          ("h" backward-char)
-                          ("n" next-line)
-                          ("e" previous-line)
-                          ("i" forward-char)
-                          ("r" beginning-of-line)
-                          ("t" move-end-of-line)
-                          ("E" scroll-down-command)
-                          ("N" scroll-up-command)
-                          ("l" recenter-top-bottom))
-                      (defhydra hydra-motion ()
-                        "motion"
-                        ("h" backward-char)
-                        ("j" next-line)
-                        ("k" previous-line)
-                        ("l" forward-char)
-                        ("s" beginning-of-line)
-                        ("f" move-end-of-line)
-                        ("K" scroll-down-command)
-                        ("J" scroll-up-command)
-                        ("l" recenter-top-bottom)))))
+    (defhydra hydra-motion (:body-pre (next-line))
+      "motion"
+      ("b" backward-char)
+      ("n" next-line)
+      ("p" previous-line)
+      ("f" forward-char)
+      ("a" beginning-of-line)
+      ("e" move-end-of-line)
+      ("P" scroll-down-command)
+      ("N" scroll-up-command)
+      ("l" recenter-top-bottom)
+      ("G" end-of-buffer)
+      ("g" beginning-of-buffer))
+    (global-set-key (kbd "C-n") #'hydra-motion/next-line)
+    (global-set-key (kbd "C-p") #'hydra-motion/previous-line)
+    (global-set-key (kbd "C-f") #'hydra-motion/forward-char)
+    (global-set-key (kbd "C-b") #'hydra-motion/backward-char))
+#+END_SRC
+*** [[https://www.emacswiki.org/emacs/KeyChord][key-chord]]
+Allows the ability to define different key chords, key combinations
+that trigger an action when pressed in quick succession.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package key-chord
+    :init
+    (key-chord-mode 1)
+    (setq key-chord-one-key-delay 0.2)
+    (setq key-chord-two-key-delay 0.1)
+    (key-chord-define c-mode-map ".." "->")
+    (key-chord-define c++-mode-map ".." "->")
+    (key-chord-define global-map "-." "→")
+    (key-chord-define-global ",-" "←"))
 #+END_SRC
 *** [[https://github.com/nonsequitur/smex][smex]]
 Uses ido completion when using M-x.
