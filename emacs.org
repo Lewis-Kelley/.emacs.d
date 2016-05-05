@@ -177,17 +177,17 @@ of evil-mode, but I'm sure I'll keep both installed for a while.
     :init
     (defhydra hydra-motion (:body-pre (next-line))
       "motion"
-      ("b" backward-char)
-      ("n" next-line)
-      ("p" previous-line)
-      ("f" forward-char)
-      ("a" beginning-of-line)
-      ("e" move-end-of-line)
-      ("P" scroll-down-command)
-      ("N" scroll-up-command)
-      ("l" recenter-top-bottom)
-      ("G" end-of-buffer)
-      ("g" beginning-of-buffer))
+      ("b" backward-char "←")
+      ("n" next-line "↓")
+      ("p" previous-line "↑")
+      ("f" forward-char "→")
+      ("a" beginning-of-line "BoL")
+      ("e" move-end-of-line "EoL")
+      ("P" scroll-down-command "Pg ↓")
+      ("N" scroll-up-command "Pg ↑")
+      ("l" recenter-top-bottom "Center")
+      ("G" end-of-buffer "EoF")
+      ("g" beginning-of-buffer "BoF"))
     (global-set-key (kbd "C-n") #'hydra-motion/next-line)
     (global-set-key (kbd "C-p") #'hydra-motion/previous-line)
     (global-set-key (kbd "C-f") #'hydra-motion/forward-char)
@@ -217,6 +217,7 @@ Uses ido completion when using M-x.
     (smex-initialize)
     (global-set-key (kbd "M-x") 'smex))
 #+END_SRC
+*** TODO swiper
 ** Programming
 *** [[https://www.emacswiki.org/emacs/CcMode][cc-mode]]
 Built into Emacs. I'm just putting this here to establish a few start up hooks. I have individual setups for each C-type mode,
@@ -245,6 +246,7 @@ indentation size is and sets yours to match.
 #+BEGIN_SRC emacs-lisp
   (req-package dtrt-indent)
 #+END_SRC
+*** TODO Doxymacs
 *** [[https://github.com/lewang/fic-mode][fic-mode]]
 Another tiny yet remarkably helpful package that just highlights keywords like TODO or FIXME in comments.
 It is currently turned on in any prog-mode. Someday I should just write something like this myself, both for experience
@@ -817,6 +819,7 @@ Things I'd like to fix/improve when I have the time and know-how.
 ** Colored elscreen Tabs
 - I'm a sucker for colorful things
 ** Clean Up Mode Line
+- smart-mode-line?
 - there are currently lots of things that are smooshed to the right side, I'd like to make it a little prettier
 ** Better IDE-style things?
 - maybe [[http://alexott.net/en/writings/emacs-devenv/EmacsCedet.html][CEDET]] or irony?
