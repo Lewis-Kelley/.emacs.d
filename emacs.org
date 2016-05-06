@@ -163,9 +163,24 @@ Allows for more autocompletion when searching for files.
 
 #+BEGIN_SRC emacs-lisp
     (req-package ido
+      :disabed t
       :init
       (ido-mode t)
       (setq ido-default-buffer-method 'selected-window))
+#+END_SRC
+*** [[https://github.com/abo-abo/swiper][ivy]]
+This is a generic completion package that is used as a backend for swiper.
+It pulls up a larger minibuffer that shows all the possible completions.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package ivy
+    :diminish ivy-mode
+    :config
+    (setq ivy-use-virtual-buffers t)
+    (define-key ivy-minibuffer-map (kbd "C-p") 'ivy-previous-line)
+    (define-key ivy-minibuffer-map (kbd "C-n") 'ivy-next-line)
+    (ivy-mode 1))
+  (global-set-key (kbd "C-c C-r") 'ivy-resume)
 #+END_SRC
 *** [[https://github.com/abo-abo/hydra][hydra]]
 This lovely package allows for improved use of chaining similar commands.
@@ -217,7 +232,16 @@ Uses ido completion when using M-x.
     (smex-initialize)
     (global-set-key (kbd "M-x") 'smex))
 #+END_SRC
-*** TODO swiper
+*** [[https://github.com/abo-abo/swiper][swiper]]
+This basically extends ivy-mode to provide a comprehensive overview of whatever you're
+searching for.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package swiper
+    :requires ivy)
+
+  (global-set-key (kbd "C-s") 'swiper)
+#+END_SRC
 ** Programming
 *** [[https://www.emacswiki.org/emacs/CcMode][cc-mode]]
 Built into Emacs. I'm just putting this here to establish a few start up hooks. I have individual setups for each C-type mode,
@@ -339,9 +363,11 @@ Helps finding files in a given project. I'm not entirely sure if or how this is 
 #+BEGIN_SRC emacs-lisp
   (req-package projectile
     :diminish projectile-mode
+    :requires ivy
     :init
     (projectile-global-mode)
-    (setq projectile-enable-caching t))
+    (setq projectile-enable-caching t)
+    (setq projectile-completion-system 'ivy))
 #+END_SRC
 *** [[https://github.com/syohex/emacs-quickrun][quickrun]]
 Ever wanted to just compile and run a program with one short keystroke? This allows you to do just that.
@@ -546,6 +572,7 @@ Does some nice fuzzy matching when looking for files or buffers.
 
 #+BEGIN_SRC emacs-lisp
   (req-package flx-ido
+    :disabled t
     :init
     (ido-mode 1)
     (ido-everywhere 1)
@@ -608,17 +635,13 @@ Keeps track of all the commands you've used by frequency.
               self-insert-command)))
 #+END_SRC
 *** [[https://github.com/magit/magit][magit]]
-The best way to use git with Emacs. This also hooks into [[https://github.com/justbur/evil-magit][evil-magit]], which I may end up removing soon; it isn't working too well
-with the Colemak layout.
+The best way to use git with Emacs. Period.
 
 #+BEGIN_SRC emacs-lisp
   (req-package magit ;;git porcelain
     :init
     (setq magit-restore-window-configuration t)
-    (add-hook 'magit-mode-hook
-              '(lambda ()
-                 (require 'evil-magit)
-                 (evil-motion-state)))
+    (setq magit-completing-read-function 'ivy-completing-read)
     (global-set-key (kbd "s-g") 'magit-status)
     (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup))
 #+END_SRC
@@ -798,6 +821,7 @@ the full package.
 
 #+BEGIN_SRC emacs-lisp
   (req-package seethru
+    :disabled t
     :init
     (seethru 90))
 #+END_SRC
