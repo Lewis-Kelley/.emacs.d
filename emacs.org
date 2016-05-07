@@ -262,6 +262,18 @@ searching for.
 
   (global-set-key (kbd "C-s") 'swiper)
 #+END_SRC
+*** [[https://github.com/mrkkrp/zzz-to-char][zzz-to-char]]
+Visually kill a part of a line, forward or backward, to a given character.
+This in some ways shoots Vim's kill-to command out of the water, simply
+because of how easy it is to go to a specific instance of a character with
+an avy backend.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package zzz-to-char
+    :requires avy)
+  (global-set-key (kbd "M-z") 'zzz-up-to-char)
+  (global-set-key (kbd "M-Z") 'zzz-to-char)
+#+END_SRC
 ** Programming
 *** [[https://www.emacswiki.org/emacs/CcMode][cc-mode]]
 Built into Emacs. I'm just putting this here to establish a few start up hooks. I have individual setups for each C-type mode,
@@ -878,3 +890,6 @@ Things I'd like to fix/improve when I have the time and know-how.
 ** Better IDE-style things?
 - maybe [[http://alexott.net/en/writings/emacs-devenv/EmacsCedet.html][CEDET]] or irony?
   
+** Move-To-Char
+Reverse-engineer zzz-to-char to make a move to char, which would function the same,
+just it wouldn't actually delete text, only move the cursor.
