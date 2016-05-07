@@ -65,6 +65,11 @@ between a few spots in a file.
         (global-set-key (kbd "s-j") 'bm-next)
         (global-set-key (kbd "s-k") 'bm-previous))))
 #+END_SRC    
+*** [[https://github.com/abo-abo/swiper][counsel]]
+#+BEGIN_SRC emacs-lisp
+  (req-package counsel)
+  (global-set-key (kbd "M-x") 'counsel-M-x)
+#+END_SRC
 *** [[https://github.com/knu/elscreen][elscreen]]
 You know how Emacs does multiple windows? Poorly, in my opinion. Why would you ever want to deal with layers of windows you 
 can't see when you could just have different tabs that you can easily switch between that function identically to having
@@ -158,6 +163,20 @@ Some of these keybindings overwrite standard Emacs motion keys.
     :require evil
     :diminish evil-mc-mode)
 #+END_SRC
+*** [[https://github.com/magnars/expand-region.el][expand-region]]
+Gives the ability to quickly create and expand a region to fill some kind of
+boundary, like parentheses or quotes. This gives Emacs something like the
+functionality of Vim with its "change-in" commands.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package expand-region)
+  (global-set-key (kbd "M-i") 'er/expand-region)
+  ;; This just does the same in reverse.
+  (global-set-key (kbd "M-r") (lambda ()
+                                  (interactive)
+                                  (setq current-prefix-arg '(-1))
+                                  (call-interactively 'er/expand-region)))
+#+END_SRC
 *** [[https://www.emacswiki.org/emacs/InteractivelyDoThings][ido]]
 Allows for more autocompletion when searching for files.
 
@@ -228,6 +247,7 @@ Uses ido completion when using M-x.
 
 #+BEGIN_SRC emacs-lisp
   (req-package smex
+    :disabled t
     :config
     (smex-initialize)
     (global-set-key (kbd "M-x") 'smex))
@@ -824,6 +844,16 @@ the full package.
     :disabled t
     :init
     (seethru 90))
+#+END_SRC
+*** [[https://github.com/k-talo/volatile-highlights.el][volatile-highlights]]
+Whenever you change a large block of text, like with an undo or a yank,
+this temporarily highlights it to draw attention to it.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package volatile-highlights
+    :diminish volatile-highlights-mode
+    :config
+    (volatile-highlights-mode t))
 #+END_SRC
 * Bucket List
 Things I'd like to fix/improve when I have the time and know-how.
