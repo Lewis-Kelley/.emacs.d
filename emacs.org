@@ -236,11 +236,16 @@ that trigger an action when pressed in quick succession.
     :init
     (key-chord-mode 1)
     (setq key-chord-one-key-delay 0.2)
-    (setq key-chord-two-key-delay 0.1)
+    (setq key-chord-two-key-delay 0.2)
     (key-chord-define c-mode-map ".." "->")
     (key-chord-define c++-mode-map ".." "->")
     (key-chord-define global-map "-." "→")
-    (key-chord-define-global ",-" "←"))
+    (key-chord-define-global ",-" "←")
+    (key-chord-define-global "--" "_")
+    (key-chord-define-global "vf" 'find-file)
+    (key-chord-define-global "vu" 'undo)
+    (key-chord-define-global "vs" 'save-buffer)
+    (key-chord-define-global "vn" #'hydra-motion/next-line))
 #+END_SRC
 *** [[https://github.com/nonsequitur/smex][smex]]
 Uses ido completion when using M-x.
@@ -490,7 +495,7 @@ Allows you to build your own tree of special characters that can be accessed via
   (req-package char-menu
     :init
     (setq char-menu '("‘’" "“”" "…" "⌊⌋" "⋀" "⋁" "√"))
-    (global-set-key (kbd "M-i") 'char-menu))
+    (global-set-key (kbd "M-o") 'char-menu))
 #+END_SRC
 *** [[https://github.com/darksmile/cheatsheet/][cheatsheet]]
 Just shows a quick list of handwritten keybindings and descriptions that you can pull up whenever you want. This section
