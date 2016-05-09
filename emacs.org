@@ -36,7 +36,7 @@ This is taken from http://www.lunaryorn.com/2016/04/28/fullscreen-magit-status.h
 #+END_SRC
 * Package List
 ** Control
-*** avy
+*** [[https://github.com/abo-abo/avy][avy]]
 A lovely package that allows you to quickly jump to wherever you want to go practically instantly.
 - keybinds:
   + M-s - use avy with one word
@@ -54,13 +54,12 @@ them with ease. Really useful when you need to go looking for something but want
 between a few spots in a file.
 #+BEGIN_SRC emacs-lisp
   (req-package bm ;;make bookmarks and cycle through them
-    :disabled t
     :config
     (global-set-key (kbd "s-d") 'bm-toggle)
     (if (= flag-colemak 1)
         (progn
-          (global-set-key (kbd "s-n") 'bm-next)
-          (global-set-key (kbd "s-e") 'bm-previous))
+          (global-set-key (kbd "C-M-n") 'bm-next)
+          (global-set-key (kbd "C-M-p") 'bm-previous))
       (progn
         (global-set-key (kbd "s-j") 'bm-next)
         (global-set-key (kbd "s-k") 'bm-previous))))
@@ -245,6 +244,7 @@ that trigger an action when pressed in quick succession.
     (key-chord-define-global "vf" 'find-file)
     (key-chord-define-global "vu" 'undo)
     (key-chord-define-global "vs" 'save-buffer)
+    (key-chord-define-global "vl" 'ispell-region)
     (key-chord-define-global "vn" #'hydra-motion/next-line))
 #+END_SRC
 *** [[https://github.com/nonsequitur/smex][smex]]
@@ -307,7 +307,6 @@ indentation size is and sets yours to match.
 #+BEGIN_SRC emacs-lisp
   (req-package dtrt-indent)
 #+END_SRC
-*** TODO Doxymacs
 *** [[https://github.com/lewang/fic-mode][fic-mode]]
 Another tiny yet remarkably helpful package that just highlights keywords like TODO or FIXME in comments.
 It is currently turned on in any prog-mode. Someday I should just write something like this myself, both for experience
@@ -876,10 +875,8 @@ this temporarily highlights it to draw attention to it.
 Things I'd like to fix/improve when I have the time and know-how.
 
 ** Cool Packages
-- https://github.com/hlissner/evil-multiedit
-  - alternative to evil-mc that may be better
-- https://github.com/noctuid/general.el
-  - alternative to evil-leader that has more flexibility and isn't tied to evil
+- https://github.com/mrkkrp/modalka
+  - very customizable modal editing that works with Emacs rather than overwriting it
 ** Adjust More Bindings to Colemak
 - make C-n/C-e be page down/up
 - get avy-menu to use Colemak home row
@@ -887,14 +884,11 @@ Things I'd like to fix/improve when I have the time and know-how.
 - find a nice syntax checker
 ** Loadup Speed
 - figure out why it takes at least 10 seconds to start up
-** Colored elscreen Tabs
-- I'm a sucker for colorful things
 ** Clean Up Mode Line
 - smart-mode-line?
 - there are currently lots of things that are smooshed to the right side, I'd like to make it a little prettier
 ** Better IDE-style things?
 - maybe [[http://alexott.net/en/writings/emacs-devenv/EmacsCedet.html][CEDET]] or irony?
-  
 ** Move-To-Char
 Reverse-engineer zzz-to-char to make a move to char, which would function the same,
 just it wouldn't actually delete text, only move the cursor.
