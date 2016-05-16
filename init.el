@@ -11,7 +11,7 @@
  '(avy-keys (quote (97 114 115 116 100 104 110 101 105 111)))
  '(custom-safe-themes
    (quote
-    ("b04425cc726711a6c91e8ebc20cf5a3927160681941e06bc7900a5a5bfe1a77f" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" "1e3b2c9e7e84bb886739604eae91a9afbdfb2e269936ec5dd4a9d3b7a943af7f" "38ba6a938d67a452aeb1dada9d7cdeca4d9f18114e9fc8ed2b972573138d4664" "01ce486c3a7c8b37cf13f8c95ca4bb3c11413228b35676025fdf239e77019ea1" "2bfb9d4dd5c82cd77b3e9fa78fc6ad112d18cb811a5ad1e74f722cb043f3f1db" "395ab8733b275e8d1e2817a997935b5ff9e40ff56e4fb036fa7c342846defbf1" "045251e7ff119a8b065b4cb0072067eb2f297acc44a9e36407e6ff165e35c528" "196cc00960232cfc7e74f4e95a94a5977cb16fd28ba7282195338f68c84058ec" "ef5f1b745d16d9fbdbf55d624e0a38b8f7f15bc8f87887f1ebaf9d949e3778f2" "05c3bc4eb1219953a4f182e10de1f7466d28987f48d647c01f1f0037ff35ab9a" default)))
+    ("0f98f9c2f1241c3b6227af48dc96e708ec023dd68363edb5d36dc7beaad64c23" "b04425cc726711a6c91e8ebc20cf5a3927160681941e06bc7900a5a5bfe1a77f" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" "1e3b2c9e7e84bb886739604eae91a9afbdfb2e269936ec5dd4a9d3b7a943af7f" "38ba6a938d67a452aeb1dada9d7cdeca4d9f18114e9fc8ed2b972573138d4664" "01ce486c3a7c8b37cf13f8c95ca4bb3c11413228b35676025fdf239e77019ea1" "2bfb9d4dd5c82cd77b3e9fa78fc6ad112d18cb811a5ad1e74f722cb043f3f1db" "395ab8733b275e8d1e2817a997935b5ff9e40ff56e4fb036fa7c342846defbf1" "045251e7ff119a8b065b4cb0072067eb2f297acc44a9e36407e6ff165e35c528" "196cc00960232cfc7e74f4e95a94a5977cb16fd28ba7282195338f68c84058ec" "ef5f1b745d16d9fbdbf55d624e0a38b8f7f15bc8f87887f1ebaf9d949e3778f2" "05c3bc4eb1219953a4f182e10de1f7466d28987f48d647c01f1f0037ff35ab9a" default)))
  '(flycheck-c/c++-gcc-executable "gcc")
  '(fringe-mode (quote (nil . 0)) nil (fringe))
  '(indicate-buffer-boundaries (quote right))
@@ -29,6 +29,8 @@
  '(package-selected-packages
    (quote
     (geiser smex alda-mode fancy-battery elfeed-org elfeed req-package aggressive-indent evil-magit c-eldoc cheatsheet markdown-mode char-menu srefactor zone-rainbow org-bullets evil-smartparens slime slime-company fireplace dired-filetype-face ess elisp--witness--lisp diredful resize-window elpy multi-line ggtags quickrun fic-mode evil-leader graphene-meta-theme wgrep chess irony emacs-eclim switch-window sublimity rainbow-delimiters evil-mc evil-easymotion company wsd-mode buffer-move multiple-cursors mulitple-cursors flx-ido multicolumn company-c-headers seethru projectile magit powerline-evil monokai function-args arduino-mode package-build shut-up epl git commander f dash s gnuplot flycheck evil yasnippet monokai-theme use-package multi-term cdlatex)))
+ '(paradox-automatically-star t)
+ '(paradox-github-token t)
  '(powerline-height nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

@@ -34,6 +34,19 @@ This is taken from http://www.lunaryorn.com/2016/04/28/fullscreen-magit-status.h
                  (my-display-buffer-fullframe)
                  (reusable-frames . nil)))
 #+END_SRC
+** Set Default Browser To Conkeror
+Conkeror is quick and I have some nice keybindings for it.
+
+#+BEGIN_SRC emacs-lisp
+  (setq browse-url-browser-function 'browse-url-generic
+        browse-url-generic-program "~/scripts/conkeror.sh")
+#+END_SRC
+** Overwrite Selected Text
+Emacs usually deselects a region once you start typing, but I like it to delete the selected text in that case.
+
+#+BEGIN_SRC emacs-lisp
+  (delete-selection-mode t)
+#+END_SRC
 * Package List
 ** Control
 *** [[https://github.com/abo-abo/avy][avy]]
@@ -218,6 +231,8 @@ of evil-mode, but I'm sure I'll keep both installed for a while.
       ("e" move-end-of-line "EoL")
       ("P" scroll-down-command "Pg ↓")
       ("N" scroll-up-command "Pg ↑")
+      ("B" backward-word "←←")
+      ("F" forward-word "→→")
       ("l" recenter-top-bottom "Center")
       ("G" end-of-buffer "EoF")
       ("g" beginning-of-buffer "BoF"))
@@ -245,6 +260,7 @@ that trigger an action when pressed in quick succession.
     (key-chord-define-global "vu" 'undo)
     (key-chord-define-global "vs" 'save-buffer)
     (key-chord-define-global "vl" 'ispell-region)
+    (key-chord-define-global "VL" 'endless/ispell-word-then-abbrev)
     (key-chord-define-global "vn" #'hydra-motion/next-line))
 #+END_SRC
 *** [[https://github.com/nonsequitur/smex][smex]]
@@ -576,6 +592,17 @@ Autocomplete that goes with just about everything. This is currently enabled glo
     :config
     (global-company-mode))
 #+END_SRC
+*** [[https://github.com/Malabarba/conkeror-minor-mode][conkeror-mode]]
+This allows you to send lines to conkeror to be evaluated live.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package conkeror-minor-mode
+    :config
+    (add-hook 'js-mode-hook (lambda ()
+                              (when (string= ".conkerorrc" (buffer-name))
+                                (conkeror-minor-mode 1))))
+    (setq conkeror-file-path "~/programs/conkeror/application.ini"))
+#+END_SRC
 *** [[https://github.com/myrjola/diminish.el][diminish]]
 Allows you to stop showing the name of specific minor modes.
 
@@ -805,13 +832,33 @@ the OS's battery display.
   (req-package fancy-battery)
 #+END_SRC
 *** [[https://github.com/oneKelvinSmith/monokai-emacs][monokai-theme]]
-My personal theme of choice.
+My personal theme of choice. I'm currently trying darkokai, we'll see if it sticks.
 
 #+BEGIN_SRC emacs-lisp
   (req-package monokai-theme
+    :disabled t
     :require fic-mode
     :init
     (load-theme 'monokai))
+#+END_SRC
+*** [[https://github.com/sjrmanning/darkokai][darkokai]]
+I'm just trying this for now, but it seems nice.
+The extra line is to keep the modeline small and not stupid looking.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package darkokai-theme
+    :require fic-mode
+    :config
+    (setq darkokai-mode-line-padding 1)
+    (load-theme 'darkokai t))
+#+END_SRC
+*** [[http://elpa.gnu.org/packages/nlinum.html][nlinum]]
+Like linum mode, but much, /much/, _much_ more efficient.
+
+#+BEGIN_SRC emacs-lisp
+    (req-package nlinum-mode
+      :config
+      (add-hook 'prog-mode-hook 'nlinum-mode))
 #+END_SRC
 *** [[https://github.com/sabof/org-bullets][org-bullets]]
 Turn org-mode bullets into fancy utf-8 symbols that make them look so much prettier. Sorry if your browser can't see some
@@ -877,6 +924,8 @@ Things I'd like to fix/improve when I have the time and know-how.
 ** Cool Packages
 - https://github.com/mrkkrp/modalka
   - very customizable modal editing that works with Emacs rather than overwriting it
+- https://github.com/twada/coverlay.el
+  - shows code coverage according to an lcov file
 ** Adjust More Bindings to Colemak
 - make C-n/C-e be page down/up
 - get avy-menu to use Colemak home row
