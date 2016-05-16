@@ -283,6 +283,19 @@ searching for.
 
   (global-set-key (kbd "C-s") 'swiper)
 #+END_SRC
+*** [[https://github.com/tlinden/viking-mode][viking-mode]]
+Hillariously named and actually quite useful. This package quickly deletes first the word, then line
+remainder, the whole line, the paragraph, and finally the whole buffer.
+
+It also provides a nice variable that tracks how many times the last key was consecutively pressed, which might
+be fun to work with.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package viking-mode
+    :config
+    (viking-global-mode)
+    (define-key viking-mode-map (kbd "C-d") 'viking-kill-thing-at-point))
+#+END_SRC
 *** [[https://github.com/mrkkrp/zzz-to-char][zzz-to-char]]
 Visually kill a part of a line, forward or backward, to a given character.
 This in some ways shoots Vim's kill-to command out of the water, simply
