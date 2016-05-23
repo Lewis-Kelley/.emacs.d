@@ -545,10 +545,10 @@ Allows you to build your own tree of special characters that can be accessed via
 Just shows a quick list of handwritten keybindings and descriptions that you can pull up whenever you want. This section
 makes heavy usage of the =(substitute-command-keys)= function, which looks to see whatever the command is currently bound
 to and uses its string. This means I don't have to rewrite this whenever I rebind keys.
-    
+
 #+BEGIN_SRC emacs-lisp
   (req-package cheatsheet ;;Allows you to make a small cheatsheet of different keyboard shortcuts.
-    :requires avy semantic hs resize-window evil-mc flycheck
+    :requires avy semantic hs resize-window flycheck
     :config
     (cheatsheet-add
      :group 'Motion
@@ -578,30 +578,6 @@ to and uses its string. This means I don't have to rewrite this whenever I rebin
      :group 'Common
      :key (substitute-command-keys "\\[resize-window]")
      :description "Enter resize-window mode.")
-    (cheatsheet-add
-     :group 'Multiple-Cursors
-     :key (substitute-command-keys "\\[evil-mc-make-all-cursors]")
-     :description "Create cursors at all matching strings.")
-    (cheatsheet-add
-     :group 'Multiple-Cursors
-     :key (substitute-command-keys "\\[evil-mc-undo-all-cursors]")
-     :description "Remove all cursors.")
-    (cheatsheet-add
-     :group 'Multiple-Cursors
-     :key (substitute-command-keys "\\[evil-mc-make-cursor-here]")
-     :description "Create a cursor at the current location.")
-    (cheatsheet-add
-     :group 'Multiple-Cursors
-     :key (substitute-command-keys "\\[evil-mc-make-and-goto-next-match]")
-     :description "Make a new cursor at the current match and go to the next match.")
-    (cheatsheet-add
-     :group 'Multiple-Cursors
-     :key (substitute-command-keys "\\[evil-mc-skip-and-goto-next-match]")
-     :description "Go to the next match.")
-    (cheatsheet-add
-     :group 'Multiple-Cursors
-     :key (substitute-command-keys "\\[evil-mc-make-and-goto-prev-match]")
-     :description "Make a new cursor at the current match and go to the previous match.")
     (cheatsheet-add
      :group 'Programming
      :key (substitute-command-keys "\\[flycheck-next-error]")
@@ -717,13 +693,7 @@ Keeps track of all the commands you've used by frequency.
       (keyfreq-mode 1)
       (keyfreq-autosave-mode 1)
       (setq keyfreq-excluded-commands
-            '(evil-next-visual-line
-              evil-previous-visual-line
-              evil-insert
-              evil-normal-state
-              evil-forward-char
-              evil-backward-char
-              save-buffer
+            '(save-buffer
               self-insert-command)))
 #+END_SRC
 *** [[https://github.com/magit/magit][magit]]
@@ -906,15 +876,11 @@ Built into Emacs by default. This essentially changes a few keywords into pretty
     :init
     (global-prettify-symbols-mode 1))
 #+END_SRC
-*** [[https://github.com/raugturi/powerline-evil][powerline-evil]]
-Makes the mode line look better as well as makes it so much easier to tell which evil state I'm in.
+*** [[https://github.com/milkypostman/powerline][powerline]]
+Makes the mode line look better in my opinion.
 
 #+BEGIN_SRC emacs-lisp
-  (req-package powerline-evil
-    :init
-    (powerline-evil-center-color-theme)
-    (setq powerline-default-separator nil)
-    (display-time-mode nil))
+  (req-package powerline)
 #+END_SRC
 *** [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimeters]]
 This package recolors parentheses, braces, and brackets in matching pairs. This makes programming so much eaier and prettier.

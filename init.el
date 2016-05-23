@@ -134,8 +134,16 @@
 
   (require 'cc-mode)
   (require 'semantic)
-  (require 'req-package)
+
+  (unless package-archive-contents
+    (package-refresh-contents))
+  (unless (package-installed-p 'use-package)
+    (package-install 'use-package))
+  (unless (package-installed-p 'req-package)
+    (package-install 'req-package))
+  
   (require 'use-package)
+  (require 'req-package)
 
   ;; load up all literate org-mode files in this directory
   (org-babel-load-file "~/.emacs.d/emacs.org")
