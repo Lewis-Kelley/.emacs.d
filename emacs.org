@@ -612,7 +612,9 @@ This allows you to send lines to conkeror to be evaluated live.
 Allows you to stop showing the name of specific minor modes.
 
 #+BEGIN_SRC emacs-lisp
-  (req-package diminish)
+  (req-package diminish
+    :config
+    (diminish 'abbrev-mode))
 #+END_SRC
 *** [[https://github.com/skeeto/elfeed][elfeed]]
 An RSS reader that loads from elfeed.org. Basically I use it to check GitHub and various Emacs sites.
@@ -759,6 +761,12 @@ Built into Emacs by default, but I need to configure some of it, especially how 
 
   (setq org-agenda-files (list "~/planner.org"))
 #+END_SRC
+*** [[https://github.com/Malabarba/paradox/][paradox]]
+Allows for asynchronous installation of packages.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package paradox)
+#+END_SRC
 *** [[https://github.com/dpsutton/resize-window][resize-window]]
 Creates a new special mode where you can quickly resize any window using n-p-f-b. Makes it a lot easier to readjust things.
 
@@ -827,18 +835,8 @@ the OS's battery display.
 #+BEGIN_SRC emacs-lisp
   (req-package fancy-battery)
 #+END_SRC
-*** [[https://github.com/oneKelvinSmith/monokai-emacs][monokai-theme]]
-My personal theme of choice. I'm currently trying darkokai, we'll see if it sticks.
-
-#+BEGIN_SRC emacs-lisp
-  (req-package monokai-theme
-    :disabled t
-    :require fic-mode
-    :init
-    (load-theme 'monokai))
-#+END_SRC
 *** [[https://github.com/sjrmanning/darkokai][darkokai]]
-I'm just trying this for now, but it seems nice.
+It's like monokai theme, but better in my opinion.
 The extra line is to keep the modeline small and not stupid looking.
 
 #+BEGIN_SRC emacs-lisp
@@ -880,7 +878,10 @@ Built into Emacs by default. This essentially changes a few keywords into pretty
 Makes the mode line look better in my opinion.
 
 #+BEGIN_SRC emacs-lisp
-  (req-package powerline)
+  (req-package powerline
+    :disabled t
+    :config
+    (powerline-default-theme))
 #+END_SRC
 *** [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimeters]]
 This package recolors parentheses, braces, and brackets in matching pairs. This makes programming so much eaier and prettier.
@@ -889,6 +890,15 @@ This package recolors parentheses, braces, and brackets in matching pairs. This 
   (req-package rainbow-delimiters
     :config
     (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+#+END_SRC
+*** [[https://github.com/Malabarba/smart-mode-line/][smart-mode-line]]
+Gives lots of nice customizability to the mode line.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package smart-mode-line
+    :config
+    (column-number-mode)
+    (sml/setup))
 #+END_SRC
 *** [[https://github.com/Benaiah/seethru][seethru]]
 Allows easy and quick changes to a frame's transparency. I can probably reverse engineer this to avoid the overhead of
