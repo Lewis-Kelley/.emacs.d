@@ -7,6 +7,42 @@ in [ ] next to the defaults. \\
 I also use the super key (s- ) in a lot of my bindings. If you want to use them as-is, you need to look into getting the key to work
 properly on your OS.
 * General Settings
+** Clean Init
+I don't like the splash-screen, and I don't need the tool bar, menu bar, or scroll bar, so get rid of them.
+
+#+BEGIN_SRC emacs-lisp
+  (setq inhibit-splash-screen t)
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
+  (scroll-bar-mode -1)
+#+END_SRC
+** Tab Configuration
+I use 2 space tabs, and (for my preferences) I use spaces.
+
+#+BEGIN_SRC emacs-lisp
+  (setq-default tab-width 2
+                indent-tabs-mode nil)
+
+#+END_SRC
+** Input Method
+It's always a pain to input fancy unicode characters. I have char-menu to
+alleviate some of this, but for less used characters, I use this to type
+them with LaTeX style \ codes.
+
+#+BEGIN_SRC emacs-lisp
+  (setq default-input-method 'TeX)
+#+END_SRC
+** Smooth Scrolling
+I really don't like how Emacs scrolls by default, so this code implements smooth
+scrolling.
+
+#+BEGIN_SRC emacs-lisp
+  (setq redisplay-dont-pause t ;;Smooth scrolling
+        scroll-margin 3
+        scroll-step 1
+        scroll-conservatively 10000
+        scroll-preserve-screen-position 1)
+#+END_SRC
 ** Hide Make Buffers
 I don't really like having a new window pop up to tell me what happened during a make.
 This makes it so that the minibuffer tells you whether the compilation succeeded or failed.

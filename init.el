@@ -108,18 +108,8 @@
   ;; Set global custom variables
   ;;
 
-  (setq inhibit-splash-screen t)
   (setq diary-file "~/.emacs.d/diary")
-  (setq-default tab-width 2
-                indent-tabs-mode nil)
-  (setq default-input-method 'TeX)
-
-  (setq redisplay-dont-pause t ;;Smooth scrolling
-        scroll-margin 3
-        scroll-step 1
-        scroll-conservatively 10000
-        scroll-preserve-screen-position 1)
-
+    
   ;; set the default font
   (set-face-attribute 'default nil
                       :family "DejaVu Sans Mono"
@@ -132,33 +122,9 @@
                     (font-spec :size 20
                                :name "Symbola"))
 
-  ;; ;; disable CJK coding/encoding (Chinese/Japanese/Korean characters)
-  ;; (setq utf-translate-cjk-mode nil)
-
-  ;; (set-language-environment 'utf-8)
-  ;; (setq locale-coding-system 'utf-8)
-
-  ;; ;; set the default encoding system
-  ;; (prefer-coding-system 'utf-8)
-  ;; (setq default-file-name-coding-system 'utf-8)
-  ;; (set-default-coding-systems 'utf-8)
-  ;; (set-terminal-coding-system 'utf-8)
-  ;; (set-keyboard-coding-system 'utf-8)
-  ;; ;; backwards compatibility as default-buffer-file-coding-system
-  ;; ;; is deprecated in 23.2.
-  ;; (if (boundp buffer-file-coding-system)
-  ;;     (setq buffer-file-coding-system 'utf-8)
-  ;;   (setq default-buffer-file-coding-system 'utf-8))
-
-  ;; ;; Treat clipboard input as UTF-8 string first; compound text next, etc.
-  ;; (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
-
   (setq flag-colemak 1) ;; Set to 0 to use QWERTY bindings
 
   ;; disable toolbar and the like
-  (tool-bar-mode -1)
-  (menu-bar-mode -1)
-  (scroll-bar-mode -1)
 ;;  (toggle-frame-fullscreen)
 
   (require 'package)
@@ -215,7 +181,6 @@
   ;;
 
   (show-paren-mode)
-  ;(evil-mode)
 
   ;; turn off garbage collection when using minibuffer
   ;; this may not be working (http://bling.github.io/blog/2016/01/18/why-are-you-changing-gc-cons-threshold/)
