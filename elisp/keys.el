@@ -14,6 +14,8 @@
 ;;(global-set-key (kbd "C-c r") 'desktop-read)
 (global-set-key (kbd "C-x x") 'desktop-save-and-close)
 (global-set-key (kbd "C-x C-0") 'toggle-windows-split)
+(global-set-key (kbd "C-a") 'sk/smarter-move-beginning-of-line)
+(global-set-key (kbd "s-v") 'sk/select-current-line)
 
 ;; coding
 (global-set-key (kbd "C-c /") 'comment-line)
