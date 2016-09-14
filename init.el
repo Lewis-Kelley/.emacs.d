@@ -54,6 +54,8 @@
  '(pos-tip-background-color "#E6DB74")
  '(pos-tip-foreground-color "#242728")
  '(powerline-height nil)
+ '(sml/full-mode-string " …")
+ '(sml/vc-mode-show-backend t)
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
    (quote
@@ -171,7 +173,7 @@
   (add-to-list 'load-path "~/.emacs.d/plugins/evil-org-mode")
   (add-to-list 'load-path "~/.emacs.d/elisp")
   (load-library "functions")
-  (load-library "smart-mode-line-gray")
+;;  (load-library "smart-mode-line-gray")
   (req-package-finish)
   (load-library "minor-modes")
   (load-library "keys")
