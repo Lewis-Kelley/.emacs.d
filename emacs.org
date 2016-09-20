@@ -439,22 +439,22 @@ compile for loops and the like by default for some reason. Triggered in any prog
     (flycheck-set-checker-executable 'c/c++-gcc "/usr/bin/gcc")
     (setq flycheck-gcc-args "-std=gnu11")
 
-    (when (require 'rtags nil :noerror)
-      (require 'company)
-      (define-key c-mode-base-map (kbd "s-n")
-        (function rtags-find-symbol-at-point))
-      (define-key c-mode-base-map (kbd "s-k")
-        (function rtags-find-references-at-point))
-      (rtags-enable-standard-keybindings)
-      (setq rtags-autostart-diagnostics t)
-      (rtags-diagnostics)
-      (setq rtags-completions-enabled t)
-      (push 'company-rtags company-backends)
-      (global-company-mode t)
-      (define-key c-mode-base-map (kbd "<C-tab>")
-        (function company-complete))
-      (require 'flycheck-rtags)
-      (add-hook 'c-mode-common-hook #'setup-flycheck-rtags))
+    ;; (when (require 'rtags nil :noerror)
+    ;;   (require 'company)
+    ;;   (define-key c-mode-base-map (kbd "s-n")
+    ;;     (function rtags-find-symbol-at-point))
+    ;;   (define-key c-mode-base-map (kbd "s-k")
+    ;;     (function rtags-find-references-at-point))
+    ;;   (rtags-enable-standard-keybindings)
+    ;;   (setq rtags-autostart-diagnostics t)
+    ;;   (rtags-diagnostics)
+    ;;   (setq rtags-completions-enabled t)
+    ;;   (push 'company-rtags company-backends)
+    ;;   (global-company-mode t)
+    ;;   (define-key c-mode-base-map (kbd "<C-tab>")
+    ;;     (function company-complete))
+    ;;   (require 'flycheck-rtags)
+    ;;   (add-hook 'c-mode-common-hook #'setup-flycheck-rtags))
 
     (add-hook 'prog-mode-hook 'flycheck-mode))
 #+END_SRC
@@ -993,6 +993,12 @@ This package recolors parentheses, braces, and brackets in matching pairs. This 
 Gives lots of nice customizability to the mode line.
 
 #+BEGIN_SRC emacs-lisp
+  (setq orig-mode-line mode-line-format)
+
+  (defun reset-modeline ()
+    (interactive)
+    (setq mode-line-format orig-mode-line))
+
   (defun custom-modeline-modified ()
     (let* ((config-alist
             '(("*" all-the-icons-faicon-family all-the-icons-faicon "chain-broken" :height 1.2 :v-adjust -0.0)
@@ -1006,7 +1012,7 @@ Gives lots of nice customizability to the mode line.
     (format " %s"
             (propertize (all-the-icons-icon-for-buffer)
                         'help-echo (format "Major-mode: `%s`" major-mode)
-                        'face `(:foreground "dark olive green" :height 1.2 :family ,(all-the-icons-icon-family-for-buffer)))))
+                        'face `(:foreground "dark olive green" :height 1.25 :family ,(all-the-icons-icon-family-for-buffer)))))
 
   (defun custom-modeline-region-info ()
     (when mark-active
@@ -1042,44 +1048,51 @@ Gives lots of nice customizability to the mode line.
        ((string-match "SVN-" vc-mode) (-custom-modeline-svn-vc))
        (t (format "%s" vc-mode)))))
 
-  (defun customize-modeline ()
-    (interactive)
-    (setq-default mode-line-format
-                  '(concat " %e"
-                           (:eval
-                            (concat
-                             (propertize (custom-modeline-modified)
-                                         'face
-                                         '(:foreground "pink"))
-                             (propertize " %I"
-                                         'face
-                                         '(:foreground "firebrick"))
-                             " %z | "
-                             (propertize "%l"
-                                         'face
-                                         '(:foreground "tomato"))
-                             ":"
-                             (propertize "%c"
-                                         'face
-                                         '(:foreground "gold"))
-                             (propertize " %p"
-                                         'face
-                                         '(:foreground "medium purple"))
-                             " |"
-                             (custom-modeline-mode-icon)
-                             " "
-                             (propertize (buffer-name)
-                                         'face
-                                         '(:foreground "white"))
-                             " |"
-                             (let ((text (custom-modeline-icon-vc)))
-                               (if text
-                                   (concat
-                                    (propertize text
-                                                'face
-                                                '(:foreground "orange"))
-                                    " | ")))))
-                           (:eval mode-line-modes))))
+  (let ((font-height 1.25))
+    (defun customize-modeline ()
+      (interactive)
+      (setq-default mode-line-format
+                    '(concat " %e"
+                             (:eval
+                              (concat
+                               (propertize (custom-modeline-modified)
+                                           'face
+                                           '(:foreground "pink" :height font-height))
+                               (propertize " %I"
+                                           'face
+                                           '(:foreground "firebrick" :height font-height))
+                               (propertize " %z | "
+                                           'face
+                                           '(:height font-height))
+                               (propertize "%l"
+                                           'face
+                                           '(:foreground "tomato" :height font-height))
+                               (propertize ":"
+                                           'face
+                                           '(:height font-height))
+                               (propertize "%c"
+                                           'face
+                                           '(:foreground "gold" :height font-height))
+                               (propertize " %p"
+                                           'face
+                                           '(:foreground "medium purple" :height font-height))
+                               (propertize " |"
+                                           'face
+                                           '(:height font-height))
+                               (custom-modeline-mode-icon)
+                               " "
+                               (propertize (buffer-name)
+                                           'face
+                                           '(:foreground "white" :height font-height))
+                               " |"
+                               (let ((text (custom-modeline-icon-vc)))
+                                 (if text
+                                     (concat
+                                      (propertize text
+                                                  'face
+                                                  '(:foreground "orange" :height font-height))
+                                      " | ")))))
+                             (:eval mode-line-modes)))))
 
   (customize-modeline)
 
