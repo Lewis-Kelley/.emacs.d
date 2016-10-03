@@ -275,23 +275,18 @@ of evil-mode, but I'm sure I'll keep both installed for a while.
     :config
     (defhydra hydra-motion (:body-pre (next-line))
       "motion"
-      ("b" backward-char "←")
+      ("h" backward-char "←")
       ("n" next-line "↓")
-      ("p" previous-line "↑")
-      ("f" forward-char "→")
-      ("a" sk/smarter-beginning-of-line "BoL")
-      ("e" move-end-of-line "EoL")
-      ("P" scroll-down-command "Pg ↓")
-      ("N" scroll-up-command "Pg ↑")
-      ("B" backward-word "←←")
-      ("F" forward-word "→→")
-      ("l" recenter-top-bottom "Center")
-      ("G" end-of-buffer "EoF")
-      ("g" beginning-of-buffer "BoF"))
-    (global-set-key (kbd "C-n") #'hydra-motion/next-line)
-    (global-set-key (kbd "C-p") #'hydra-motion/previous-line)
-    (global-set-key (kbd "C-f") #'hydra-motion/forward-char)
-    (global-set-key (kbd "C-b") #'hydra-motion/backward-char))
+      ("e" previous-line "↑")
+      ("i" forward-char "→")
+      ("M-h" sk/smarter-beginning-of-line "BoL")
+      ("M-i" move-end-of-line "EoL")
+      ("N" scroll-up-command "Pg ↓")
+      ("E" scroll-down-command "Pg ↑")
+      ("H" backward-word "←←")
+      ("I" forward-word "→→")
+      ("g" nil "×"))
+    (global-set-key (kbd "C-n") #'hydra-motion/next-line))
 #+END_SRC
 *** [[https://www.emacswiki.org/emacs/KeyChord][key-chord]]
 Allows the ability to define different key chords, key combinations
@@ -312,7 +307,6 @@ that trigger an action when pressed in quick succession.
     (key-chord-define-global "vs" 'save-buffer)
     (key-chord-define-global "vl" 'ispell-region)
     (key-chord-define-global "VL" 'endless/ispell-word-then-abbrev)
-    (key-chord-define-global "vn" #'hydra-motion/next-line)
     (key-chord-mode 1))
 #+END_SRC
 *** [[http://elpa.gnu.org/packages/smart-yank.html][smart-yank]]
@@ -708,6 +702,7 @@ Allows you to define your RSS feeds in an org file, which makes it so much more 
     :config
     (elfeed-org))
 #+END_SRC
+
 *** [[https://github.com/lewang/flx][flx-ido]]
 Does some nice fuzzy matching when looking for files or buffers.
 
@@ -806,6 +801,8 @@ Email manager.
         smtpmail-smtp-service 587
         smtpmail-debug-info t)
 #+END_SRC
+
+
 *** [[http://orgmode.org/][org-mode]]
 :PROPERTIES:
 :ORDERED:  t
@@ -871,7 +868,8 @@ Shows a visual representation of your undo history as an easily navigable tree.
 
 #+BEGIN_SRC emacs-lisp
   (req-package undo-tree
-    :diminish undo-tree-mode)
+    :diminish undo-tree-mode
+    :config (global-undo-tree-mode))
 #+END_SRC
 *** [[https://github.com/bcbcarl/emacs-wttrin][wttrin]]
 A nice forecast program with some nice ASCII art for the clouds. Now I can check what the weather is like without
