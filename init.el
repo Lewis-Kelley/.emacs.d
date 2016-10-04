@@ -18,10 +18,14 @@
  '(custom-enabled-themes (quote (sanityinc-tomorrow-night)))
  '(custom-safe-themes
    (quote
-    ("70403e220d6d7100bae7775b3334eddeb340ba9c37f4b39c189c2c29d458543b" "fa80190f587f2fab395b878d78d4db0aab0fac9844e1345d55f2f7558eff221f" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "0f98f9c2f1241c3b6227af48dc96e708ec023dd68363edb5d36dc7beaad64c23" "b04425cc726711a6c91e8ebc20cf5a3927160681941e06bc7900a5a5bfe1a77f" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" "1e3b2c9e7e84bb886739604eae91a9afbdfb2e269936ec5dd4a9d3b7a943af7f" "38ba6a938d67a452aeb1dada9d7cdeca4d9f18114e9fc8ed2b972573138d4664" "01ce486c3a7c8b37cf13f8c95ca4bb3c11413228b35676025fdf239e77019ea1" "2bfb9d4dd5c82cd77b3e9fa78fc6ad112d18cb811a5ad1e74f722cb043f3f1db" "395ab8733b275e8d1e2817a997935b5ff9e40ff56e4fb036fa7c342846defbf1" "045251e7ff119a8b065b4cb0072067eb2f297acc44a9e36407e6ff165e35c528" "196cc00960232cfc7e74f4e95a94a5977cb16fd28ba7282195338f68c84058ec" "ef5f1b745d16d9fbdbf55d624e0a38b8f7f15bc8f87887f1ebaf9d949e3778f2" "05c3bc4eb1219953a4f182e10de1f7466d28987f48d647c01f1f0037ff35ab9a" default)))
+    (default)))
+ '(default-frame-alist
+    (quote
+     ((left-fringe)
+      (right-fringe . 0)
+      (vertical-scroll-bars))))
  '(fci-rule-color "#d6d6d6")
  '(flycheck-c/c++-gcc-executable "gcc")
- '(fringe-mode (quote (nil . 0)) nil (fringe))
  '(highlight-changes-colors (quote ("#ff8eff" "#ab7eff")))
  '(highlight-tail-colors
    (quote
@@ -45,7 +49,7 @@
  '(monokai-height-plus-3 1.0)
  '(monokai-height-plus-4 1.0)
  '(monokai-use-variable-pitch t)
- '(overflow-newline-into-fringe nil)
+ '(overflow-newline-into-fringe t)
  '(package-selected-packages
    (quote
     (geiser smex alda-mode fancy-battery elfeed-org elfeed req-package aggressive-indent evil-magit c-eldoc cheatsheet markdown-mode char-menu srefactor zone-rainbow org-bullets evil-smartparens slime slime-company fireplace dired-filetype-face ess elisp--witness--lisp diredful resize-window elpy multi-line ggtags quickrun fic-mode evil-leader graphene-meta-theme wgrep chess irony emacs-eclim switch-window sublimity rainbow-delimiters evil-mc evil-easymotion company wsd-mode buffer-move multiple-cursors mulitple-cursors flx-ido multicolumn company-c-headers seethru projectile magit powerline-evil monokai function-args arduino-mode package-build shut-up epl git commander f dash s gnuplot flycheck evil yasnippet monokai-theme use-package multi-term cdlatex)))
@@ -86,7 +90,6 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(breakpoint-disabled ((t (:foreground "red3"))))
- '(fringe ((t (:background "gray17" :foreground "white"))))
  '(minimap-active-region-background ((t (:background "midnight blue"))))
  '(powerline-evil-emacs-face ((t (:inherit powerline-evil-base-face :background "salmon2"))))
  '(powerline-evil-insert-face ((t (:inherit powerline-evil-base-face :background "steel blue"))))
@@ -171,7 +174,6 @@
 
   (add-to-list 'load-path "~/.emacs.d/plugins/yasnippet")
   (add-to-list 'load-path "~/.emacs.d/elisp")
-;;  (load-library "smart-mode-line-gray")
   (req-package-finish)
 
   ;;

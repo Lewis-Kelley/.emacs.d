@@ -148,83 +148,6 @@ you want.
     (global-set-key  (kbd "C-c h") 'elscreen-previous)
     (global-set-key (kbd "C-c s-o") 'elscreen-goto))
 #+END_SRC
-*** [[https://bitbucket.org/lyro/evil/wiki/Home][evil]]
-Gets me out of a lot of text editor wars and allows me to use slightly less insane bindings for moving around.
-
-#+BEGIN_SRC emacs-lisp
-    (req-package evil ;;TODO Speed up
-      :disabled t
-      :config
-      (global-set-key (kbd "s-e") 'evil-mode)
-      (evil-set-initial-state 'blackbox-mode 'emacs)
-      (evil-set-initial-state 'package-menu-mode 'motion)
-      (evil-set-initial-state 'org-agenda-mode 'motion)
-      (evil-set-initial-state 'elfeed-show-mode 'emacs)
-      (evil-set-initial-state 'elfeed-search-mode 'emacs)
-      (evil-set-initial-state 'dired-mode 'emacs)
-      (evil-set-initial-state 'doc-view-mode 'emacs)
-      (add-hook 'forecast-mode-hook 'evil-emacs-state)
-
-      (setq evil-move-cursor-back nil) ;; Make it so the cursor doesn't pop back when leaving insert mode.
-
-      (if (= flag-colemak 1)
-          (progn
-            (colemak-evil-normal-state-remap)
-            (colemak-evil-visual-state-remap)
-            (colemak-evil-motion-state-remap))
-        (progn
-          (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
-          (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line))))
-#+END_SRC
-*** [[https://github.com/cofi/evil-leader][evil-leader]]
-Allows me to set a <leader> key, for me the spacebar, to use for another set of keybindings. Really useful for common operations
-I do a lot, like saving for instance.
-
-#+BEGIN_SRC emacs-lisp
-  (req-package evil-leader
-    :require evil quickrun
-    :disabled t
-    :init
-    (setq evil-leader/in-all-states 1)
-    (global-evil-leader-mode)
-    :config
-    (evil-leader/set-leader "SPC")
-    (evil-leader/set-key
-      "0" 'delete-window
-      "1" 'delete-other-windows
-      "2" 'split-window-below
-      "3" 'split-window-right
-      "f" 'find-file
-      "D" 'divide-evenly
-      "d" 'ido-dired
-      "s" 'save-buffer
-      "o" 'other-window
-      "O" 'switch-window
-      "l" 'ispell-buffer
-      "L" 'endless/ispell-word-then-abbrev
-      "k" 'goto-last-change
-      "j" 'goto-last-change-reverse
-      "b" 'ido-switch-buffer
-      "r" 'quickrun
-      "x" 'smex))
-#+END_SRC
-*** [[https://github.com/gabesoft/evil-mc][evil-mc]]
-Turns all those sublime text users' principle argument against Emacs on it's head and gives Emacs multiple cursors.
-Some of these keybindings overwrite standard Emacs motion keys.
-- keybinds
-  + g r h - create a new cursor at this location
-  + g r u - remove all cursors
-  + g r m - create cursors at all matching strings
-  + C-p - make a new cursor at the current match and go to the previous match
-  + C-t - go to next match
-  + C-n - make a new cursor at the current match and go to the next match
-    
-#+BEGIN_SRC emacs-lisp
-  (req-package evil-mc
-    :require evil
-    :disabled t
-    :diminish evil-mc-mode)
-#+END_SRC
 *** [[https://github.com/magnars/expand-region.el][expand-region]]
 Gives the ability to quickly create and expand a region to fill some kind of
 boundary, like parentheses or quotes. This gives Emacs something like the
@@ -348,10 +271,9 @@ be fun to work with.
 
 #+BEGIN_SRC emacs-lisp
   (req-package viking-mode
-    :disabled t
     :config
     (viking-global-mode)
-    (define-key viking-mode-map (kbd "C-d") 'viking-kill-thing-at-point))
+    (define-key viking-mode-map (kbd "M-d") 'viking-kill-thing-at-point))
 #+END_SRC
 *** [[https://github.com/mrkkrp/zzz-to-char][zzz-to-char]]
 Visually kill a part of a line, forward or backward, to a given character.
@@ -937,6 +859,7 @@ The extra line is to keep the modeline small and not stupid looking.
 
 #+BEGIN_SRC emacs-lisp
   (req-package darkokai-theme
+    :disabled t
     :require fic-mode
     :config
     (setq darkokai-mode-line-padding 1)
@@ -946,9 +869,7 @@ The extra line is to keep the modeline small and not stupid looking.
 Like linum mode, but much, /much/, _much_ more efficient.
 
 #+BEGIN_SRC emacs-lisp
-    (req-package nlinum-mode
-      :config
-      (add-hook 'prog-mode-hook 'nlinum-mode))
+  (req-package nlinum)
 #+END_SRC
 *** [[https://github.com/sabof/org-bullets][org-bullets]]
 Turn org-mode bullets into fancy utf-8 symbols that make them look so much prettier. Sorry if your browser can't see some
@@ -966,9 +887,7 @@ of the beautiful symbols. Take my word for it, they're just fancy bullets.
 Built into Emacs by default. This essentially changes a few keywords into pretty symbols, like changing lambda to λ in Lisp.
 
 #+BEGIN_SRC emacs-lisp
-  (req-package prettify-symbols-mode
-    :init
-    (global-prettify-symbols-mode 1))
+  (global-prettify-symbols-mode 1)
 #+END_SRC
 *** [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimeters]]
 This package recolors parentheses, braces, and brackets in matching pairs. This makes programming so much eaier and prettier.
@@ -994,6 +913,7 @@ Just making my modeline fancy.
 Note that this requires the package all-the-icons.
 #+BEGIN_SRC emacs-lisp
   (defvar orig-mode-line mode-line-format)
+  (defvar mode-line-font-height 1.25)
 
   (defun reset-modeline ()
     (interactive)
@@ -1011,11 +931,12 @@ Note that this requires the package all-the-icons.
   (defun custom-modeline-mode-icon ()
     (format " %s"
             (let* ((icon (all-the-icons-icon-for-buffer))
-                   (is-string (stringp icon)))
+                   (is-string (stringp icon))
+                   (height (if is-string 1.25 1.00)))
               (propertize (if is-string icon (format "%s" major-mode))
                               'help-echo (format "Major-mode: `%s`" major-mode)
                               'face `(:foreground "dark olive green"
-                                                  :height (if is-string 1.25 1.00)
+                                                  :height ,mode-line-font-height
                                                   :family ,(if is-string
                                                                (all-the-icons-icon-family-for-buffer)
                                                              "DejaVu Sans Mono"))))))
@@ -1054,8 +975,7 @@ Note that this requires the package all-the-icons.
        ((string-match "SVN-" vc-mode) (-custom-modeline-svn-vc))
        (t (format "%s" vc-mode)))))
 
-  (let ((font-height 1.25))
-    (defun customize-modeline ()
+  (defun customize-modeline ()
       (interactive)
       (setq-default mode-line-format
                     '(concat " %e"
@@ -1063,45 +983,44 @@ Note that this requires the package all-the-icons.
                               (concat
                                (propertize (custom-modeline-modified)
                                            'face
-                                           '(:foreground "pink" :height font-height))
+                                           `(:foreground "pink" :height ,mode-line-font-height))
                                (propertize " %I"
                                            'face
-                                           '(:foreground "firebrick" :height font-height))
+                                           `(:foreground "firebrick" :height ,mode-line-font-height))
                                (propertize " %z | "
                                            'face
-                                           '(:height font-height))
+                                           `(:height ,mode-line-font-height))
                                (propertize "%l"
                                            'face
-                                           '(:foreground "tomato" :height font-height))
+                                           `(:foreground "tomato" :height ,mode-line-font-height))
                                (propertize ":"
                                            'face
-                                           '(:height font-height))
+                                           `(:height ,mode-line-font-height))
                                (propertize "%c"
                                            'face
-                                           '(:foreground "gold" :height font-height))
+                                           `(:foreground "gold" :height ,mode-line-font-height))
                                (propertize " %p"
                                            'face
-                                           '(:foreground "medium purple" :height font-height))
+                                           `(:foreground "medium purple" :height ,mode-line-font-height))
                                (propertize " |"
                                            'face
-                                           '(:height font-height))
+                                           `(:height ,mode-line-font-height))
                                (custom-modeline-mode-icon)
                                " "
                                (propertize (buffer-name)
                                            'face
-                                           '(:foreground "white" :height font-height))
+                                           `(:foreground "white" :height ,mode-line-font-height))
                                " |"
                                (let ((text (custom-modeline-icon-vc)))
                                  (if text
                                      (concat
                                       (propertize text
                                                   'face
-                                                  '(:foreground "orange" :height font-height))
+                                                  `(:foreground "orange" :height ,mode-line-font-height))
                                       " | ")))))
-                             (:eval mode-line-modes)))))
+                             (:eval mode-line-modes))))
 
   (customize-modeline)
-
 #+END_SRC
 ** Clean Buffer
 #+BEGIN_SRC emacs-lisp
@@ -1292,6 +1211,14 @@ or custom functions.
   (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
   (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
 #+END_SRC
+* Miscenallany
+** Lego Theme
+My own creation, and definitely still a work in progress, but I can change 
+whatever I want to whenever I need to, so that's nice.
+
+#+BEGIN_SRC emacs-lisp
+  (load-theme 'lego t)
+#+END_SRC
 * Bucket List
 Things I'd like to fix/improve when I have the time and know-how.
 
@@ -1302,14 +1229,10 @@ Things I'd like to fix/improve when I have the time and know-how.
   - shows code coverage according to an lcov file
 ** Adjust More Bindings to Colemak
 - make C-n/C-e be page down/up
-- get avy-menu to use Colemak home row
 ** Java
 - find a nice syntax checker
-** Loadup Speed
-- figure out why it takes at least 10 seconds to start up
-** Clean Up Mode Line
-- smart-mode-line?
-- there are currently lots of things that are smooshed to the right side, I'd like to make it a little prettier
+** Speed up theme loading
+- color-theme-x might help, it just doesn't work too well
 ** Better IDE-style things?
 - maybe [[http://alexott.net/en/writings/emacs-devenv/EmacsCedet.html][CEDET]] or irony?
 ** Move-To-Char
