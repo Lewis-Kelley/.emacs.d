@@ -170,13 +170,9 @@
   (org-babel-load-file "~/.emacs.d/emacs.org")
 
   (add-to-list 'load-path "~/.emacs.d/plugins/yasnippet")
-  (add-to-list 'load-path "~/.emacs.d/plugins/evil-org-mode")
   (add-to-list 'load-path "~/.emacs.d/elisp")
-  (load-library "functions")
 ;;  (load-library "smart-mode-line-gray")
   (req-package-finish)
-  (load-library "minor-modes")
-  (load-library "keys")
 
   ;;
   ;; bootup commands

@@ -970,15 +970,6 @@ Built into Emacs by default. This essentially changes a few keywords into pretty
     :init
     (global-prettify-symbols-mode 1))
 #+END_SRC
-*** [[https://github.com/milkypostman/powerline][powerline]]
-Makes the mode line look better in my opinion.
-
-#+BEGIN_SRC emacs-lisp
-  (req-package powerline
-    :disabled t
-    :config
-    (powerline-default-theme))
-#+END_SRC
 *** [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimeters]]
 This package recolors parentheses, braces, and brackets in matching pairs. This makes programming so much eaier and prettier.
 
@@ -986,28 +977,6 @@ This package recolors parentheses, braces, and brackets in matching pairs. This 
   (req-package rainbow-delimiters
     :config
     (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
-#+END_SRC
-*** [[https://github.com/Malabarba/smart-mode-line/][smart-mode-line]]
-Gives lots of nice customizability to the mode line. Currently disabled, since
-manual is underrated.
-
-#+BEGIN_SRC emacs-lisp
-  (req-package smart-mode-line
-    :disabled t
-    :config
-    (column-number-mode)
-    (sml/setup)
-    (customize-modeline))
-#+END_SRC
-*** [[https://github.com/Benaiah/seethru][seethru]]
-Allows easy and quick changes to a frame's transparency. I can probably reverse engineer this to avoid the overhead of
-the full package.
-
-#+BEGIN_SRC emacs-lisp
-  (req-package seethru
-    :disabled t
-    :init
-    (seethru 90))
 #+END_SRC
 *** [[https://github.com/k-talo/volatile-highlights.el][volatile-highlights]]
 Whenever you change a large block of text, like with an undo or a yank,
@@ -1019,7 +988,7 @@ this temporarily highlights it to draw attention to it.
     :config
     (volatile-highlights-mode t))
 #+END_SRC
-* Random Functions
+* Custom Functions
 ** Modeline Customization
 Just making my modeline fancy.
 Note that this requires the package all-the-icons.
@@ -1133,6 +1102,195 @@ Note that this requires the package all-the-icons.
 
   (customize-modeline)
 
+#+END_SRC
+** Clean Buffer
+#+BEGIN_SRC emacs-lisp
+  (defun clean-buffer ()
+    "Reindent the whole buffer."
+    (interactive)
+    (indent-region (point-min) (point-max)))
+#+END_SRC
+** Update Doxygen
+#+BEGIN_SRC emacs-lisp
+  (defun update-doxygen ()
+    "Check to see if there is a Doxyfile in the current directory.
+  If it does, update the file.  If not, generate a new Doxyfile."
+    (interactive)
+    (if (file-exists-p "Doxyfile")
+        (shell-command "doxygen Doxyfile > /dev/null")
+      (progn
+        (shell-command "doxygen -g > /dev/null; doxygen Doxyfile > /dev/null")
+        (message "Created new Doxyfile"))))
+#+END_SRC
+** Hex Coloring
+Changes the font color of colors to easily determine what they are.
+Taken from http://ergoemacs.org/emacs/elisp_eval_lisp_code.html
+
+#+BEGIN_SRC emacs-lisp
+  (defun xah-syntax-color-hex ()
+    "Syntax color hex color spec such as 「#ff1100」 in current buffer."
+    (interactive)
+    (font-lock-add-keywords
+     nil
+     '(("#[abcdef[:digit:]]\\{6\\}"
+        (0 (put-text-property
+            (match-beginning 0)
+            (match-end 0)
+            'face (list :background (match-string-no-properties 0)))))))
+    (font-lock-fontify-buffer))
+#+END_SRC
+** Save Spelling to Dictionary
+Basically uses ispell on the previous misspelled word, and stores the change
+into abbrev for future autocorrection.
+http://endlessparentheses.com/ispell-and-abbrev-the-perfect-auto-correct.html
+
+#+BEGIN_SRC emacs-lisp
+  (defun endless/ispell-word-then-abbrev (p)
+    "Call `ispell-word', then create an abbrev for it.
+  With prefix P, create local abbrev.  Otherwise it will
+  be global.
+  If there's nothing wrong with the word at point, keep
+  looking for a typo until the beginning of buffer.  You can
+  skip typos you don't want to fix with `SPC', and you can
+  abort completely with `C-g'."
+    (interactive "P")
+    (let (bef aft)
+      (save-excursion
+        (while (if (setq bef (thing-at-point 'word))
+                   ;; Word was corrected or used quit.
+                   (if (ispell-word nil 'quiet)
+                       nil ; End the loop.
+                     ;; Also end if we reach `bob'.
+                     (not (bobp)))
+                 ;; If there's no word at point, keep looking
+                 ;; until `bob'.
+                 (not (bobp)))
+          (backward-word))
+        (setq aft (thing-at-point 'word)))
+      (if (and aft bef (not (equal aft bef)))
+          (let ((aft (downcase aft))
+                (bef (downcase bef)))
+            (define-abbrev
+              (if p local-abbrev-table global-abbrev-table)
+              bef aft)
+            (message "\"%s\" now expands to \"%s\" %sally"
+                     bef aft (if p "loc" "glob")))
+        (user-error "No typo at or before point"))))
+
+  (setq save-abbrevs 'silently)
+  (setq-default abbrev-mode t)
+#+END_SRC
+** Actually Quit Minibuffer
+#+BEGIN_SRC emacs-lisp
+  (defun minibuffer-keyboard-quit ()
+    "Abort recursive edit.
+  In Delete Selection mode, if the mark is active, just deactivate it;
+  then it takes a second \\[keyboard-quit] to abort the minibuffer."
+    (interactive)
+    (if (and delete-selection-mode transient-mark-mode mark-active)
+        (setq deactivate-mark t)
+      (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
+      (abort-recursive-edit)))
+#+END_SRC
+** Move to Start of Text
+Taken from http://sriramkswamy.github.io/dotemacs/#orgheadline18
+#+BEGIN_SRC emacs-lisp
+  (defun sk/smarter-move-beginning-of-line (arg)
+    "Move point back to indentation of beginning of line.
+  Move point to the first non-whitespace character on this line.
+  If point is already there, move to the beginning of the line.
+  Effectively toggle between the first non-whitespace character and
+  the beginning of the line.
+  If ARG is not nil or 1, move forward ARG - 1 lines first.  If
+  point reaches the beginning or end of the buffer, stop there."
+    (interactive "^p")
+    (setq arg (or arg 1))
+    ;; Move lines first
+    (when (/= arg 1)
+      (let ((line-move-visual nil))
+        (forward-line (1- arg))))
+    (let ((orig-point (point)))
+      (back-to-indentation)
+      (when (= orig-point (point))
+        (move-beginning-of-line 1))))
+#+END_SRC
+** Select Current Line
+#+BEGIN_SRC emacs-lisp
+  (defun sk/select-current-line ()
+    "Select the current line.
+  Stolen from http://sriramkswamy.github.io/dotemacs/#orgheadline18."
+    (interactive)
+    (sk/smarter-move-beginning-of-line 1)
+    (set-mark (line-end-position))
+    (exchange-point-and-mark))
+#+END_SRC
+** Auto-correct DOuble CAps
+Taken from http://sriramkswamy.github.io/dotemacs/#orgheadline18
+#+BEGIN_SRC emacs-lisp
+  (defun sk/dcaps-to-scaps ()
+    "Convert word in DOuble CApitals to Single Capitals."
+    (interactive)
+    (and (= ?w (char-syntax (char-before)))
+         (save-excursion
+           (and (if (called-interactively-p)
+                    (skip-syntax-backward "w")
+                  (= -3 (skip-syntax-backward "w")))
+                (let (case-fold-search)
+                  (looking-at "\\b[[:upper:]]\\{2\\}[[:lower:]]"))
+                (capitalize-word 1)))))
+#+END_SRC
+* Custom Minor Modes
+** Dubcaps Mode
+Taken from http://sriramkswamy.github.io/dotemacs/#orgheadline18
+#+BEGIN_SRC emacs-lisp
+  (define-minor-mode sk/dubcaps-mode
+    "Toggle `sk/dubcaps-mode'.  Converts words in DOuble CApitals to
+  Single Capitals as you type."
+    :init-value nil
+    :lighter (" DC")
+    (if sk/dubcaps-mode
+        (add-hook 'post-self-insert-hook #'sk/dcaps-to-scaps nil 'local)
+      (remove-hook 'post-self-insert-hook #'sk/dcaps-to-scaps 'local)))
+
+  (add-hook 'text-mode-hook #'sk/dubcaps-mode)
+  (add-hook 'org-mode-hook #'sk/dubcaps-mode)
+#+END_SRC
+** Doxygen Mode
+My personal creation that just updates doxygen whenever you save the current file.
+#+BEGIN_SRC emacs-lisp
+  (define-minor-mode doxygen-mode
+    "Update the Doxyfile after each save."
+    :lighter " Doxygen"
+    (add-hook 'after-save-hook 'update-doxygen))
+#+END_SRC
+* Custom Keybinds
+Note that there are plenty more scattered around, so this is more for built-in
+or custom functions.
+** Motion and Formatting
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-a") 'sk/smarter-move-beginning-of-line)
+  (global-set-key (kbd "s-v") 'sk/select-current-line)
+  (global-set-key (kbd "s-r") 'clean-buffer)
+#+END_SRC
+** Programming
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-c /") 'comment-line)
+  (global-set-key (kbd "C-c C-/") 'comment-or-uncomment-region)
+  (global-set-key (kbd "<f5>") 'compile)
+#+END_SRC
+** Start Applications
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "s-t") 'ansi-term)
+  (global-set-key (kbd "s-b") 'eww)
+  (global-set-key (kbd "s-c") 'calc)
+#+END_SRC
+** Strengthen Escape
+#+BEGIN_SRC emacs-lisp
+  (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
 #+END_SRC
 * Bucket List
 Things I'd like to fix/improve when I have the time and know-how.
