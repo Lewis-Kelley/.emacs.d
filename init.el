@@ -26,6 +26,7 @@
       (vertical-scroll-bars))))
  '(fci-rule-color "#d6d6d6")
  '(flycheck-c/c++-gcc-executable "gcc")
+ '(fringe-mode (quote (nil . 0)) nil (fringe))
  '(highlight-changes-colors (quote ("#ff8eff" "#ab7eff")))
  '(highlight-tail-colors
    (quote
