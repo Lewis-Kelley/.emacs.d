@@ -18,7 +18,7 @@
  '(custom-enabled-themes (quote (sanityinc-tomorrow-night)))
  '(custom-safe-themes
    (quote
-    (default)))
+    ("507a247f70ccc2649f9cab12da7bade08fc1776fddccdbf5d06bc83690c28a7d" "6be97df1da3aeaab8c7f17491dd8f328e67c91afa7885ce65f9615a168209d39" "2f7b66342db3951c3c58c3718eb11825b7c0bfee2550bfecf0b8c20aaf1445b4" "ca7284bf1618e60b13bfe291a0505145aef8482a8f303f9d3e4ba0f8a0fa2910" "04aab6a4309af7733f6c0f8d29e27875a4f3c75159f8e28400ddec583390ab27" "103fc7c01370efa3168e2fcf608d4e6729b22a31e76c5d2de5100a13acf3dd56" "5332aec6093b402b6896aaffd6577b6c1f6e8b84982d6a541bf372a12ad4b0cf" "59c51d6c8dacad6714a3a679e75f4c7a9cf4be535ba6eb502de3a3019ed32789" "2671aaaf2a2d6b1eb24da0323e9bbe41cdff34e11300c728f29ef4e62052b83a" default)))
  '(default-frame-alist
     (quote
      ((left-fringe)

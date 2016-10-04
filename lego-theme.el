@@ -1,5 +1,5 @@
 (deftheme lego
-  "Created 2016-10-04.")
+  "My own custom dark theme that attempts to use bright, basic colors to make things *pop*.")
 
 (custom-theme-set-faces
  'lego
@@ -8,8 +8,8 @@
  '(variable-pitch ((t (:family "Sans Serif"))))
  '(escape-glyph ((t (:foreground "gray" :slant normal))))
  '(minibuffer-prompt ((t (:foreground "violet"))))
- '(highlight ((t (:background "#a8e6de" :foreground "#202028"))))
- '(region ((t (:background "#a8e6de" :foreground "#202028"))))
+ '(highlight ((t (:background "royal blue" :foreground "#202028"))))
+ '(region ((t (:background "royal blue" :foreground "#202028"))))
  '(shadow ((((class color grayscale) (min-colors 88) (background light)) (:foreground "grey50")) (((class color grayscale) (min-colors 88) (background dark)) (:foreground "grey70")) (((class color) (min-colors 8) (background light)) (:foreground "green")) (((class color) (min-colors 8) (background dark)) (:foreground "yellow"))))
  '(secondary-selection ((((class color) (min-colors 88) (background light)) (:background "yellow1")) (((class color) (min-colors 88) (background dark)) (:background "SkyBlue4")) (((class color) (min-colors 16) (background light)) (:background "yellow")) (((class color) (min-colors 16) (background dark)) (:background "SkyBlue4")) (((class color) (min-colors 8)) (:foreground "black" :background "cyan")) (t (:inverse-video t))))
  '(trailing-whitespace ((((class color) (background light)) (:background "red1")) (((class color) (background dark)) (:background "red1")) (t (:inverse-video t))))
@@ -43,6 +43,21 @@
  '(match ((((class color) (min-colors 88) (background light)) (:background "yellow1")) (((class color) (min-colors 88) (background dark)) (:background "RoyalBlue3")) (((class color) (min-colors 8) (background light)) (:foreground "black" :background "yellow")) (((class color) (min-colors 8) (background dark)) (:foreground "white" :background "blue")) (((type tty) (class mono)) (:inverse-video t)) (t (:background "gray"))))
  '(next-error ((t (:inherit (region)))))
  '(query-replace ((t (:inherit (isearch)))))
- '(default ((t (:inherit nil :stipple nil :background "#202028" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 90 :width normal :foundry "unknown" :family "DejaVu Sans Mono")))))
+ '(rainbow-delimiters-mismatched-face ((t (:inherit (rainbow-delimiters-unmatched-face)))))
+ '(rainbow-delimiters-unmatched-face ((t (:foreground "red" :weight extra-bold))))
+ '(rainbow-delimiters-depth-1-face ((t (:foreground "purple1"))))
+ '(rainbow-delimiters-depth-2-face ((t (:foreground "light sea green"))))
+ '(rainbow-delimiters-depth-3-face ((t (:foreground "green"))))
+ '(rainbow-delimiters-depth-4-face ((t (:foreground "yellow"))))
+ '(rainbow-delimiters-depth-5-face ((t (:foreground "orange"))))
+ '(rainbow-delimiters-depth-6-face ((t (:foreground "red"))))
+ '(rainbow-delimiters-depth-7-face ((t (:foreground "chocolate"))))
+ '(rainbow-delimiters-depth-8-face ((t (:foreground "indian red"))))
+ '(rainbow-delimiters-depth-9-face ((t (:foreground "SeaGreen1"))))
+ '(dired-directory ((t (:foreground "forest green" :weight semi-bold))))
+ '(dired-flagged ((t (:foreground "red" :box (:line-width 2 :color "red" :style released-button)))))
+ '(default ((t (:inherit nil :stipple nil :background "#202028" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 90 :width normal :foundry "unknown" :family "DejaVu Sans Mono"))))
+ '(dired-ignored ((t (:foreground "gray40" :strike-through t))))
+ '(dired-symlink ((t (:foreground "cyan" :slant italic :weight semi-bold)))))
 
 (provide-theme 'lego)

@@ -504,6 +504,15 @@ Since I use StumpWM, this should come in handy.
     (add-to-list 'auto-mode-alist '(".stumpwmrc" . stumpwm-mode)))
 #+END_SRC
 ** Usability
+*** [[https://github.com/jgkamat/alda-mode][alda-mode]]
+Ties into the musical programming language alda. It's just kind of fun to mess
+around in.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package alda-mode
+    :config
+    (setq set-alda-binary-location "/usr/local/bin/alda"))
+#+END_SRC
 *** [[https://github.com/cdominik/cdlatex][cdlatex]]
 Provides quick shortcuts for lots of long latex symbols. For example, `a turns into =\alpha=.
 
