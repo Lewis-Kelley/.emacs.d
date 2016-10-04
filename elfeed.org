@@ -1,18 +1,15 @@
 * Elfeed                                                             :elfeed:
 ** Emacs                                                             :emacs:
-//*** http://www.terminally-incoherent.com/blog/feed
 *** http://nullprogram.com/feed
 *** http://planet.emacsen.org/atom.xml
 *** http://endlessparentheses.com/atom.xml
+*** https://gitweb.gentoo.org/repo/gentoo.git/atom/app-editors/emacs?h=master
 ** GitHub :coding:
-*** https://github.com/Lewis-Kelley.private.atom?token=AF041q-CX3DN2BDZIiv5plCcm0bQGJmXks60zOc6wA==
+*** https://github.com/Lewis-Kelley.private.atom?token=AF041q-CX3DN2BDZIiv5plCcm0bQGJmXks60zOc6wA
 ** Games :games:
 *** http://www.teamfortress.com/rss.xml
-*** http://devgameclub.libsyn.com/rss
 ** Prep News :news:
 *** http://student.sluh.org/prepnews/index.php/news2?format=feed
 *** http://student.sluh.org/prepnews/index.php/features2?format=feed
 *** http://student.sluh.org/prepnews/index.php/sports2
 *** http://student.sluh.org/prepnews/index.php/opinions2
-** Jobs :jobs:
-*** https://chm.tbe.taleo.net/chm03/ats/servlet/Rss?org=WWT&cws=1&WebPage=SRCHR&WebVersion=0&_rss_version=2&department=13
