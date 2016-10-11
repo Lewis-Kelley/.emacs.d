@@ -1,5 +1,5 @@
 (deftheme lego
-  "My own custom dark theme that attempts to use bright, basic colors to make things *pop*.")
+  "Created 2016-10-10.")
 
 (custom-theme-set-faces
  'lego
@@ -23,7 +23,7 @@
  '(font-lock-negation-char-face ((t (:foreground "orange red" :weight bold))))
  '(font-lock-preprocessor-face ((t (:foreground "gold" :slant italic :weight semi-bold))))
  '(font-lock-string-face ((t (:foreground "chocolate"))))
- '(font-lock-type-face ((t (:foreground "yellow"))))
+ '(font-lock-type-face ((t (:foreground "magenta1"))))
  '(font-lock-variable-name-face ((t (:foreground "yellow"))))
  '(font-lock-warning-face ((t (:inherit (error)))))
  '(button ((t (:inherit (link)))))
@@ -56,8 +56,14 @@
  '(rainbow-delimiters-depth-9-face ((t (:foreground "SeaGreen1"))))
  '(dired-directory ((t (:foreground "forest green" :weight semi-bold))))
  '(dired-flagged ((t (:foreground "red" :box (:line-width 2 :color "red" :style released-button)))))
- '(default ((t (:inherit nil :stipple nil :background "#202028" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 90 :width normal :foundry "unknown" :family "DejaVu Sans Mono"))))
  '(dired-ignored ((t (:foreground "gray40" :strike-through t))))
- '(dired-symlink ((t (:foreground "cyan" :slant italic :weight semi-bold)))))
+ '(dired-symlink ((t (:foreground "cyan" :slant italic :weight semi-bold))))
+ '(org-level-1 ((t (:foreground "lime green" :height 1.5))))
+ '(org-level-2 ((t (:foreground "gold" :weight semi-bold :height 1.3))))
+ '(org-level-3 ((t (:foreground "dark turquoise" :weight semi-bold :height 1.2))))
+ '(org-level-4 ((t (:foreground "DarkOrchid2" :height 1.1))))
+ '(error ((t (:foreground "dark orange" :underline t :slant italic :weight bold))))
+ '(default ((t (:inherit nil :stipple nil :background "#202028" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 90 :width normal :foundry "unknown" :family "DejaVu Sans Mono"))))
+ '(git-gutter:modified ((t (:inherit default :foreground "SteelBlue1" :weight bold)))))
 
 (provide-theme 'lego)
