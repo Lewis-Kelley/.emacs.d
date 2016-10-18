@@ -198,6 +198,50 @@ that trigger an action when pressed in quick succession.
     (key-chord-define-global "VL" 'endless/ispell-word-then-abbrev)
     (key-chord-mode 1))
 #+END_SRC
+*** [[https://github.com/Kungsgeten/ryo-modal][ryo-modal]]
+A do-it-yourself modal control system which allows for the benefits of things
+like Evil while still preserving the base Emacs. I'll be building this up over
+time, and I really want to find a way to have multiple different types of modes
+with different commands each.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package ryo-modal
+    :bind ("M-m" . ryo-modal-mode)
+    :config
+    (ryo-modal-keys
+     ("m" ryo-modal-mode)
+     ("0" "M-0")
+     ("1" "M-1")
+     ("2" "M-2")
+     ("3" "M-3")
+     ("4" "M-4")
+     ("5" "M-5")
+     ("6" "M-6")
+     ("7" "M-7")
+     ("8" "M-8")
+     ("9" "M-9")
+     ("h" backward-char)
+     ("H" backward-word)
+     ("n" next-line)
+     ("e" previous-line)
+     ("i" forward-char)
+     ("I" forward-word)
+     ("l" avy-goto-line)
+     ("v" scroll-up-command)
+     ("V" scroll-down-command)
+     ("g" beginning-of-buffer)
+     ("G" end-of-buffer)
+     ("d" delete-char)
+     ("D" delete-word)
+     ("k" kill-line)
+     ("K" kill-whole-line)
+     ("y" yank)
+     ("Y" counsel-yank-pop)
+     ("z" zzz-up-to-char)
+     ("Z" zzz-to-char)
+     ("s" save-buffer)
+     ("S" swiper)))
+#+END_SRC
 *** [[http://elpa.gnu.org/packages/smart-yank.html][smart-yank]]
 Makes yanking a little smarter. For one thing, when doing a yank-pop, it moves the cut that you've
 popped to the top of the ring to make it easier the next time, while it also resets the stack position
@@ -226,10 +270,9 @@ an avy backend.
 
 #+BEGIN_SRC emacs-lisp
   (req-package zzz-to-char
-    :requires avy
-    :config
-    (global-set-key (kbd "M-z") 'zzz-up-to-char)
-    (global-set-key (kbd "M-Z") 'zzz-to-char))
+    :bind
+    (("M-z" . zzz-up-to-char)
+     ("M-S-z" . zzz-to-char)))
 #+END_SRC
 ** Programming
 *** [[https://www.emacswiki.org/emacs/CcMode][cc-mode]]
@@ -460,7 +503,7 @@ Allows you to build your own tree of special characters that can be accessed via
 #+BEGIN_SRC emacs-lisp
   (req-package char-menu
     :init
-    (setq char-menu '("‘’" "“”" "…" "⌊⌋" "⋀" "⋁" "√"))
+    (setq char-menu '("‘’" "“”" "…" "⌊⌋" "⋀" "⋁" "√" ("script" "ℛ" "ℒ")))
     (global-set-key (kbd "M-o") 'char-menu))
 #+END_SRC
 *** [[https://github.com/darksmile/cheatsheet/][cheatsheet]]
