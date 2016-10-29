@@ -1,1 +1,1 @@
-I use org mode to make my emacs configuration so much cleaner and more readable. All of the code for loading packages is in emacs.org, and I hope to be moving other stuff, like function definitons, in there too at some point.
+emacs.org
