@@ -503,7 +503,7 @@ Allows you to build your own tree of special characters that can be accessed via
 #+BEGIN_SRC emacs-lisp
   (req-package char-menu
     :init
-    (setq char-menu '("‘’" "“”" "…" "⌊⌋" "⋀" "⋁" "√" ("script" "ℛ" "ℒ")))
+    (setq char-menu '("’" "‘’" "“”" "…" "⌊⌋" "⋀" "⋁" "√" ("script" "ℛ" "ℒ")))
     (global-set-key (kbd "M-o") 'char-menu))
 #+END_SRC
 *** [[https://github.com/darksmile/cheatsheet/][cheatsheet]]
@@ -639,18 +639,6 @@ q = quit
 
 #+BEGIN_SRC emacs-lisp
   (req-package git-timemachine)
-#+END_SRC
-*** [[https://github.com/dacap/keyfreq][keyfreq]]
-Keeps track of all the commands you've used by frequency.
-
-#+BEGIN_SRC emacs-lisp
-    (req-package keyfreq
-      :config
-      (keyfreq-mode 1)
-      (keyfreq-autosave-mode 1)
-      (setq keyfreq-excluded-commands
-            '(save-buffer
-              self-insert-command)))
 #+END_SRC
 *** [[https://github.com/magit/magit][magit]]
 The best way to use git with Emacs. Period.
@@ -882,7 +870,7 @@ Just making my modeline fancy.
 Note that this requires the package all-the-icons.
 #+BEGIN_SRC emacs-lisp
   (defvar orig-mode-line mode-line-format)
-  (defvar mode-line-font-height 1.25)
+  (defvar mode-line-font-height 1.0)
 
   (defun reset-modeline ()
     (interactive)
@@ -1188,18 +1176,18 @@ whatever I want to whenever I need to, so that's nice.
 #+BEGIN_SRC emacs-lisp
   (load-theme 'lego t)
 #+END_SRC
+** Font
+This is just the font I’m using.
+
+#+BEGIN_SRC emacs-lisp
+ (setq default-frame-alist (cons '(font . "DejaVu Sans Mono-14") default-frame-alist))
+#+END_SRC
 * Bucket List
 Things I'd like to fix/improve when I have the time and know-how.
 
 ** Cool Packages
-- https://github.com/mrkkrp/modalka
-  - very customizable modal editing that works with Emacs rather than overwriting it
-- https://github.com/Kungsgeten/ryo-modal
-  - like modalka, but supposedly better (not on MELPA yet <2016-10-10 Mon>)
 - https://github.com/twada/coverlay.el
   - shows code coverage according to an lcov file
-** Adjust More Bindings to Colemak
-- make C-n/C-e be page down/up
 ** Java
 - find a nice syntax checker
 ** Speed up theme loading
@@ -1209,3 +1197,8 @@ Things I'd like to fix/improve when I have the time and know-how.
 ** Move-To-Char
 Reverse-engineer zzz-to-char to make a move to char, which would function the same,
 just it wouldn't actually delete text, only move the cursor.
+** New unicode input method
+Char-menu is nice, but it's kind of hard to memorize its tree. LaTeX-style insert
+is also nice, but it's often really clunky with things like \bigtriangledown.
+If I can somehow set up a LaTeX shorthand like \btd = \bigtriangledown, then life
+should be better.
