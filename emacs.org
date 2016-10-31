@@ -70,12 +70,13 @@ This is taken from http://www.lunaryorn.com/2016/04/28/fullscreen-magit-status.h
                  (my-display-buffer-fullframe)
                  (reusable-frames . nil)))
 #+END_SRC
-** Set Default Browser To Conkeror
-Conkeror is quick and I have some nice keybindings for it.
+** Set Default Browser To EWW
+I used to have this set to conkeror, but for some reason it just doesn’t
+actually open links. Anyways, EWW just got serious improvements, so I’ll
+just use that instead.
 
 #+BEGIN_SRC emacs-lisp
-  (setq browse-url-browser-function 'browse-url-generic
-        browse-url-generic-program "~/scripts/conkeror.sh")
+  (setq browse-url-browser-function 'eww-browse-url)
 #+END_SRC
 ** Overwrite Selected Text
 Emacs usually deselects a region once you start typing, but I like it to delete the selected text in that case.
@@ -470,6 +471,16 @@ Built into Emacs by default. Sets the refresh time and some keybinds.
     (add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode)
     (global-set-key (kbd "M-g TAB") 'semantic-complete-analyze-inline)
     (global-set-key (kbd "M-g g") 'semantic-complete-jump-local))
+#+END_SRC
+*** TODO [[https://github.com/slime/slime][slime]]
+I’m going to try this just to see if it helps my lisp coding any.
+
+#+BEGIN_SRC emacs-lisp
+  (setq inferior-lisp-program "/usr/bin/sbcl")
+  (req-package slime
+    :init
+    (setq slime-contribs '(slime-fancy))
+    (slime-setup))
 #+END_SRC
 *** stumpwm-mode
 Since I use StumpWM, this should come in handy.
