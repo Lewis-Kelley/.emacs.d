@@ -78,6 +78,14 @@ just use that instead.
 #+BEGIN_SRC emacs-lisp
   (setq browse-url-browser-function 'eww-browse-url)
 #+END_SRC
+** Set Alternate Browser to Conkeror
+I really wish I could get this to work for Conkeror, but running that browser
+is like balancing on a knife edge in my current setup. Oh well. This is opened
+up in eww by pressing &, which I may want to remap at some point.
+
+#+BEGIN_SRC emacs-lisp
+  (setq shr-external-browser 'open-url-conkeror)
+#+END_SRC
 ** Overwrite Selected Text
 Emacs usually deselects a region once you start typing, but I like it to delete the selected text in that case.
 
@@ -91,6 +99,20 @@ UTF-8 is amazing, so use that by default.
   (prefer-coding-system 'utf-8)
   (setq-default buffer-file-coding-system 'utf-8-auto-unix)
 #+END_SRC
+** Lego Theme
+My own creation, and definitely still a work in progress, but I can change 
+whatever I want to whenever I need to, so that's nice.
+
+#+BEGIN_SRC emacs-lisp
+  (load-theme 'lego t)
+#+END_SRC
+** Font
+This is just the font I’m using.
+
+#+BEGIN_SRC emacs-lisp
+ (setq default-frame-alist (cons '(font . "DejaVu Sans Mono-14") default-frame-alist))
+#+END_SRC
+
 * Packages
 ** Control
 *** [[https://github.com/abo-abo/avy][avy]]
@@ -198,6 +220,14 @@ that trigger an action when pressed in quick succession.
     (key-chord-define-global "vl" 'ispell-region)
     (key-chord-define-global "VL" 'endless/ispell-word-then-abbrev)
     (key-chord-mode 1))
+#+END_SRC
+*** [[https://github.com/noctuid/link-hint.el][link-hint]]
+I really don’t like manually moving the cursor around just to select a link, so
+I just use this to jump straight to links when in things like EWW.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package link-hint
+    :bind ("M-S-l" . link-hint-open-link))
 #+END_SRC
 *** [[https://github.com/Kungsgeten/ryo-modal][ryo-modal]]
 A do-it-yourself modal control system which allows for the benefits of things
@@ -1126,6 +1156,15 @@ Taken from http://sriramkswamy.github.io/dotemacs/#orgheadline18
                   (looking-at "\\b[[:upper:]]\\{2\\}[[:lower:]]"))
                 (capitalize-word 1)))))
 #+END_SRC
+** Open URL in Conkeror
+I really like Conkeror if literally only for the keyboard-based browsing. It’s
+really clunky, though, so I need to manually call it here. Don’t ask why.
+
+#+BEGIN_SRC emacs-lisp
+  (defun open-url-conkeror (url)
+    (shell-command
+     (concat "conkeror " (format "%s" url))))
+#+END_SRC
 * Custom Minor Modes
 ** Dubcaps Mode
 Taken from http://sriramkswamy.github.io/dotemacs/#orgheadline18
@@ -1179,19 +1218,16 @@ or custom functions.
   (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
   (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
 #+END_SRC
-* Miscenallany
-** Lego Theme
-My own creation, and definitely still a work in progress, but I can change 
-whatever I want to whenever I need to, so that's nice.
+* Yet Another Modal Mode (YAM)
+This is really more of a lisp experiment on my part, so this may get ugly.
+I used to use Evil mode, and while I’ve looked at what replacements are there,
+such as modalka and ryo-modal, but they’re all missing the ability to define
+meaningfully different modes like the Normal / Visual modes in Vim. This hopes
+to take the best parts of those modes and create my own with this added
+functionality.
 
 #+BEGIN_SRC emacs-lisp
-  (load-theme 'lego t)
-#+END_SRC
-** Font
-This is just the font I’m using.
-
-#+BEGIN_SRC emacs-lisp
- (setq default-frame-alist (cons '(font . "DejaVu Sans Mono-14") default-frame-alist))
+  (require 'yam-mode "~/.emacs.d/yam-mode.el")
 #+END_SRC
 * Bucket List
 Things I'd like to fix/improve when I have the time and know-how.
