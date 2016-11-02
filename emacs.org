@@ -227,7 +227,7 @@ I just use this to jump straight to links when in things like EWW.
 
 #+BEGIN_SRC emacs-lisp
   (req-package link-hint
-    :bind ("M-S-l" . link-hint-open-link))
+    :bind ("M-L" . link-hint-open-link))
 #+END_SRC
 *** [[https://github.com/Kungsgeten/ryo-modal][ryo-modal]]
 A do-it-yourself modal control system which allows for the benefits of things
@@ -1164,6 +1164,23 @@ really clunky, though, so I need to manually call it here. Don’t ask why.
   (defun open-url-conkeror (url)
     (shell-command
      (concat "conkeror " (format "%s" url))))
+#+END_SRC
+** Open in External Program
+Just open the current file in whatever the default program is for it’s type.
+This is mostly intended for opening HTML’s, PDF’s, and LibreOffice files, but
+there’s a chance it won’t terribly mess up with other types of files.
+
+#+BEGIN_SRC emacs-lisp
+  (defun open-external ()
+    "Open current file in default external program."
+    (interactive)
+    (when buffer-file-name
+      (shell-command (concat
+                      "xdg-open "
+                      (shell-quote-argument buffer-file-name)
+                      " &"))))
+
+  (global-set-key (kbd "C-c o") 'open-external)
 #+END_SRC
 * Custom Minor Modes
 ** Dubcaps Mode
