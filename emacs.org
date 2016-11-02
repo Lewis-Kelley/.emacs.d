@@ -1182,6 +1182,29 @@ there’s a chance it won’t terribly mess up with other types of files.
 
   (global-set-key (kbd "C-c o") 'open-external)
 #+END_SRC
+** Save and Restore Scratch Buffer
+It’s kind of nice /not/ completely blowing away the scratch buffer whenever I
+kill Emacs. This code from [[https://github.com/dakrone/eos/blob/master/eos-core.org][here]] should save it every minute and whenever Emacs
+dies as well as reload it upon boot-up.
+
+#+BEGIN_SRC emacs-lisp
+  (defun save-persistent-scratch ()
+    "Write the contents of *scratch* to the file name
+  `persistent-scratch-file-name'."
+    (with-current-buffer (get-buffer-create "*scratch*")
+      (write-region (point-min) (point-max) "~/.emacs.d/persistent-scratch")))
+
+  (defun load-persistent-scratch ()
+    "Load the contents of `persistent-scratch-file-name' into the
+  scratch buffer, clearing its contents first."
+    (if (file-exists-p "~/.emacs.d/persistent-scratch")
+        (with-current-buffer (get-buffer "*scratch*")
+          (delete-region (point-min) (point-max))
+          (insert-file-contents "~/.emacs.d/persistent-scratch"))))
+
+  (add-hook 'after-init-hook 'load-persistent-scratch)
+  (add-hook 'kill-emacs-hook 'save-persistent-scratch)
+#+END_SRC
 * Custom Minor Modes
 ** Dubcaps Mode
 Taken from http://sriramkswamy.github.io/dotemacs/#orgheadline18
