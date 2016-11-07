@@ -130,7 +130,7 @@ with the no-op thunk.
   (defun thunk ())
   (setq ring-bell-function 'thunk)
 #+END_SRC
-* Package
+* Packages
 ** Control
 *** [[https://github.com/abo-abo/avy][avy]]
 A lovely package that allows you to quickly jump to wherever you want to go
@@ -292,7 +292,7 @@ with different commands each.
      ("g" beginning-of-buffer)
      ("G" end-of-buffer)
      ("d" delete-char)
-     ("D" delete-word)
+     ("D" kill-word)
      ("k" kill-line)
      ("K" kill-whole-line)
      ("y" yank)
@@ -439,6 +439,14 @@ definitions and usages of variables and functions.
   (define-key ggtags-mode-map (kbd "M-g M-g") #'ggtags-find-tag-dwim)
   (define-key ggtags-mode-map (kbd "M-g r") #'ggtags-prev-mark))
 #+END_SRC
+*** [[https://github.com/jaor/geiser][geiser]]
+A nice Scheme editing mode. Don’t know too much about how to use it yet, but it
+seems nice.
+#+BEGIN_SRC emacs-lisp
+  (req-package geiser
+    :init
+    (setq geiser-active-implementations '(chez)))
+#+END_SRC
 *** [[https://www.emacswiki.org/emacs/HideShow][hs]]
 A very effective code folding package that is started in any prog-mode.
     
@@ -542,13 +550,18 @@ Built into Emacs by default. Sets the refresh time and some keybinds.
     (global-set-key (kbd "M-g g") 'semantic-complete-jump-local))
 #+END_SRC
 *** TODO [[https://github.com/slime/slime][slime]]
-I’m going to try this just to see if it helps my lisp coding any.
+I’m going to try this just to see if it helps my lisp coding any. It's currently
+complaining about how there is a void function being called named
+slime-setup-contribs from the slime-load-hook, but I can't figure out what's
+wrong.
 
 #+BEGIN_SRC emacs-lisp
   (setq inferior-lisp-program "/usr/bin/sbcl")
   (req-package slime
+    :disabled t
     :init
-    (setq slime-contribs '(slime-fancy))
+    (require 'slime-autoloads)
+    (setq slime-contribs nil)
     (slime-setup))
 #+END_SRC
 *** stumpwm-mode
@@ -575,8 +588,7 @@ into =\alpha=.
 
 #+BEGIN_SRC emacs-lisp
 (req-package cdlatex
-  :diminish cdlatex-mode
-  :require auctex)
+  :diminish cdlatex-mode)
 #+END_SRC
 *** [[https://github.com/mrkkrp/char-menu][char-menu]]
 Allows you to build your own tree of special characters that can be accessed via
@@ -701,7 +713,9 @@ Built into Emacs by default. I only take this opportunity to set a quick keybind
 
 #+BEGIN_SRC emacs-lisp
   (req-package flyspell
-    (global-set-key (kbd "C-c l") 'flyspell-mode))
+    :init
+    (global-set-key (kbd "C-x l") 'flyspell-mode)
+    (add-hook 'org-mode-hook 'flyspell-mode))
 #+END_SRC
 *** [[https://github.com/syohex/emacs-git-gutter-fringe][git-gutter-fringe]]
 When editing a file under version control, this shows little markers indicating
@@ -749,7 +763,6 @@ Built into Emacs by default, but I need to configure some of it, especially how 
   (setq org-clock-idle-time 5)
 
   (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
-  (add-hook 'org-mode-hook 'org-toggle-latex-fragment)
   (add-hook 'org-cdlatex-mode-hook (lambda () (diminish 'org-cdlatex-mode)))
   (add-hook 'org-indent-mode-hook (lambda () (diminish 'org-indent-mode)))
   (add-hook 'org-mode-hook (lambda ()
