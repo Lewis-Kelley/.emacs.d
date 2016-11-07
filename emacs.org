@@ -108,7 +108,7 @@ UTF-8 is amazing, so use that by default.
   (setq-default buffer-file-coding-system 'utf-8-auto-unix)
 #+END_SRC
 ** Lego Theme
-My own creation, and definitely still a work in progress, but I can change 
+My own creation, and definitely still a work in progress, but I can change
 whatever I want to whenever I need to, so that's nice.
 
 #+BEGIN_SRC emacs-lisp
@@ -148,20 +148,15 @@ practically instantly.
 *** [[https://github.com/joodland/bm][bm]]
 An extremely simple yet really helpful package that allows you to mark multiple
 different positions in a file and cycle through them with ease. Really useful
-when you need to go looking for something but want to save your spot, or if you 
+when you need to go looking for something but want to save your spot, or if you
 keep bouncing between a few spots in a file.
 #+BEGIN_SRC emacs-lisp
   (req-package bm ;;make bookmarks and cycle through them
     :config
-    (global-set-key (kbd "s-d") 'bm-toggle)
-    (if (= flag-colemak 1)
-        (progn
-          (global-set-key (kbd "C-M-n") 'bm-next)
-          (global-set-key (kbd "C-M-p") 'bm-previous))
-      (progn
-        (global-set-key (kbd "s-j") 'bm-next)
-        (global-set-key (kbd "s-k") 'bm-previous))))
-#+END_SRC    
+    (global-set-key (kbd "M-T") 'bm-toggle)
+    (global-set-key (kbd "M-N") 'bm-next)
+    (global-set-key (kbd "M-P") 'bm-previous))
+#+END_SRC
 *** [[https://github.com/abo-abo/swiper][counsel]]
 #+BEGIN_SRC emacs-lisp
   (req-package counsel
@@ -426,7 +421,7 @@ definitions and usages of variables and functions.
 - keybinds:
   + M-g M-g - go to either the definition or usage of the symbol at point
   + M-g r - return to the last point jumped from
-    
+
 #+BEGIN_SRC emacs-lisp
 (req-package ggtags
   :diminish ggtags-mode
@@ -449,7 +444,7 @@ seems nice.
 #+END_SRC
 *** [[https://www.emacswiki.org/emacs/HideShow][hs]]
 A very effective code folding package that is started in any prog-mode.
-    
+
 #+BEGIN_SRC emacs-lisp
   (add-hook 'hs-minor-mode-hook '(lambda () (diminish 'hs-minor-mode)))
   (add-hook 'prog-mode-hook 'hs-minor-mode)
@@ -569,8 +564,10 @@ Since I use StumpWM, this should come in handy.
 
 #+BEGIN_SRC emacs-lisp
   (req-package stumpwm-mode
-    :config
-    (add-to-list 'auto-mode-alist '(".stumpwmrc" . stumpwm-mode)))
+    :init
+    (setq stumpwm-shell-program "~/scripts/stumpish")
+    (add-to-list 'auto-mode-alist '(".stumpwmrc" . stumpwm-mode))
+    (define-key stumpwm-mode-map (kbd "C-x C-e") 'stumpwm-eval-last-sexp))
 #+END_SRC
 ** Usability
 *** [[https://github.com/jgkamat/alda-mode][alda-mode]]
@@ -593,7 +590,7 @@ into =\alpha=.
 *** [[https://github.com/mrkkrp/char-menu][char-menu]]
 Allows you to build your own tree of special characters that can be accessed via
 an avy-menu...menu.
-    
+
 #+BEGIN_SRC emacs-lisp
   (req-package char-menu
     :init
@@ -609,16 +606,11 @@ whenever I rebind keys.
 
 #+BEGIN_SRC emacs-lisp
   (req-package cheatsheet
-    :requires avy semantic hs resize-window flycheck
     :init
     (cheatsheet-add
      :group 'Motion
      :key (substitute-command-keys "\\[avy-goto-char-2]")
      :description "Jump to a 2-character sequence.")
-    (cheatsheet-add
-     :group 'Motion
-     :key (substitute-command-keys "\\[avy-goto-line]")
-     :description "Jump to a line.")
     (cheatsheet-add
      :group 'Tags
      :key "M-g M-g"
@@ -633,20 +625,20 @@ whenever I rebind keys.
      :description "Prompt for a function, then jump to the definition.")
     (cheatsheet-add
      :group 'Programming
-     :key (substitute-command-keys "\\[hs-toggle-hiding]")
-     :description "Toggle code folding.")
-    (cheatsheet-add
-     :group 'Common
-     :key (substitute-command-keys "\\[resize-window]")
-     :description "Enter resize-window mode.")
-    (cheatsheet-add
-     :group 'Programming
      :key (substitute-command-keys "\\[flycheck-next-error]")
      :description "Go to the next error in this program.")
     (cheatsheet-add
-     :group 'Common
-     :key (substitute-command-keys "\\[flyspell-mode]")
-     :description "Toggle flyspell mode in this buffer.")
+     :group 'Bookmarks
+     :key (substitute-command-keys "\\[bm-toggle]")
+     :description "Toggle a bookmark at this line.")
+    (cheatsheet-add
+     :group 'Bookmarks
+     :key (substitute-command-keys "\\[bm-next]")
+     :description "Move to the next bookmark.")
+    (cheatsheet-add
+     :group 'Bookmarks
+     :key (substitute-command-keys "\\[bm-previous]")
+     :description "Move to the previous bookmark.")
     (global-set-key (kbd "C-h h") 'cheatsheet-show))
 #+END_SRC
 *** [[https://github.com/company-mode/company-mode][company]]
@@ -692,7 +684,7 @@ various Emacs sites.
   + g - (in elfeed mode) refresh the feed
   + r - (in elfeed mode) mark as read
   + u - (in elfeed mode) mark as unread
-    
+
 #+BEGIN_SRC emacs-lisp
   (req-package elfeed
     :config
