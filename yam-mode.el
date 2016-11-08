@@ -8,42 +8,66 @@
 ;; arbitrary number of different states akin to Vim’s Normal / Visual modes.
 
 ;;; Code:
-(defvar yam-mode-maps (list (make-sparse-keymap))
+(defvar yam-maps (list (make-sparse-keymap))
   "The list of all the different keymaps used by yam-mode.")
 
-(defvar yam-mode-cursor-type (list t)
+(defvar yam-cursor-type (list t)
   "Change the cursor when entering a given mode.")
 
-(defvar yam-mode-cursor-color (list "blue")
+(defvar yam-cursor-color (list "blue")
   "A list of the colors used for each state.")
 
-(defvar yam-mode-states-key (make-hash-table :test 'equal)
+(defvar yam-states-key (make-hash-table :test 'equal)
   "Hashtable of all the different created states to keep track of their index.")
+(puthash "Normal" 0 yam-states-key)
 
-(defvar yam-mode-curr-state nil
-  "The index of the currently selected state.  Nil if no state selected.")
+(defvar yam-curr-state 0
+  "The index of the currently selected state.")
 
-(defun yam-mode-create-state (name)
+(defvar yam-mode-map (car yam-maps))
+
+(defun yam-wipe ()
+  "Reset all yam variables to their initial default values."
+  (interactive)
+  (setq yam-maps (list (make-sparse-keymap)))
+  (setq yam-cursor-type (list t))
+  (setq yam-cursor-color (list "blue"))
+  (setq yam-states-key (make-hash-table :test 'equal))
+  (puthash "Normal" 0 yam-states-key)
+  (setq yam-curr-state 0)
+  (setq yam-mode-map (car yam-maps)))
+
+(defun yam-create-state (name)
   "Create a new state with the given NAME."
-  (add-to-list yam-mode-maps (make-sparse-keymap))
-  (add-to-list yam-mode-cursor-type t)
-  (add-to-list yam-mode-cursor-color (list "white"))
-  (add-to-list yam-mode-states-key name))
+  (add-to-list 'yam-maps (make-sparse-keymap))
+  (add-to-list 'yam-cursor-type t)
+  (add-to-list 'yam-cursor-color (list "white"))
+  (puthash name (hash-table-count yam-states-key) yam-states-key))
 
-(defun yam-mode-add-binding (name key func)
+(defun yam-add-binding (name key func)
   "Add a new binding to yam state NAME.
 When KEY is pressed in NAME state, run FUNC."
-  (let* ((index (gethash name yam-mode-states-key))
-         (yam-mode-map (nth index yam-mode-maps)))
-    (define-key yam-mode-map (kbd key) func)))
+  (let* ((index (- (hash-table-count yam-states-key)
+                   (gethash name yam-states-key)
+                   1))
+         (yam-map (nth index yam-maps)))
+    (define-key yam-map (kbd key) func)))
 
-(defun yam-mode-toggle-state (name)
-  "If the current mode is not equal to NAME, set the current state to NAME.
-Otherwise, set the current state to nil."
-  (let ((index (gethash name yam-mode-states-key)))
-    (setq yam-mode-curr-state (if (equal yam-mode-curr-state index)
-                                  nil
-                                index))))
+(defun yam-set-state (name)
+  "Set the current yam-state to NAME."
+  (interactive "sEnter mode: ")
+  (setq yam-curr-state (gethash name yam-states-key))
+  (setq yam-mode-map (nth (- (hash-table-count yam-states-key) yam-curr-state 1)
+                          yam-maps)))
+
+(define-minor-mode yam-mode
+  "Toggle `yam-minor-mode'."
+  nil " yam" yam-mode-map)
+
+(yam-add-binding "Normal" "n" (lambda () (interactive) (message "Hello YAM!")))
+(yam-create-state "Delete")
+(yam-add-binding "Delete" "k" (lambda () (interactive) (message "Goodbye YAM!")))
+(yam-set-state "Delete")
 
 (provide 'yam-mode)
 ;;; yam-mode.el ends here
