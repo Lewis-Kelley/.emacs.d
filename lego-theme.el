@@ -1,5 +1,5 @@
 (deftheme lego
-  "Created 2016-10-29.")
+  "Created 2016-11-24.")
 
 (custom-theme-set-faces
  'lego
@@ -64,7 +64,8 @@
  '(org-level-4 ((t (:foreground "DarkOrchid2" :height 1.1))))
  '(error ((t (:foreground "dark orange" :underline t :slant italic :weight bold))))
  '(git-gutter:modified ((t (:inherit default :foreground "SteelBlue1" :weight bold))))
+ '(fic-face ((t (:foreground "dark orange" :box (:line-width 4 :style released-button) :slant italic :weight bold))))
  '(default ((t (:stipple nil :background "#202028" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 140 :width normal :foundry "unknown" :family "DejaVu Sans Mono"))))
- '(term-color-blue ((t (:background "dark turquoise" :foreground "dark turquoise")))))
+ '(term-color-blue ((t (:background "deep sky blue" :foreground "deep sky blue")))))
 
 (provide-theme 'lego)

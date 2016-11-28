@@ -130,6 +130,24 @@ with the no-op thunk.
   (defun thunk ())
   (setq ring-bell-function 'thunk)
 #+END_SRC
+** Window Management
+Basically, this makes Emacs /not/ split windows and instead create new frames
+I can control with StumpWM. Taken from [[http://anderspapitto.com/posts/2016-11-02-vanquishing-emacs-display-buffer.html][here]].
+
+#+BEGIN_SRC emacs-lisp
+  ;; (setq display-buffer-alist
+  ;;       '(("*shell*" (display-buffer-same-window) ())
+  ;;         (".*" (display-buffer-reuse-window
+  ;;                display-buffer-same-window
+  ;;                display-buffer-pop-up-frame)
+  ;;          (reusable-frames . t))))
+  ;; (advice-add 'display-buffer-pop-up-window :around
+  ;;             (lambda (orig-fun buffer alist)
+  ;;               (display-buffer-same-window buffer nil)))
+  ;; (advice-add 'set-window-dedicated-p :around
+  ;;             (lambda (orig-fun &rest args) nil))
+  ;; (setq frame-auto-hide-function 'delete-frame)
+#+END_SRC
 * Packages
 ** Control
 *** [[https://github.com/abo-abo/avy][avy]]
@@ -566,8 +584,8 @@ Since I use StumpWM, this should come in handy.
   (req-package stumpwm-mode
     :init
     (setq stumpwm-shell-program "~/scripts/stumpish")
-    (add-to-list 'auto-mode-alist '(".stumpwmrc" . stumpwm-mode))
-    (define-key stumpwm-mode-map (kbd "C-x C-e") 'stumpwm-eval-last-sexp))
+    (add-to-list 'auto-mode-alist '(".stumpwmrc" . stumpwm-mode)))
+    ;(define-key 'stumpwm-mode-map (kbd "C-x C-e") 'stumpwm-eval-last-sexp))
 #+END_SRC
 ** Usability
 *** [[https://github.com/jgkamat/alda-mode][alda-mode]]
@@ -701,12 +719,20 @@ readable.
     (elfeed-org))
 #+END_SRC
 *** [[https://www.emacswiki.org/emacs/FlySpell][flyspell]]
-Built into Emacs by default. I only take this opportunity to set a quick keybind.
+Built into Emacs by default. I only take this opportunity to set a quick
+keybind for both that and visual-line-mode (also built in). If I care about
+spelling, I also probably want lines to wrap properly.
 
 #+BEGIN_SRC emacs-lisp
+  (defun start-flyspell-and-visual ()
+    "Call both function `flyspell' and function `visual-line-mode'."
+    (interactive)
+    (flyspell-mode t)
+    (visual-line-mode))
+
   (req-package flyspell
     :init
-    (global-set-key (kbd "C-x l") 'flyspell-mode)
+    (global-set-key (kbd "C-x l") 'start-flyspell-and-visual)
     (add-hook 'org-mode-hook 'flyspell-mode))
 #+END_SRC
 *** [[https://github.com/syohex/emacs-git-gutter-fringe][git-gutter-fringe]]
@@ -744,15 +770,16 @@ The best way to use git with Emacs. Period.
     (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup))
 #+END_SRC
 *** [[http://orgmode.org/][org-mode]]
-Built into Emacs by default, but I need to configure some of it, especially how the agenda works.
+Built into Emacs by default, but I need to configure some of it, especially how
+the agenda works.
 
 #+BEGIN_SRC emacs-lisp
   (setq org-startup-indented t)
+  (setq org-use-speed-commands t)
   (setq org-agenda-include-diary t)
   (setq org-agenda-start-on-weekday nil)
   (setq org-ellipsis "…")
   (setq org-src-fontify-natively t)
-  (setq org-clock-idle-time 5)
 
   (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
   (add-hook 'org-cdlatex-mode-hook (lambda () (diminish 'org-cdlatex-mode)))
@@ -764,13 +791,39 @@ Built into Emacs by default, but I need to configure some of it, especially how 
   (global-set-key (kbd "C-c a") 'org-agenda)
   (add-hook 'org-agenda-mode-hook 'delete-other-windows)
 
-  (setq org-agenda-files (list "~/planner.org"
-                               "~/schedules/Y2/Q1.org"
-                               "~/homework/MA211.org"
-                               "~/homework/CSSE372.org"
-                               "~/homework/MA332.org"
-                               "~/homework/CSSE371.org"
-                               "~/homework/RH330.org"))
+  (setq org-agenda-files (list "~/planner.org" "~/classes.org"))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (require 'ob)
+
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((sh . t)
+     (plantuml . t)
+     (C . t)
+     (java . t)
+     (octave . t)))
+
+  (add-to-list 'org-src-lang-modes (quote ("plantuml" . fundamental)))
+  (setq org-plantuml-jar-path "/usr/share/plantuml/lib/plantuml.jar")
+#+END_SRC
+
+I like using Org’s clocking function, but I want to change the time it takes
+before it yells at me for being away from Emacs for too long. I also prefer
+editing the clocked time by the minute than by every 5.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-clock-idle-time 5)
+  (setq org-time-stamp-rounding-minutes '(1 1))
+  (setq org-clock-out-remove-zero-time-clocks t)
+#+END_SRC
+
+For some reason, ox.el isn’t loading properly. That’s the file that tells org
+how to do that cool LaTeX rendering, so I definitely want that on.
+
+#+BEGIN_SRC emacs-lisp
+  (require 'ox)
 #+END_SRC
 *** octave-mode
 #+BEGIN_SRC emacs-lisp
