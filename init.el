@@ -19,7 +19,7 @@
  '(custom-enabled-themes (quote (sanityinc-tomorrow-night)))
  '(custom-safe-themes
    (quote
-    ("abc32ac25b5da830d82e30740c41b188f91acec7bf83bfdf279002d8856d2741" "01399b771710a8fb0859bf383594dd43bbe0fe7ab1f832196359de46a61bc487" "081d1c85358e2400122e6c6632698cb9bcce6a5bd9c18f3553ba7fdcdaa7dae8" "0133460faaa577d4ba8eb669cc4b2be0e7f354c182bf20cc7ede2ef4b2d15b96" "479986546b94b12c57bccc2414f72af0390b1ea868faf2780f52d628e9ff4662" "5a9dfc753c609d7a8011a92fd1c1ae43f31208af2f13127a12f71af291afe5a5" "e42f727d135034e9b6699053a064472df3d4f713223b18c1c56bdf96c99e2f8d" "b9193d5f92d10ef660b263cb13e484c0a97619c4beb4f7f851f438f33848c582" "9be5e80dfb4179bae55815d6ef5b96442a5f1c2ed82b42ef906fd6f9698f97ad" "01b601c721daaa701265331c7375274879209616b33b250588c25d03f5d3d216" "c4f4a47347331f4a1674a25d07b7dabe42feccbcb3ad61c95e23beaa21c3fb42" "d3374987a8cf3698f9e608605fd4a01acc27ed841797ecdca6cfb42c1aa8de1f" "507a247f70ccc2649f9cab12da7bade08fc1776fddccdbf5d06bc83690c28a7d" "6be97df1da3aeaab8c7f17491dd8f328e67c91afa7885ce65f9615a168209d39" "2f7b66342db3951c3c58c3718eb11825b7c0bfee2550bfecf0b8c20aaf1445b4" "ca7284bf1618e60b13bfe291a0505145aef8482a8f303f9d3e4ba0f8a0fa2910" "04aab6a4309af7733f6c0f8d29e27875a4f3c75159f8e28400ddec583390ab27" "103fc7c01370efa3168e2fcf608d4e6729b22a31e76c5d2de5100a13acf3dd56" "5332aec6093b402b6896aaffd6577b6c1f6e8b84982d6a541bf372a12ad4b0cf" "59c51d6c8dacad6714a3a679e75f4c7a9cf4be535ba6eb502de3a3019ed32789" "2671aaaf2a2d6b1eb24da0323e9bbe41cdff34e11300c728f29ef4e62052b83a" default)))
+    ("69fe2e2056b31b3d09e62cfcc8712b4f8865e394e075c4dbfe30c1964d9f4a16" "abc32ac25b5da830d82e30740c41b188f91acec7bf83bfdf279002d8856d2741" "01399b771710a8fb0859bf383594dd43bbe0fe7ab1f832196359de46a61bc487" "081d1c85358e2400122e6c6632698cb9bcce6a5bd9c18f3553ba7fdcdaa7dae8" "0133460faaa577d4ba8eb669cc4b2be0e7f354c182bf20cc7ede2ef4b2d15b96" "479986546b94b12c57bccc2414f72af0390b1ea868faf2780f52d628e9ff4662" "5a9dfc753c609d7a8011a92fd1c1ae43f31208af2f13127a12f71af291afe5a5" "e42f727d135034e9b6699053a064472df3d4f713223b18c1c56bdf96c99e2f8d" "b9193d5f92d10ef660b263cb13e484c0a97619c4beb4f7f851f438f33848c582" "9be5e80dfb4179bae55815d6ef5b96442a5f1c2ed82b42ef906fd6f9698f97ad" "01b601c721daaa701265331c7375274879209616b33b250588c25d03f5d3d216" "c4f4a47347331f4a1674a25d07b7dabe42feccbcb3ad61c95e23beaa21c3fb42" "d3374987a8cf3698f9e608605fd4a01acc27ed841797ecdca6cfb42c1aa8de1f" "507a247f70ccc2649f9cab12da7bade08fc1776fddccdbf5d06bc83690c28a7d" "6be97df1da3aeaab8c7f17491dd8f328e67c91afa7885ce65f9615a168209d39" "2f7b66342db3951c3c58c3718eb11825b7c0bfee2550bfecf0b8c20aaf1445b4" "ca7284bf1618e60b13bfe291a0505145aef8482a8f303f9d3e4ba0f8a0fa2910" "04aab6a4309af7733f6c0f8d29e27875a4f3c75159f8e28400ddec583390ab27" "103fc7c01370efa3168e2fcf608d4e6729b22a31e76c5d2de5100a13acf3dd56" "5332aec6093b402b6896aaffd6577b6c1f6e8b84982d6a541bf372a12ad4b0cf" "59c51d6c8dacad6714a3a679e75f4c7a9cf4be535ba6eb502de3a3019ed32789" "2671aaaf2a2d6b1eb24da0323e9bbe41cdff34e11300c728f29ef4e62052b83a" default)))
  '(default-frame-alist
     (quote
      ((left-fringe)
@@ -43,15 +43,15 @@
  '(indicate-empty-lines t)
  '(ledger-reports
    (quote
-    (("account" "ledger -f /home/lewis/docs/misc/ledger_test.dat reg Expenses")
+    (("account" "ledger -f /home/lewis/ledger reg %(account)")
      (#("bal" 0 1
-        (idx 0))
+        (idx 1))
       "%(binary) -f %(ledger-file) bal")
      (#("reg" 0 1
-        (idx 1))
+        (idx 2))
       "%(binary) -f %(ledger-file) reg")
      (#("payee" 0 1
-        (idx 2))
+        (idx 3))
       "%(binary) -f %(ledger-file) reg @%(payee)"))))
  '(magit-diff-use-overlays nil)
  '(minimap-dedicated-window nil)
@@ -67,15 +67,18 @@
  '(overflow-newline-into-fringe t)
  '(package-selected-packages
    (quote
-    (plantuml-mode slime org-gcal org sx iedit link-hint darkokai-theme counsel swiper ryo-modal geiser smex alda-mode fancy-battery elfeed-org elfeed req-package aggressive-indent evil-magit c-eldoc cheatsheet markdown-mode char-menu srefactor zone-rainbow org-bullets evil-smartparens slime-company fireplace dired-filetype-face ess elisp--witness--lisp diredful resize-window elpy multi-line ggtags quickrun fic-mode graphene-meta-theme wgrep chess irony emacs-eclim switch-window sublimity rainbow-delimiters evil-easymotion company wsd-mode buffer-move multiple-cursors mulitple-cursors flx-ido multicolumn company-c-headers seethru projectile magit powerline-evil monokai function-args arduino-mode package-build shut-up epl git commander f dash s gnuplot flycheck monokai-theme use-package multi-term cdlatex)))
+    (ledger-mode org-mime meghanada jdee plantuml-mode org-gcal sx iedit link-hint darkokai-theme counsel swiper ryo-modal geiser smex alda-mode fancy-battery elfeed-org elfeed req-package aggressive-indent evil-magit c-eldoc cheatsheet markdown-mode char-menu srefactor zone-rainbow org-bullets evil-smartparens slime-company fireplace dired-filetype-face ess elisp--witness--lisp diredful resize-window elpy multi-line quickrun fic-mode graphene-meta-theme wgrep chess irony emacs-eclim switch-window sublimity rainbow-delimiters evil-easymotion company wsd-mode buffer-move multiple-cursors mulitple-cursors flx-ido multicolumn company-c-headers seethru projectile magit powerline-evil monokai function-args arduino-mode package-build shut-up epl git commander f dash s gnuplot flycheck monokai-theme use-package multi-term cdlatex)))
  '(paradox-automatically-star t)
  '(paradox-github-token t)
  '(pos-tip-background-color "#E6DB74")
  '(pos-tip-foreground-color "#242728")
  '(powerline-height nil)
- '(safe-local-variable-values (quote ((eval 80-column-rule))))
+ '(safe-local-variable-values (quote ((eval git-gutter-mode nil) (eval 80-column-rule))))
+ '(send-mail-function (quote smtpmail-send-it))
  '(sml/full-mode-string " …")
  '(sml/vc-mode-show-backend t)
+ '(smtpmail-smtp-server "exchange.rose-hulman.edu")
+ '(smtpmail-smtp-service 587)
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
    (quote
