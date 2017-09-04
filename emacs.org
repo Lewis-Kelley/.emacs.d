@@ -747,8 +747,6 @@ the agenda works.
   (defvar org-dir "~/org-files/")
   (setq org-startup-indented t)
   (setq org-use-speed-commands t)
-  (setq org-agenda-include-diary t)
-  (setq org-agenda-start-on-weekday nil)
   (setq org-ellipsis "…")
   (setq org-src-fontify-natively t)
 
@@ -759,13 +757,61 @@ the agenda works.
                              (local-set-key (kbd "C-c C-x M-l")
                                             (kbd "C-u C-u C-c C-x C-l"))))
 
-  (global-set-key (kbd "C-c a") 'org-agenda)
-  (add-hook 'org-agenda-mode-hook 'delete-other-windows)
-  (setq org-agenda-files (list (concat org-dir "classes.org")
-                               (concat org-dir "planner.org")
-                               (concat org-dir "calendar.org")))
   (setq org-columns-default-format
         "%40ITEM(Task) {:} %CLOCKSUM")
+#+END_SRC
+**** Agenda
+Some basic settings.
+#+BEGIN_SRC emacs-lisp
+  (setq org-agenda-include-diary t
+        org-agenda-start-on-weekday nil
+        org-agenda-files (list (concat org-dir "classes.org")
+                               (concat org-dir "planner.org")
+                               (concat org-dir "calendar.org")))
+
+  (global-set-key (kbd "C-c a") 'org-agenda)
+  (add-hook 'org-agenda-mode-hook 'delete-other-windows)
+#+END_SRC
+
+This is some color coding that colors differently tagged items with
+pre-selected colors.
+#+BEGIN_SRC emacs-lisp
+  (defun colorged/create-agenda-face (color)
+    "Create a standard face using COLOR."
+    `(face (:foreground ,color)))
+
+  (defun colorged/set-text-face (start end color)
+    "Set the face of the text between START and END to COLOR."
+    (add-face-text-property start end (colorged/create-agenda-face color)))
+
+  (defun colorged/find-next-tag (tag-name)
+    "Move the point to the next instance of TAG-NAME if possible"
+    (re-search-forward (concat ":" tag-name ":") nil t))
+
+  (defun colorged/colorize-buffer (color-map)
+    "Color-code the org agenda.
+  Change instances of the tags in the car's of COLOR-MAP to have a
+  different face with the colors in the cdr's of COLOR-MAP."
+    (when color-map
+      (save-excursion
+        (goto-char (point-min))
+        (while (colorged/find-next-tag (caar color-map))
+          (colorged/set-text-face (point-at-bol) (point-at-eol) (cdar color-map))))
+      (colorged/colorize-buffer (cdr color-map))))
+
+  (setq org-agenda-colors
+        '(("architecture" . "Deepskyblue3")
+          ("hadoop" . "green")
+          ("ai" . "purple")
+          ("senior_project" . "LightSlateBlue")
+          ("srt" . "Orangered3")
+          ("fun" . "Tomato")
+          ("mentor" . "Yellow3")))
+
+  (defun colorize-org-agenda ()
+    (colorged/colorize-buffer org-agenda-colors))
+
+  (add-hook 'org-finalize-agenda-hook 'colorize-org-agenda)
 #+END_SRC
 **** Org Babel
 For some reason, ox.el isn’t loading properly. That’s the file that tells org
