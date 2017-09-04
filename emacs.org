@@ -259,6 +259,12 @@ I just use this to jump straight to links when in things like EWW.
     :config
     (define-key eww-mode-map (kbd "f") 'link-hint-open-link))
 #+END_SRC
+*** [[https://github.com/magnars/multiple-cursors.el][multiple-cursors]]
+#+BEGIN_SRC emacs-lisp
+  (req-package multiple-cursors
+    :find (("M-k" . mc/mark-next-like-this)
+           ("M-S-k" . mc/edit-lines)))
+#+END_SRC
 *** [[https://github.com/Kungsgeten/ryo-modal][ryo-modal]]
 A do-it-yourself modal control system which allows for the benefits of things
 like Evil while still preserving the base Emacs. I'll be building this up over
@@ -759,6 +765,11 @@ the agenda works.
 
   (setq org-columns-default-format
         "%40ITEM(Task) {:} %CLOCKSUM")
+
+  (set-face-attribute 'org-todo nil
+                      ':box '(:line-width 3 :color "Pink" :style released-button))
+  (set-face-attribute 'org-done nil
+                      ':box '(:line-width 3 :color "PaleGreen" :style pressed-button))
 #+END_SRC
 **** Agenda
 Some basic settings.

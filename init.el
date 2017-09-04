@@ -67,7 +67,7 @@
  '(overflow-newline-into-fringe t)
  '(package-selected-packages
    (quote
-    (dad-joke helm ledger-mode org-mime meghanada jdee plantuml-mode org-gcal sx iedit link-hint darkokai-theme counsel swiper ryo-modal geiser smex alda-mode fancy-battery elfeed-org elfeed req-package aggressive-indent evil-magit c-eldoc cheatsheet markdown-mode char-menu srefactor zone-rainbow org-bullets evil-smartparens slime-company fireplace dired-filetype-face ess elisp--witness--lisp diredful resize-window elpy multi-line quickrun fic-mode graphene-meta-theme wgrep chess irony emacs-eclim switch-window sublimity rainbow-delimiters evil-easymotion company wsd-mode buffer-move multiple-cursors mulitple-cursors flx-ido multicolumn company-c-headers seethru projectile magit powerline-evil monokai function-args arduino-mode package-build shut-up epl git commander f dash s gnuplot flycheck monokai-theme use-package multi-term cdlatex)))
+    (google-maps dad-joke helm ledger-mode org-mime meghanada jdee plantuml-mode org-gcal sx iedit link-hint darkokai-theme counsel swiper ryo-modal geiser smex alda-mode fancy-battery elfeed-org elfeed req-package aggressive-indent evil-magit c-eldoc cheatsheet markdown-mode char-menu srefactor zone-rainbow org-bullets evil-smartparens slime-company fireplace dired-filetype-face ess elisp--witness--lisp diredful resize-window elpy multi-line quickrun fic-mode graphene-meta-theme wgrep chess irony emacs-eclim switch-window sublimity rainbow-delimiters evil-easymotion company wsd-mode buffer-move multiple-cursors mulitple-cursors flx-ido multicolumn company-c-headers seethru projectile magit powerline-evil monokai function-args arduino-mode package-build shut-up epl git commander f dash s gnuplot flycheck monokai-theme use-package multi-term cdlatex)))
  '(paradox-automatically-star t)
  '(paradox-github-token t)
  '(pos-tip-background-color "#E6DB74")
@@ -133,7 +133,7 @@
   ;;
 
   (setq diary-file "~/.emacs.d/diary")
-    
+
   ;; set the default font
   (set-face-attribute 'default nil
                       :family "DejaVu Sans Mono"
@@ -184,7 +184,7 @@
     (package-install 'use-package))
   (unless (package-installed-p 'req-package)
     (package-install 'req-package))
-  
+
   (require 'use-package)
   (require 'req-package)
 
