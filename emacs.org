@@ -33,7 +33,11 @@ I use 4 space tabs, and (for my preferences) I use spaces.
 It’s nice to remove all the extra whitespaces every time I save.
 
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'after-save-hook 'whitespace-cleanup)
+  (defun whitespace-cleanup-on-save ()
+    (add-hook 'after-save-hook 'whitespace-cleanup nil t))
+
+  (add-hook 'prog-mode-hook 'whitespace-cleanup-on-save)
+  (add-hook 'org-mode-hook 'whitespace-cleanup-on-save)
 #+END_SRC
 ** Input Method
 It's always a pain to input fancy unicode characters. I have char-menu to
@@ -181,15 +185,6 @@ keep bouncing between a few spots in a file.
     (global-set-key (kbd "M-N") 'bm-next)
     (global-set-key (kbd "M-P") 'bm-previous))
 #+END_SRC
-*** [[https://github.com/abo-abo/swiper][counsel]]
-#+BEGIN_SRC emacs-lisp
-  (req-package counsel
-    :bind
-    (("M-y" . counsel-yank-pop)
-     :map ivy-minibuffer-map
-     ("M-y" . ivy-next-line)))
-  (global-set-key (kbd "M-x") 'counsel-M-x)
-#+END_SRC
 *** [[https://github.com/magnars/expand-region.el][expand-region]]
 Gives the ability to quickly create and expand a region to fill some kind of
 boundary, like parentheses or quotes. This gives Emacs something like the
@@ -208,20 +203,13 @@ buffers, this can be super powerful. Currently bound to =C-;=.
 #+BEGIN_SRC emacs-lisp
   (req-package iedit)
 #+END_SRC
-*** [[https://github.com/abo-abo/swiper][ivy]]
-This is a generic completion package that is used as a backend for swiper.
-It pulls up a larger minibuffer that shows all the possible completions.
-
+*** helm
 #+BEGIN_SRC emacs-lisp
-  (req-package ivy
-    :diminish ivy-mode
-    :config
-    (setq ivy-use-virtual-buffers t)
-    (setq ivy-re-builders-alist '((t . ivy--regex-fuzzy))) ;; Use fuzzy matching
-    (define-key ivy-minibuffer-map (kbd "C-p") 'ivy-previous-line)
-    (define-key ivy-minibuffer-map (kbd "C-n") 'ivy-next-line)
-    (global-set-key (kbd "C-c C-r") 'ivy-resume)
-    (ivy-mode 1))
+      (req-package helm
+        :bind (("M-x" . helm-M-x)
+               ("C-x f" . helm-find-files)
+               ("C-x b" . helm-buffers-list)
+               ("C-s" . helm-occur)))
 #+END_SRC
 *** [[https://github.com/abo-abo/hydra][hydra]]
 This lovely package allows for improved use of chaining similar commands.
@@ -237,12 +225,6 @@ of evil-mode, but I'm sure I'll keep both installed for a while.
       ("n" next-line "↓")
       ("e" previous-line "↑")
       ("i" forward-char "→")
-      ("M-h" sk/smarter-beginning-of-line "BoL")
-      ("M-i" move-end-of-line "EoL")
-      ("N" scroll-up-command "Pg ↓")
-      ("E" scroll-down-command "Pg ↑")
-      ("H" backward-word "←←")
-      ("I" forward-word "→→")
       ("g" nil "×"))
     (global-set-key (kbd "C-n") #'hydra-motion/next-line))
 #+END_SRC
@@ -260,7 +242,7 @@ that trigger an action when pressed in quick succession.
     (key-chord-define global-map "-." "→")
     (key-chord-define-global ",-" "←")
     (key-chord-define-global "--" "_")
-    (key-chord-define-global "vf" 'find-file)
+    (key-chord-define-global "vf" 'helm-find-files)
     (key-chord-define-global "vu" 'undo)
     (key-chord-define-global "vs" 'save-buffer)
     (key-chord-define-global "vl" 'ispell-buffer)
@@ -285,6 +267,7 @@ with different commands each.
 
 #+BEGIN_SRC emacs-lisp
   (req-package ryo-modal
+    :disabled t
     :bind ("M-m" . ryo-modal-mode)
     :config
     (ryo-modal-keys
@@ -329,6 +312,7 @@ on kills.
 
 #+BEGIN_SRC emacs-lisp
   (req-package smart-yank
+    :disabled
     :config
     (smart-yank-mode 1))
 #+END_SRC
@@ -338,6 +322,7 @@ you’re searching for.
 
 #+BEGIN_SRC emacs-lisp
   (req-package swiper
+    :disabled
     :requires ivy
     :config
     (global-set-key (kbd "C-s") 'swiper))
@@ -456,14 +441,6 @@ definitions and usages of variables and functions.
   (define-key ggtags-mode-map (kbd "M-g M-g") #'ggtags-find-tag-dwim)
   (define-key ggtags-mode-map (kbd "M-g r") #'ggtags-prev-mark))
 #+END_SRC
-*** [[https://github.com/jaor/geiser][geiser]]
-A nice Scheme editing mode. Don’t know too much about how to use it yet, but it
-seems nice.
-#+BEGIN_SRC emacs-lisp
-  (req-package geiser
-    :init
-    (setq geiser-active-implementations '(chez)))
-#+END_SRC
 *** [[https://www.emacswiki.org/emacs/HideShow][hs]]
 A very effective code folding package that is started in any prog-mode.
 
@@ -471,15 +448,6 @@ A very effective code folding package that is started in any prog-mode.
   (add-hook 'hs-minor-mode-hook '(lambda () (diminish 'hs-minor-mode)))
   (add-hook 'prog-mode-hook 'hs-minor-mode)
   (global-set-key (kbd "C-c C-f") 'hs-toggle-hiding)
-#+END_SRC
-*** jdee
-A Java integration into Emacs that I’m currently trying to work with.
-
-#+BEGIN_SRC emacs-lisp
-    (req-package jdee
-      :disabled t
-      (setq jdee-jdk-registry "/usr/bin/java")
-      (setq jdee-jdk "1.8"))
 #+END_SRC
 *** lisp-mode
 Built into Emacs (or more specifically, builds Emacs) by default. Right now I'm
@@ -507,20 +475,6 @@ working, so I'll fiddle around with it.
     (projectile-global-mode)
     (setq projectile-enable-caching t)
     (setq projectile-completion-system 'ivy))
-#+END_SRC
-*** [[https://github.com/syohex/emacs-quickrun][quickrun]]
-Ever wanted to just compile and run a program with one short keystroke? This
-allows you to do just that.
-
-#+BEGIN_SRC emacs-lisp
-  (defun load-quickrun ()
-    (require 'quickrun)
-    (quickrun-add-command "c/gcc"
-                          '((:command . "gcc")
-                            (:exec . ("%c %o -std=gnu11 -o %e %s" "%e")))
-                          :override t))
-
-  (add-hook 'prog-mode-hook 'load-quickrun)
 #+END_SRC
 *** scheme-mode
 A lot of these settings are from the default config for my CSSE304 class.
@@ -575,21 +529,6 @@ Built into Emacs by default. Sets the refresh time and some keybinds.
     (global-set-key (kbd "M-g TAB") 'semantic-complete-analyze-inline)
     (global-set-key (kbd "M-g g") 'semantic-complete-jump-local))
 #+END_SRC
-*** TODO [[https://github.com/slime/slime][slime]]
-I’m going to try this just to see if it helps my lisp coding any. It's currently
-complaining about how there is a void function being called named
-slime-setup-contribs from the slime-load-hook, but I can't figure out what's
-wrong.
-
-#+BEGIN_SRC emacs-lisp
-  (setq inferior-lisp-program "/usr/bin/sbcl")
-  (req-package slime
-    :disabled t
-    :init
-    (require 'slime-autoloads)
-    (setq slime-contribs nil)
-    (slime-setup))
-#+END_SRC
 *** stumpwm-mode
 Since I use StumpWM, this should come in handy.
 
@@ -624,52 +563,10 @@ an avy-menu...menu.
 #+BEGIN_SRC emacs-lisp
   (req-package char-menu
     :init
-    (setq char-menu '("’" "‘’" "“”" "…" "⌊⌋" "⋀" "⋁" "√" ("script" "ℛ" "ℒ")))
+    (setq char-menu '("’" "‘’" "“”" "…" "⌊⌋" "⋀" "⋁" "√"
+                      ("script" "ℛ" "ℒ")
+                      ("emoji" "😏" "😉")))
     (global-set-key (kbd "M-o") 'char-menu))
-#+END_SRC
-*** [[https://github.com/darksmile/cheatsheet/][cheatsheet]]
-Just shows a quick list of handwritten keybindings and descriptions that you can
-pull up whenever you want. This section makes heavy usage of the
-=(substitute-command-keys)= function, which looks to see whatever the command is
-currently bound to and uses its string. This means I don't have to rewrite this
-whenever I rebind keys.
-
-#+BEGIN_SRC emacs-lisp
-  (req-package cheatsheet
-    :init
-    (cheatsheet-add
-     :group 'Motion
-     :key (substitute-command-keys "\\[avy-goto-char-2]")
-     :description "Jump to a 2-character sequence.")
-    (cheatsheet-add
-     :group 'Tags
-     :key "M-g M-g"
-     :description "Jump to the definition of the symbol under the cursor.")
-    (cheatsheet-add
-     :group 'Tags
-     :key "M-g r"
-     :description "Jump back to the previous jump origin.")
-    (cheatsheet-add
-     :group 'Tags
-     :key (substitute-command-keys "\\[semantic-complete-jump-local]")
-     :description "Prompt for a function, then jump to the definition.")
-    (cheatsheet-add
-     :group 'Programming
-     :key (substitute-command-keys "\\[flycheck-next-error]")
-     :description "Go to the next error in this program.")
-    (cheatsheet-add
-     :group 'Bookmarks
-     :key (substitute-command-keys "\\[bm-toggle]")
-     :description "Toggle a bookmark at this line.")
-    (cheatsheet-add
-     :group 'Bookmarks
-     :key (substitute-command-keys "\\[bm-next]")
-     :description "Move to the next bookmark.")
-    (cheatsheet-add
-     :group 'Bookmarks
-     :key (substitute-command-keys "\\[bm-previous]")
-     :description "Move to the previous bookmark.")
-    (global-set-key (kbd "C-h h") 'cheatsheet-show))
 #+END_SRC
 *** [[https://github.com/company-mode/company-mode][company]]
 Autocomplete that goes with just about everything. This is currently enabled
@@ -681,16 +578,12 @@ globally.
     :config
     (global-company-mode))
 #+END_SRC
-*** [[https://github.com/Malabarba/conkeror-minor-mode][conkeror-mode]]
-This allows you to send lines to conkeror to be evaluated live.
+*** dad-joke
+😏
 
 #+BEGIN_SRC emacs-lisp
-  (req-package conkeror-minor-mode
-    :config
-    (add-hook 'js-mode-hook (lambda ()
-                              (when (string= ".conkerorrc" (buffer-name))
-                                (conkeror-minor-mode 1))))
-    (setq conkeror-file-path "~/programs/conkeror/application.ini"))
+  (req-package dad-joke
+    :bind (("s-d" . dad-joke)))
 #+END_SRC
 *** [[https://github.com/myrjola/diminish.el][diminish]]
 Allows you to stop showing the name of specific minor modes.
@@ -748,12 +641,6 @@ spelling, I also probably want lines to wrap properly.
     (global-set-key (kbd "C-x l") 'start-flyspell-and-visual)
     (add-hook 'org-mode-hook 'flyspell-mode))
 #+END_SRC
-*** ledger
-#+BEGIN_SRC emacs-lisp
-  (req-package ledger
-    :config
-    (add-to-list 'auto-mode-alist '("ledger" . ledger-mode)))
-#+END_SRC
 *** [[https://github.com/syohex/emacs-git-gutter-fringe][git-gutter-fringe]]
 When editing a file under version control, this shows little markers indicating
 if a line has been added, modified, or deleted.
@@ -764,7 +651,6 @@ if a line has been added, modified, or deleted.
     :init
     (global-git-gutter-mode 1))
 #+END_SRC
-
 *** [[https://github.com/pidu/git-timemachine][git-timemachine]]
 Allows you to quickly go through the git history of a file.
 
@@ -781,7 +667,7 @@ q = quit
 The best way to use git with Emacs. Period.
 
 #+BEGIN_SRC emacs-lisp
-  (req-package magit ;;git porcelain
+  (req-package magit
     :init
     (setq magit-restore-window-configuration t)
     (setq magit-completing-read-function 'ivy-completing-read)
@@ -795,17 +681,18 @@ email setup. The interesting one, the html2text-command, is stolen from
 
 #+BEGIN_SRC emacs-lisp
   (req-package mu4e
+    :bind (("s-m" . mu4e))
     :config
     (require 'mu4e-contrib)
     (require 'org-mu4e)
 
-    (defun mimedown ()
-      "Used to transform a markdown email into an HTML one.
-  Uses code from http://tess.oconnor.cx/2008/01/html-email-composition-in-emacs#f1"
+    (defun compose-org-message ()
       (interactive)
-      (save-excursion
-        (message-goto-body)
-        (shell-command-on-region (point) (point-max) "mimedown" nil t)))
+      (org~mu4e-mime-switch-headers-or-body)
+      ;; We need these options to make the HTML look non-stupid
+      (insert "#+OPTIONS: tex:imagemagick\n#+OPTIONS: toc:0\n\n"))
+
+    (bind-key "C-c o" 'compose-org-message mu4e-compose-mode-map)
 
     (setq mu4e-maildir "~/Maildir"
           mu4e-sent-folder "/Sent Items"
@@ -814,7 +701,11 @@ email setup. The interesting one, the html2text-command, is stolen from
           mu4e-trash-folder "/Deleted Items"
           mu4e-get-mail-command "offlineimap"
           mu4e-update-interval 300
-          mu4e-compose-signature ""
+          mu4e-compose-signature (concat "Lewis Kelley\n"
+                                         "\n"
+                                         "CSSE Sophomore Resident Tutor\n"
+                                         "In-Room (Lakeside 118): Sun/Thu 6:30-8:00\n"
+                                         "Percopo Classroom: Tue 8:00-11:00")
           mu4e-view-prefer-html t
           message-send-mail-function 'smtpmail-send-it
           smtpmail-smtp-server "exchange.rose-hulman.edu"
@@ -824,12 +715,12 @@ email setup. The interesting one, the html2text-command, is stolen from
                                    ("/Sent Items" . ?s)
                                    ("/Deleted Items" . ?d)
                                    ("/Archive" . ?a)))
-    (setq mu4e-html2text-command
-          (lambda ()
-            (let ((dom (libxml-parse-html-region (point-min) (point-max))))
-              (erase-buffer)
-              (shr-insert-document dom)
-              (goto-char (point-min)))))
+
+
+
+    (add-to-list 'mu4e-view-actions
+                 '("xViewXWidget" . mu4e-action-view-with-xwidget) t)
+
     (setq mu4e-compose-complete-addresses nil)
 
     ;; Notify the desktop
@@ -841,11 +732,9 @@ email setup. The interesting one, the html2text-command, is stolen from
                                            unread
                                            "\""))))))
 
-    ;; I like being safe, and this also allows me to ask for htmlizing the email
+    ;; I like being safe
     (add-hook 'message-send-hook
               (lambda ()
-                (when (yes-or-no-p "Do you want to send as html? ")
-                  (mimedown))
                 (unless (yes-or-no-p "Sure you want to send this? ")
                   (signal 'quit nil)))))
 #+END_SRC
@@ -931,19 +820,7 @@ Capturing is fun.
     (setq org-refile-targets (list (cons refile-files '(:level . 1)))))
 
   (setq org-capture-templates
-        '(("a" "Design Principles Assignment" entry
-           (file+headline (concat org-dir "classes.org") "CSSE 374")
-           "* TODO %^{Title}\nDEADLINE: %^t\n%?")
-          ("o" "Operating Systems Assignment" entry
-           (file+headline (concat org-dir "classes.org") "CSSE 332")
-           "* TODO %^{Title}\nDEADLINE: %^t\n%?")
-          ("d" "Databases Assignment" entry
-           (file+headline (concat org-dir "classes.org") "CSSE 333")
-           "* TODO %^{Title}\nDEADLINE: %^t\n%?")
-          ("n" "Numerical Analysis Assignment" entry
-           (file+headline (concat org-dir "classes.org") "MA 433")
-           "* TODO %^{Title}\nDEADLINE: %^t\n%?")
-          ("e" "Entertainment Event" entry
+        '(("e" "Entertainment Event" entry
            (file (concat org-dir "planner.org"))
            "* %^{Title} :fun:\n%^T\n%?")
           ("r" "Random Event" entry
@@ -1057,13 +934,6 @@ Highlights texts that goes beyond a certain column. Very nice for coding.
   (req-package column-enforce-mode
     :config
     (add-hook 'c-mode-hook 'column-enforce-mode))
-#+END_SRC
-*** [[https://github.com/lunaryorn/fancy-battery.el][fancy-battery]]
-Shows the current battery level as colored text in the mode line. Really nice since I start Emacs full screen and can't see
-the OS's battery display.
-
-#+BEGIN_SRC emacs-lisp
-  (req-package fancy-battery)
 #+END_SRC
 *** [[https://github.com/sjrmanning/darkokai][darkokai]]
 It's like monokai theme, but better in my opinion.
@@ -2692,11 +2562,18 @@ My customizations to it:
   (setq org-contacts-files (list (concat org-dir "contacts.org")))
   (setq mu4e-org-contacts-file (car org-contacts-files))
 
+  (defun add-org-contact (msg)
+    (let ((from (let ((first (car (mu4e-message-field-at-point :from))))
+                  (if (car first)
+                      (format "%s <%s>" (car first) (cdr first))
+                    (cdr first)))))
+      ))
+
   (defun my-mu4e-action-add-org-contact (msg)
     "Add an org-contact entry based on the From: address of the
-  current message (in headers or view). You need to set
-  `mu4e-org-contacts-file' to the full path to the file where you
-  store your org-contacts."
+   current message (in headers or view). You need to set
+   `mu4e-org-contacts-file' to the full path to the file where you
+   store your org-contacts."
     (unless (require 'org-capture nil 'noerror)
       (mu4e-error "org-capture is not available."))
     (unless mu4e-org-contacts-file
@@ -2706,20 +2583,20 @@ My customizations to it:
            (blurb
             (format
              (concat
-              "* %s%%?\n"
-              ":NICKNAME:   %^{Nickname}\n"
+              "* %%?%s\n"
               ":PROPERTIES:\n"
+              ":NICKNAME:   %%^{Nickname}\n"
               ":EMAIL:      %s\n"
-              ":HOME_PHONE: %^{Home Phone}\n"
-              ":CELL_PHONE: %^{Cell Phone}\n"
-              ":WORK_PHONE: %^{Work Phone}\n"
-              ":ADDRESS:    %^{Address}\n"
-              ":CITY:       %^{City}\n"
-              ":STATE:      %^{State}\n"
-              ":ZIP:        %^{ZIP}\n"
-              ":BIRTHDAY:   %^{Birthday}t\n"
-              ":NOTES:      %?\n"
-              ":END:\n")
+              ":HOME_PHONE: %%^{Home Phone}\n"
+              ":CELL_PHONE: %%^{Cell Phone}\n"
+              ":WORK_PHONE: %%^{Work Phone}\n"
+              ":ADDRESS:    \n"
+              ":CITY:       \n"
+              ":STATE:      \n"
+              ":ZIP:        \n"
+              ":BIRTHDAY:   \n"
+              ":NOTES:      \n"
+              ":END:")
              (or name email "")
              (or email "")))
            (key "mu4e-add-org-contact-key")
