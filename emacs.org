@@ -11,6 +11,29 @@ defaults. \\
 I also use the super key (s- ) in a few of my bindings. If you want to use them
 as-is, you need to look into getting the key to work properly on your OS.
 * General Settings
+** File Aliases
+#+BEGIN_SRC emacs-lisp
+  (defvar file-aliases '())
+
+  (defun quick-open-file (key)
+    (interactive "c")
+    (let ((filename (alist-get key file-aliases)))
+      (when filename (find-file filename))))
+
+  (defun add-quick-file (key filename)
+    (setf (alist-get key file-aliases) filename))
+
+  (add-quick-file ?e "~/.emacs.d/emacs.org")
+  (add-quick-file ?p "~/org-files/planner.org")
+  (add-quick-file ?n "~/org-files/notes.org")
+  (add-quick-file ?c "~/org-files/classes.org")
+
+  (global-set-key (kbd "s-n") 'quick-open-file)
+#+END_SRC
+
+#+RESULTS:
+: quick-open-file
+
 ** Clean Init
 I don't like the splash-screen, and I don't need the tool bar, menu bar, or
 scroll bar, so get rid of them.
@@ -571,7 +594,7 @@ an avy-menu...menu.
     :init
     (setq char-menu '("’" "‘’" "“”" "…" "⌊⌋" "⋀" "⋁" "√"
                       ("script" "ℛ" "ℒ")
-                      ("emoji" "😏" "😉")))
+                      ("emoji" "😏" "😉" "😭" "😦")))
     (global-set-key (kbd "M-o") 'char-menu))
 #+END_SRC
 *** [[https://github.com/company-mode/company-mode][company]]
@@ -629,6 +652,15 @@ readable.
     :config
     (setq rmh-elfeed-org-files (list (concat org-dir "elfeed.org")))
     (elfeed-org))
+#+END_SRC
+*** TODO [[https://github.com/ch11ng/exwm][exwm]]
+Someday…
+#+BEGIN_SRC emacs-lisp
+  (req-package exwm
+    :disabled t
+    :config
+    (require 'exwm-config)
+    (exwm-config-default))
 #+END_SRC
 *** [[https://www.emacswiki.org/emacs/FlySpell][flyspell]]
 Built into Emacs by default. I only take this opportunity to set a quick
@@ -691,6 +723,8 @@ email setup. The interesting one, the html2text-command, is stolen from
     :config
     (require 'mu4e-contrib)
     (require 'org-mu4e)
+
+    (setq org-mu4e-convert-to-html t)
 
     (defun compose-org-message ()
       (interactive)
@@ -767,7 +801,7 @@ the agenda works.
         "%40ITEM(Task) {:} %CLOCKSUM")
 
   (set-face-attribute 'org-todo nil
-                      ':box '(:line-width 3 :color "Pink" :style released-button))
+                      ':box '(:line-width 3 :color "Red1" :style released-button))
   (set-face-attribute 'org-done nil
                       ':box '(:line-width 3 :color "PaleGreen" :style pressed-button))
 #+END_SRC
@@ -811,15 +845,17 @@ pre-selected colors.
       (colorged/colorize-buffer (cdr color-map))))
 
   (setq org-agenda-colors
-        '(("architecture" . "Deepskyblue3")
+        '(("architecture" . "Orangered1")
           ("hadoop" . "green")
-          ("ai" . "purple")
-          ("senior_project" . "LightSlateBlue")
-          ("srt" . "Orangered3")
-          ("fun" . "Tomato")
+          ("ai" . "Magenta")
+          ("senior_project" . "Deepskyblue1")
+          ("srt" . "Orange2")
+          ("comp_sec" . "MediumSpringGreen")
+          ("fun" . "GreenYellow")
           ("mentor" . "Yellow3")))
 
   (defun colorize-org-agenda ()
+    (interactive)
     (colorged/colorize-buffer org-agenda-colors))
 
   (add-hook 'org-finalize-agenda-hook 'colorize-org-agenda)

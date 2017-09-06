@@ -67,13 +67,19 @@
  '(overflow-newline-into-fringe t)
  '(package-selected-packages
    (quote
-    (google-maps dad-joke helm ledger-mode org-mime meghanada jdee plantuml-mode org-gcal sx iedit link-hint darkokai-theme counsel swiper ryo-modal geiser smex alda-mode fancy-battery elfeed-org elfeed req-package aggressive-indent evil-magit c-eldoc cheatsheet markdown-mode char-menu srefactor zone-rainbow org-bullets evil-smartparens slime-company fireplace dired-filetype-face ess elisp--witness--lisp diredful resize-window elpy multi-line quickrun fic-mode graphene-meta-theme wgrep chess irony emacs-eclim switch-window sublimity rainbow-delimiters evil-easymotion company wsd-mode buffer-move multiple-cursors mulitple-cursors flx-ido multicolumn company-c-headers seethru projectile magit powerline-evil monokai function-args arduino-mode package-build shut-up epl git commander f dash s gnuplot flycheck monokai-theme use-package multi-term cdlatex)))
+    (google-maps dad-joke helm ledger-mode org-mime meghanada jdee plantuml-mode org-gcal sx iedit link-hint darkokai-theme swiper ryo-modal geiser smex alda-mode fancy-battery elfeed-org elfeed req-package aggressive-indent evil-magit c-eldoc cheatsheet markdown-mode char-menu srefactor zone-rainbow org-bullets evil-smartparens slime-company fireplace dired-filetype-face ess elisp--witness--lisp diredful resize-window elpy multi-line quickrun fic-mode graphene-meta-theme wgrep chess irony emacs-eclim switch-window sublimity rainbow-delimiters evil-easymotion company wsd-mode buffer-move multiple-cursors mulitple-cursors flx-ido multicolumn company-c-headers seethru projectile magit powerline-evil monokai function-args arduino-mode package-build shut-up epl git commander f dash s gnuplot flycheck monokai-theme use-package multi-term cdlatex)))
  '(paradox-automatically-star t)
  '(paradox-github-token t)
  '(pos-tip-background-color "#E6DB74")
  '(pos-tip-foreground-color "#242728")
  '(powerline-height nil)
- '(safe-local-variable-values (quote ((eval git-gutter-mode nil) (eval 80-column-rule))))
+ '(safe-local-variable-values
+   (quote
+    ((eval progn
+           (auto-fill-mode)
+           (80-column-rule))
+     (eval git-gutter-mode nil)
+     (eval 80-column-rule))))
  '(send-mail-function (quote smtpmail-send-it))
  '(sml/full-mode-string " …")
  '(sml/vc-mode-show-backend t)
