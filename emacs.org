@@ -30,10 +30,6 @@ as-is, you need to look into getting the key to work properly on your OS.
 
   (global-set-key (kbd "s-n") 'quick-open-file)
 #+END_SRC
-
-#+RESULTS:
-: quick-open-file
-
 ** Clean Init
 I don't like the splash-screen, and I don't need the tool bar, menu bar, or
 scroll bar, so get rid of them.
