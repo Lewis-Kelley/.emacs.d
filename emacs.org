@@ -590,7 +590,7 @@ an avy-menu...menu.
     :init
     (setq char-menu '("’" "‘’" "“”" "…" "⌊⌋" "⋀" "⋁" "√"
                       ("script" "ℛ" "ℒ")
-                      ("emoji" "😏" "😉" "😭" "😦")))
+                      ("emoji" "😏" "😉" "😭" "😦" "😊")))
     (global-set-key (kbd "M-o") 'char-menu))
 #+END_SRC
 *** [[https://github.com/company-mode/company-mode][company]]
@@ -696,6 +696,14 @@ q = quit
 
 #+BEGIN_SRC emacs-lisp
   (req-package git-timemachine)
+#+END_SRC
+*** [[https://github.com/wasamasa/nov.el][nov.el]]
+Honestly the only good way I've found to read =EPUB='s in Emacs.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package nov
+    :config
+    (push '("\\.epub\\'" . nov-mode) auto-mode-alist))
 #+END_SRC
 *** [[https://github.com/magit/magit][magit]]
 The best way to use git with Emacs. Period.
