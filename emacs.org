@@ -107,20 +107,8 @@ This is taken from [[http://www.lunaryorn.com/2016/04/28/fullscreen-magit-status
                  (reusable-frames . nil)))
 #+END_SRC
 ** Set Default Browser To EWW
-I used to have this set to conkeror, but for some reason it just doesn’t
-actually open links. Anyways, EWW just got serious improvements, so I’ll
-just use that instead.
-
 #+BEGIN_SRC emacs-lisp
   (setq browse-url-browser-function 'eww-browse-url)
-#+END_SRC
-** Set Alternate Browser to Conkeror
-I really wish I could get this to work for Conkeror, but running that browser
-is like balancing on a knife edge in my current setup. Oh well. This is opened
-up in eww by pressing &, which I may want to remap at some point.
-
-#+BEGIN_SRC emacs-lisp
-  (setq shr-external-browser 'open-url-conkeror)
 #+END_SRC
 ** Overwrite Selected Text
 Emacs usually deselects a region once you start typing, but I like it to delete
@@ -1375,15 +1363,6 @@ Taken from http://sriramkswamy.github.io/dotemacs/#orgheadline18
                   (looking-at "\\b[[:upper:]]\\{2\\}[[:lower:]]"))
                 (capitalize-word 1)))))
 #+END_SRC
-** Open URL in Conkeror
-I really like Conkeror if literally only for the keyboard-based browsing. It’s
-really clunky, though, so I need to manually call it here. Don’t ask why.
-
-#+BEGIN_SRC emacs-lisp
-  (defun open-url-conkeror (url)
-    (shell-command
-     (concat "conkeror " (format "%s" url))))
-#+END_SRC
 ** Open in External Program
 Just open the current file in whatever the default program is for it’s type.
 This is mostly intended for opening HTML’s, PDF’s, and LibreOffice files, but
@@ -1489,6 +1468,7 @@ or custom functions.
   (global-set-key (kbd "C-a") 'sk/smarter-move-beginning-of-line)
   (global-set-key (kbd "s-v") 'sk/select-current-line)
   (global-set-key (kbd "s-r") 'clean-buffer)
+  (global-set-key (kbd "M-Q") 'auto-fill-mode)
 #+END_SRC
 ** Programming
 #+BEGIN_SRC emacs-lisp
