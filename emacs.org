@@ -281,7 +281,7 @@ I just use this to jump straight to links when in things like EWW.
 *** [[https://github.com/magnars/multiple-cursors.el][multiple-cursors]]
 #+BEGIN_SRC emacs-lisp
   (req-package multiple-cursors
-    :find (("M-k" . mc/mark-next-like-this)
+    :bind (("M-k" . mc/mark-next-like-this)
            ("M-S-k" . mc/edit-lines)))
 #+END_SRC
 *** [[https://github.com/Kungsgeten/ryo-modal][ryo-modal]]
@@ -913,16 +913,28 @@ Capturing is fun.
   (define-key global-map (kbd "C-c c") 'org-capture)
 
   (let ((refile-files (mapcar (lambda (file) (concat org-dir file))
-                              (list "classes.org" "planner.org"))))
+                              (list "classes.org" "planner.org" "tutoring.org"))))
     (setq org-refile-targets (list (cons refile-files '(:level . 1)))))
 
-  (setq org-capture-templates
-        '(("e" "Entertainment Event" entry
-           (file (concat org-dir "planner.org"))
-           "* %^{Title} :fun:\n%^T\n%?")
-          ("r" "Random Event" entry
-           (file (concat org-dir "planner.org"))
-           "* %^{Title}\n%^T\n%?")))
+  (setq org-capture-templates '())
+
+  (push `("e" "Entertainment Event" entry
+          (file ,(concat org-dir "planner.org"))
+          "* %^{Title} :fun:\n%^T\n%?")
+        org-capture-templates)
+  (push `("r" "Random Event" entry
+          (file ,(concat org-dir "planner.org"))
+          "* %^{Title}\n%^T\n%?")
+        org-capture-templates)
+  (push `("t" "Tutoring" entry
+          (file ,(concat org-dir "tutoring.org"))
+          ,(concat "* %^{Name} - %^{Class} :srt:\n"
+                   ":PROPERTIES:\n"
+                   ":PROFESSOR: %^{Professor}\n"
+                   ":PROBLEM:   %^{Problem Description}\n"
+                   ":END:")
+          :clock-in t)
+        org-capture-templates)
 #+END_SRC
 *** octave-mode
 #+BEGIN_SRC emacs-lisp
