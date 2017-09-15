@@ -408,7 +408,7 @@ default for some reason. Triggered in any prog-mode.
   (req-package flycheck
     :config
     (flycheck-set-checker-executable 'c/c++-gcc "/usr/bin/gcc")
-    (setq flycheck-gcc-args "-ansi")
+    (setq flycheck-gcc-args "-std=c++11")
 
     ;; (when (require 'rtags nil :noerror)
     ;;   (require 'company)
@@ -578,7 +578,7 @@ an avy-menu...menu.
     :init
     (setq char-menu '("’" "‘’" "“”" "…" "⌊⌋" "⋀" "⋁" "√"
                       ("script" "ℛ" "ℒ")
-                      ("emoji" "😏" "😉" "😭" "😦" "😊")))
+                      ("emoji" "😏" "😉" "😭" "😦" "😊" "🤔")))
     (global-set-key (kbd "M-o") 'char-menu))
 #+END_SRC
 *** [[https://github.com/company-mode/company-mode][company]]
@@ -901,28 +901,90 @@ Capturing is fun.
   (define-key global-map (kbd "C-c c") 'org-capture)
 
   (let ((refile-files (mapcar (lambda (file) (concat org-dir file))
-                              (list "classes.org" "planner.org" "tutoring.org"))))
+                              (list "classes.org"
+                                    "planner.org"
+                                    "tutoring.org"
+                                    "wishlist.org"))))
     (setq org-refile-targets (list (cons refile-files '(:level . 1)))))
 
   (setq org-capture-templates '())
+#+END_SRC
 
-  (push `("e" "Entertainment Event" entry
-          (file ,(concat org-dir "planner.org"))
-          "* %^{Title} :fun:\n%^T\n%?")
-        org-capture-templates)
-  (push `("r" "Random Event" entry
-          (file ,(concat org-dir "planner.org"))
-          "* %^{Title}\n%^T\n%?")
-        org-capture-templates)
+Capture templates for my planner. I should probably add more categories…
+
+#+BEGIN_SRC emacs-lisp
+  (let ((planner-file (concat org-dir "planner.org")))
+    (push `("e" "Entertainment Event" entry
+            (file ,planner-file)
+            ,(concat "* %^{Title} :fun:\n"
+                     "%^T\n"
+                     "%a\n"
+                     "%i\n"
+                     "%?"))
+          org-capture-templates)
+    (push `("r" "Random Event" entry
+            (file ,planner-file)
+            ,(concat "* %^{Title}\n"
+                     "%^T\n"
+                     "%a\n"
+                     "%i\n"
+                     "%?"))
+          org-capture-templates))
+#+END_SRC
+
+This lets me try to track the time of people I'm tutoring a little
+more efficiently. It doesn't work too well when multiple people come
+it at once, though…
+
+#+BEGIN_SRC emacs-lisp
   (push `("t" "Tutoring" entry
-          (file ,(concat org-dir "tutoring.org"))
-          ,(concat "* %^{Name} - %^{Class} :srt:\n"
-                   ":PROPERTIES:\n"
-                   ":PROFESSOR: %^{Professor}\n"
-                   ":PROBLEM:   %^{Problem Description}\n"
-                   ":END:")
-          :clock-in t)
-        org-capture-templates)
+            (file ,(concat org-dir "tutoring.org"))
+            ,(concat "* %^{Name} - %^{Class}\n"
+                     ":PROPERTIES:\n"
+                     ":PROFESSOR: %^{Professor}\n"
+                     ":PROBLEM:   %^{Problem Description}\n"
+                     ":END:")
+            :clock-in t)
+          org-capture-templates)
+#+END_SRC
+
+Various different categories of things I'd like to read/watch/play/do
+someday.
+
+#+BEGIN_SRC emacs-lisp
+  (let ((wishlist-file (concat org-dir "wishlist.org"))
+        (basic-template "* %^{Title}\n%?"))
+    (push `("b" "Book" entry
+            (file+headline ,wishlist-file "Books")
+            ,basic-template)
+          org-capture-templates)
+    (push `("g" "Video Game" entry
+            (file+headline ,wishlist-file "Video Games")
+            ,basic-template)
+          org-capture-templates)
+    (push `("G" "Board Game" entry
+            (file+headline ,wishlist-file "Board Games")
+            ,basic-template)
+          org-capture-templates)
+    (push `("m" "Movie" entry
+            (file+headline ,wishlist-file "Movies")
+            ,basic-template)
+          org-capture-templates))
+#+END_SRC
+
+For easy log entries into my journal.
+
+#+BEGIN_SRC emacs-lisp
+  (push `("D"
+            "Chronicle Entry"
+            entry
+            (file+datetree+prompt ,(concat org-dir "chronicle.org"))
+            "* %^{Title}\n%?")
+          org-capture-templates)
+#+END_SRC
+*** TODO [[https://github.com/alphapapa/org-super-agenda][org-super-agenda]]
+#+BEGIN_SRC emacs-lisp
+  (req-package org-super-agenda)
 #+END_SRC
 *** octave-mode
 #+BEGIN_SRC emacs-lisp
@@ -1087,6 +1149,15 @@ this temporarily highlights it to draw attention to it.
     (volatile-highlights-mode t))
 #+END_SRC
 * Custom Functions
+** Random Odds
+#+BEGIN_SRC emacs-lisp
+  (defun roll-random (possibilities successes)
+    (interactive (list (read-number "Possibilities: ")
+                       (read-number "Successes: ")))
+    (if (< (random possibilities) successes)
+        (message "Success!")
+      (message "Failure!")))
+#+END_SRC
 ** Modeline Customization
 Just making my modeline fancy.
 Note that this requires the package all-the-icons.
@@ -2651,13 +2722,6 @@ My customizations to it:
   (setq org-contacts-files (list (concat org-dir "contacts.org")))
   (setq mu4e-org-contacts-file (car org-contacts-files))
 
-  (defun add-org-contact (msg)
-    (let ((from (let ((first (car (mu4e-message-field-at-point :from))))
-                  (if (car first)
-                      (format "%s <%s>" (car first) (cdr first))
-                    (cdr first)))))
-      ))
-
   (defun my-mu4e-action-add-org-contact (msg)
     "Add an org-contact entry based on the From: address of the
    current message (in headers or view). You need to set
@@ -2702,44 +2766,35 @@ My customizations to it:
   (add-to-list 'mu4e-view-actions
                '("org-contact-add" . my-mu4e-action-add-org-contact) t)
 
-  (setq org-capture-templates
-        (cons (list "c" "Personal Contact" 'entry (list 'file (car org-contacts-files))
-                    (concat "* %^{Name}\n"
-                            ":PROPERTIES:\n"
-                            ":NICKNAME:   %^{Nickname}\n"
-                            ":EMAIL:      %^{Email}\n"
-                            ":HOME_PHONE: %^{Home Phone}\n"
-                            ":CELL_PHONE: %^{Cell Phone}\n"
-                            ":WORK_PHONE: %^{Work Phone}\n"
-                            ":ADDRESS:    %^{Address}\n"
-                            ":CITY:       %^{City}\n"
-                            ":STATE:      %^{State}\n"
-                            ":ZIP:        %^{ZIP}\n"
-                            ":BIRTHDAY:   %^{Birthday}t\n"
-                            ":NOTES:      %?\n"
-                            ":END:"))
-              org-capture-templates))
+  (push `("c" "Personal Contact" entry (file ,(car org-contacts-files))
+          ,(concat "* %^{Name}\n"
+                   ":PROPERTIES:\n"
+                   ":NICKNAME:   %^{Nickname}\n"
+                   ":EMAIL:      %^{Email}\n"
+                   ":HOME_PHONE: %^{Home Phone}\n"
+                   ":CELL_PHONE: %^{Cell Phone}\n"
+                   ":WORK_PHONE: %^{Work Phone}\n"
+                   ":ADDRESS:    %^{Address}\n"
+                   ":CITY:       %^{City}\n"
+                   ":STATE:      %^{State}\n"
+                   ":ZIP:        %^{ZIP}\n"
+                   ":BIRTHDAY:   %^{Birthday}t\n"
+                   ":NOTES:      %?\n"
+                   ":END:"))
+        org-capture-templates)
 
-  (setq org-capture-templates
-        (cons (list "C" "Buisness Contact" 'entry (list 'file (car org-contacts-files))
-                    (concat "* %^{Name}\n"
-                            ":PROPERTIES:\n"
-                            ":EMAIL:   %^{Email}\n"
-                            ":PHONE:   %^{Phone}\n"
-                            ":ADDRESS: %^{Address}\n"
-                            ":CITY:    %^{City}\n"
-                            ":STATE:   %^{State}\n"
-                            ":ZIP:     %^{ZIP}\n"
-                            ":NOTES:   %?\n"
-                            ":END:"))
-              org-capture-templates))
-  (setq org-capture-templates
-        (cons (list "D"
-                    "Chronicle Entry"
-                    'entry
-                    (list 'file+datetree+prompt (concat org-dir "chronicle.org"))
-                    "* %^{Title}\n%?")
-              org-capture-templates))
+  (push `("C" "Buisness Contact" entry (file ,(car org-contacts-files))
+          ,(concat "* %^{Name}\n"
+                   ":PROPERTIES:\n"
+                   ":EMAIL:   %^{Email}\n"
+                   ":PHONE:   %^{Phone}\n"
+                   ":ADDRESS: %^{Address}\n"
+                   ":CITY:    %^{City}\n"
+                   ":STATE:   %^{State}\n"
+                   ":ZIP:     %^{ZIP}\n"
+                   ":NOTES:   %?\n"
+                   ":END:"))
+        org-capture-templates)
 #+END_SRC
 * Bucket List
 Things I'd like to fix/improve when I have the time and know-how.
@@ -2753,8 +2808,3 @@ Things I'd like to fix/improve when I have the time and know-how.
 - find a nice syntax checker
 ** Better IDE-style things?
 - maybe [[http://alexott.net/en/writings/emacs-devenv/EmacsCedet.html][CEDET]] or irony?
-** New unicode input method
-Char-menu is nice, but it's kind of hard to memorize its tree. LaTeX-style insert
-is also nice, but it's often really clunky with things like \bigtriangledown.
-If I can somehow set up a LaTeX shorthand like \btd = \bigtriangledown, then life
-should be better.
