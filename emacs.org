@@ -796,6 +796,9 @@ the agenda works.
                       ':box '(:line-width 3 :color "Red1" :style released-button))
   (set-face-attribute 'org-done nil
                       ':box '(:line-width 3 :color "PaleGreen" :style pressed-button))
+
+  (setq org-export-with-toc nil
+        org-export-with-section-numbers nil)
 #+END_SRC
 **** Agenda
 Some basic settings.
@@ -875,7 +878,8 @@ large notes file.
      (C . t)
      (java . t)
      (octave . t)
-     (dot .t)))
+     (dot . t)
+     (lisp . t)))
 
   (setq org-confirm-babel-evaluate nil)
   (add-to-list 'org-src-lang-modes (quote ("plantuml" . fundamental)))
@@ -1069,6 +1073,15 @@ start up.
                        (yas-reload-all)))))
 #+END_SRC
 ** Visuals
+*** alert
+Used by a few other packages to pop up some convenient
+notifications. I just need to set them up so they work right.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package alert
+    :config
+    (setq alert-default-style 'libnotify))
+#+END_SRC
 *** [[https://github.com/domtronn/all-the-icons.el][all-the-icons]]
 Shows fancy looking icons on file names (looks really pretty).
 
