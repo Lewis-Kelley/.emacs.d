@@ -317,6 +317,14 @@ with different commands each.
      ("s" save-buffer)
      ("S" swiper)))
 #+END_SRC
+*** [[https://github.com/itome/smart-backspace][smart-backspace]]
+Deletes back a line to matching indentation.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package smart-backspace
+    :config
+    (global-set-key [C-backspace] 'smart-backspace))
+#+END_SRC
 *** [[http://elpa.gnu.org/packages/smart-yank.html][smart-yank]]
 Makes yanking a little smarter. For one thing, when doing a yank-pop, it moves
 the cut that you've popped to the top of the ring to make it easier the next
@@ -637,14 +645,22 @@ readable.
     (setq rmh-elfeed-org-files (list (concat org-dir "elfeed.org")))
     (elfeed-org))
 #+END_SRC
-*** TODO [[https://github.com/ch11ng/exwm][exwm]]
+*** [[https://github.com/ch11ng/exwm][exwm]]
 Someday…
 #+BEGIN_SRC emacs-lisp
   (req-package exwm
     :disabled t
     :config
     (require 'exwm-config)
-    (exwm-config-default))
+    (exwm-config-default)
+
+    (require 'exwm-randr)
+    (setq exwm-randr-workspace-output-plist '(0 "VGA1"))
+    (add-hook 'exwm-randr-screen-change-hook
+              (lambda ()
+                (start-process-shell-command
+                 "xrandr" nil "xrandr --output VGA1 --left-of LVDS1 --auto")))
+    (exwm-randr-enable))
 #+END_SRC
 *** [[https://www.emacswiki.org/emacs/FlySpell][flyspell]]
 Built into Emacs by default. I only take this opportunity to set a quick
@@ -741,6 +757,7 @@ email setup. The interesting one, the html2text-command, is stolen from
           mu4e-view-prefer-html t
           message-send-mail-function 'smtpmail-send-it
           smtpmail-smtp-server "exchange.rose-hulman.edu"
+          smtpmail-local-domain "rose-hulman.edu"
           user-mail-address "kelleyld@rose-hulman.edu"
           user-full-name "Lewis Kelley"
           mu4e-maildir-shortcuts '(("/INBOX" . ?i)
@@ -799,6 +816,9 @@ the agenda works.
 
   (setq org-export-with-toc nil
         org-export-with-section-numbers nil)
+
+  ;; Change the size of rendered LaTeX fragments
+  (plist-put org-format-latex-options :scale 2.0)
 #+END_SRC
 **** Agenda
 Some basic settings.
@@ -952,6 +972,22 @@ it at once, though…
           org-capture-templates)
 #+END_SRC
 
+I'm currently looking for a job, and this helps me keep track of
+everything.
+
+#+BEGIN_SRC emacs-lisp
+  (push `("B" "Business" entry
+          (file ,(concat org-dir "jobs.org"))
+          ,(concat "* [#%^{Priority}] %^{Name}\n"
+                   ":PROPERTIES:\n"
+                   ":industry:   %^{Industry}\n"
+                   ":city:       %^{City}\n"
+                   ":state:      %^{State}\n"
+                   ":website:    %^{Website}\n"
+                   ":END:"))
+        org-capture-templates)
+#+END_SRC
+
 Various different categories of things I'd like to read/watch/play/do
 someday.
 
@@ -1020,6 +1056,7 @@ Creates a new special mode where you can quickly resize any window using n-p-f-b
     :init
     (global-set-key (kbd "C-S-r") 'resize-window))
 #+END_SRC
+
 *** [[https://github.com/Fuco1/smartparens][smartparens]]
 Autobalances your parentheses as you type them. Great for Lisp programming.
 
@@ -2821,3 +2858,4 @@ Things I'd like to fix/improve when I have the time and know-how.
 - find a nice syntax checker
 ** Better IDE-style things?
 - maybe [[http://alexott.net/en/writings/emacs-devenv/EmacsCedet.html][CEDET]] or irony?
+> >
