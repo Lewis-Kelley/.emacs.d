@@ -1022,6 +1022,12 @@ For easy log entries into my journal.
             "* %^{Title}\n%?")
           org-capture-templates)
 #+END_SRC
+*** [[https://github.com/yjwen/org-reveal][org-reveal]]
+A mode for converting Org-Mode files into presentations.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package ox-reveal)
+#+END_SRC
 *** TODO [[https://github.com/alphapapa/org-super-agenda][org-super-agenda]]
 #+BEGIN_SRC emacs-lisp
   (req-package org-super-agenda)
