@@ -2864,4 +2864,8 @@ Things I'd like to fix/improve when I have the time and know-how.
 - find a nice syntax checker
 ** Better IDE-style things?
 - maybe [[http://alexott.net/en/writings/emacs-devenv/EmacsCedet.html][CEDET]] or irony?
-> >
+** Windows 10
+Someday, I'm going to be stuck with Windows, be that in the workplace
+or otherwise (I'm sure of it). When that day comes, I plan on trying
+to set up something like this:
+https://www.reddit.com/r/emacs/comments/7a63r4/emacs_in_win10linuxdockerxserver_combo/
