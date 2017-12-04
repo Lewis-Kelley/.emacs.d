@@ -1151,6 +1151,17 @@ Shows fancy looking icons on file names (looks really pretty).
 #+BEGIN_SRC emacs-lisp
   (req-package all-the-icons)
 #+END_SRC
+*** [[https://github.com/ecraven/celestial-mode-line][celestial-mode-line]]
+Displays the time to sunrise/sunset and the moon phase.
+
+#+BEGIN_SRC emacs-lisp
+  (req-package celestial-mode-line
+    :config
+    (setq calendar-latitude 39.466)
+    (setq calendar-longitude -87.512)
+    (setq calendar-location-name "Terre Haute")
+    (celestial-mode-line-start-timer))
+#+END_SRC
 *** [[https://github.com/ankurdave/color-identifiers-mode][color-identifiers-mode]]
 This makes programming files so much prettier and colorful, as it extrapolates colors from your current theme and color codes
 all of your defined variables accordingly. This makes it easier to see where things are being used as well as a good syntax
@@ -1381,8 +1392,20 @@ Note that this requires the package all-the-icons.
                                                   "orange"
                                                   :height
                                                   ,mode-line-font-height))
-                                    " | ")))))
-                           (:eval mode-line-modes))))
+                                    " |")))
+                             (propertize celestial-mode-line-string
+                                         'face
+                                         `(:foreground
+                                           "CornflowerBlue"
+                                           :height
+                                           ,mode-line-font-height))
+                             (propertize " | "
+                                         'face
+                                         `(:foreground
+                                           "white"
+                                           :height
+                                           ,mode-line-font-height)))
+                           (:eval mode-line-modes)))))
   (set-face-attribute 'org-mode-line-clock nil :inherit nil)
   (customize-modeline)
 #+END_SRC
