@@ -660,7 +660,12 @@ Someday…
               (lambda ()
                 (start-process-shell-command
                  "xrandr" nil "xrandr --output VGA1 --left-of LVDS1 --auto")))
-    (exwm-randr-enable))
+    (exwm-randr-enable)
+    ;; (defun my/start-process-shell-command ()
+      ;; (interactive)
+      ;; (start-process-shell-command ))
+    ;; (global-set-key (kbd "s-SPC") 'start-process-shell-command)
+    )
 #+END_SRC
 *** [[https://www.emacswiki.org/emacs/FlySpell][flyspell]]
 Built into Emacs by default. I only take this opportunity to set a quick
