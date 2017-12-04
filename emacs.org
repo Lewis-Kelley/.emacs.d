@@ -1086,12 +1086,26 @@ Autobalances your parentheses as you type them. Great for Lisp programming.
     (add-hook 'prog-mode-hook '(lambda ()
                                  (smartparens-mode 1)))
     :config
-    (add-hook 'smartparens-mode-hook
-              '(lambda ()
-                 (local-set-key (kbd "s-s s") #'sp-slurp-hybrid-sexp)
-                 (local-set-key (kbd "s-s b") #'sp-backward-barf-sexp)
-                 (local-set-key (kbd "s-s c") #'sp-split-sexp)
-                 (local-set-key (kbd "s-s r") #'sp-raise-sexp))))
+    (defhydra hydra-smartparens (global-map "C-c s")
+      "smartparens"
+      ("s" sp-slurp-hybrid-sexp)
+      ("S" sp-forward-barf-sexp)
+      ("c" sp-split-sexp)
+      ("r" sp-raise-sexp)
+      ("u" sp-splice-sexp)
+      ("w" sp-rewrap-sexp)
+      ("n" sp-down-sexp)
+      ("p" sp-backward-up-sexp)
+      ("f" sp-forward-sexp)
+      ("F" sp-next-sexp)
+      ("b" sp-backward-sexp)
+      ("B" sp-previous-sexp)
+      ("e" sp-end-of-sexp)
+      ("a" sp-beginning-of-sexp)
+      ("k" sp-kill-sexp)
+      ("t" sp-transpose-sexp)
+      ("i" sp-change-inner)
+      ("g" nil)))
 #+END_SRC
 *** [[https://github.com/dimitri/switch-window][switch-window]]
 Makes life so much easier when you have multiple windows open. Just hit one keyboard shortcut, press the number screen you want,
