@@ -900,22 +900,24 @@ blocks in files; it’s just not worth the hassle, especially when I’m exporti
 large notes file.
 
 #+BEGIN_SRC emacs-lisp
-  (require 'ob)
+    (require 'ob)
 
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((sh . t)
-     (plantuml . t)
-     (C . t)
-     (java . t)
-     (octave . t)
-     (dot . t)
-     (lisp . t)))
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((sh . t)
+       (plantuml . t)
+       (C . t)
+       (java . t)
+       (octave . t)
+       (dot . t)
+       (lisp . t)
+       (scheme . t)))
 
-  (setq org-confirm-babel-evaluate nil)
-  (add-to-list 'org-src-lang-modes (quote ("plantuml" . fundamental)))
-  (setq org-plantuml-jar-path "/usr/share/plantuml/lib/plantuml.jar")
+    (setq org-confirm-babel-evaluate nil)
+    (add-to-list 'org-src-lang-modes (quote ("plantuml" . fundamental)))
+    (setq org-plantuml-jar-path "/usr/share/plantuml/lib/plantuml.jar")
 #+END_SRC
+
 **** Clocking and Capturing
 I like using Org’s clocking function. The number of times I clock in and out
 makes the global keybindings very useful.
