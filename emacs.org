@@ -462,6 +462,12 @@ definitions and usages of variables and functions.
   (define-key ggtags-mode-map (kbd "M-g M-g") #'ggtags-find-tag-dwim)
   (define-key ggtags-mode-map (kbd "M-g r") #'ggtags-prev-mark))
 #+END_SRC
+*** geiser
+#+BEGIN_SRC emacs-lisp
+  (req-package geiser
+    :config
+    (setq geiser-default-implementation 'chez))
+#+END_SRC
 *** [[https://www.emacswiki.org/emacs/HideShow][hs]]
 A very effective code folding package that is started in any prog-mode.
 
