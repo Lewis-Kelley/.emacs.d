@@ -64,7 +64,7 @@
  '(overflow-newline-into-fringe t)
  '(package-selected-packages
    (quote
-    (celestial-mode-line ox-reveal pdf-tools smart-backspace gradle-mode yaml-mode clojure-mode-extra-font-locking cider scratch el-get hive pass exwm pig-mode slack spaceline-all-the-icons spaceline flappymacs pacmacs threes emstar org-super-agenda captain nov google-maps dad-joke helm ledger-mode org-mime meghanada jdee plantuml-mode org-gcal sx iedit link-hint darkokai-theme swiper ryo-modal geiser smex alda-mode fancy-battery elfeed-org elfeed req-package aggressive-indent evil-magit c-eldoc cheatsheet markdown-mode char-menu srefactor zone-rainbow org-bullets evil-smartparens slime-company fireplace dired-filetype-face ess elisp--witness--lisp diredful resize-window elpy multi-line quickrun fic-mode graphene-meta-theme wgrep chess irony emacs-eclim switch-window sublimity rainbow-delimiters evil-easymotion company wsd-mode buffer-move multiple-cursors mulitple-cursors flx-ido multicolumn company-c-headers seethru projectile magit powerline-evil monokai function-args arduino-mode package-build shut-up epl git commander f dash s gnuplot flycheck monokai-theme use-package multi-term cdlatex)))
+    (celestial-mode-line ox-reveal pdf-tools smart-backspace gradle-mode yaml-mode clojure-mode-extra-font-locking cider scratch el-get hive pass exwm pig-mode slack spaceline-all-the-icons spaceline flappymacs pacmacs threes emstar org-super-agenda captain nov google-maps dad-joke helm ledger-mode org-mime meghanada jdee plantuml-mode org-gcal sx iedit link-hint darkokai-theme swiper ryo-modal geiser smex alda-mode fancy-battery elfeed-org elfeed aggressive-indent evil-magit c-eldoc cheatsheet markdown-mode char-menu srefactor zone-rainbow org-bullets evil-smartparens slime-company fireplace dired-filetype-face ess elisp--witness--lisp diredful resize-window elpy multi-line quickrun fic-mode graphene-meta-theme wgrep chess irony emacs-eclim switch-window sublimity rainbow-delimiters evil-easymotion company wsd-mode buffer-move multiple-cursors mulitple-cursors flx-ido multicolumn company-c-headers seethru projectile magit powerline-evil monokai function-args arduino-mode package-build shut-up epl git commander f dash s gnuplot flycheck monokai-theme use-package multi-term cdlatex)))
  '(paradox-automatically-star t)
  '(paradox-github-token t)
  '(pos-tip-background-color "#E6DB74")
@@ -72,7 +72,8 @@
  '(powerline-height nil)
  '(safe-local-variable-values
    (quote
-    ((eval progn
+    ((geiser-scheme-implementation . chez)
+     (eval progn
            (auto-fill-mode)
            (80-column-rule))
      (eval git-gutter-mode nil)
@@ -152,7 +153,7 @@
   (setq flag-colemak 1) ;; Set to 0 to use QWERTY bindings
 
   ;; disable toolbar and the like
-;;  (toggle-frame-fullscreen)
+  ;;  (toggle-frame-fullscreen)
 
   (require 'package)
   (add-to-list 'package-archives
@@ -185,18 +186,13 @@
     (package-refresh-contents))
   (unless (package-installed-p 'use-package)
     (package-install 'use-package))
-  (unless (package-installed-p 'req-package)
-    (package-install 'req-package))
-
   (require 'use-package)
-  (require 'req-package)
 
   ;; load up all literate org-mode files in this directory
   (org-babel-load-file "~/.emacs.d/emacs.org")
 
   (add-to-list 'load-path "~/.emacs.d/plugins/yasnippet")
   (add-to-list 'load-path "~/.emacs.d/elisp")
-  (req-package-finish)
 
   ;; load one tex-utils package?
   (add-to-list 'load-path "/usr/share/emacs/site-lisp/tex-utils/")
