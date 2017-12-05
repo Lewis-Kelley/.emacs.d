@@ -1091,25 +1091,40 @@ Autobalances your parentheses as you type them. Great for Lisp programming.
     (add-hook 'prog-mode-hook '(lambda ()
                                  (smartparens-mode 1)))
     :config
-    (defhydra hydra-smartparens (global-map "C-c s")
-      "smartparens"
-      ("s" sp-slurp-hybrid-sexp)
-      ("S" sp-forward-barf-sexp)
-      ("c" sp-split-sexp)
-      ("r" sp-raise-sexp)
-      ("u" sp-splice-sexp)
-      ("w" sp-rewrap-sexp)
+    (defhydra hydra-smartparens (global-map "C-c s"
+                                            :hint nil)
+      "
+  ^Motion^           ^Movement^       ^Actions
+  ^^^^^^-------------------------------------------
+  _n_: down          _s_: slurp       _i_: inner
+  _p_: up            _S_: barf        _k_: kill
+  _f_: forward       _c_: split       _w_: rewrap
+  _b_: back          _u_: splice
+  _F_: next          _r_: raise       _g_: quit
+  _B_: previous      _t_: transpose
+  _a_: beginning
+  _b_: end
+  "
       ("n" sp-down-sexp)
       ("p" sp-backward-up-sexp)
       ("f" sp-forward-sexp)
       ("F" sp-next-sexp)
       ("b" sp-backward-sexp)
       ("B" sp-previous-sexp)
-      ("e" sp-end-of-sexp)
       ("a" sp-beginning-of-sexp)
-      ("k" sp-kill-sexp)
+      ("e" sp-end-of-sexp)
+
+      ("s" sp-slurp-hybrid-sexp)
+      ("S" sp-forward-barf-sexp)
+      ("c" sp-split-sexp)
+      ("u" sp-splice-sexp)
+      ("r" sp-raise-sexp)
       ("t" sp-transpose-sexp)
+
       ("i" sp-change-inner)
+      ("k" sp-kill-sexp)
+      ("w" sp-rewrap-sexp)
+
       ("g" nil)))
 #+END_SRC
 *** [[https://github.com/dimitri/switch-window][switch-window]]
