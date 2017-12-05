@@ -980,12 +980,14 @@ it at once, though…
 #+BEGIN_SRC emacs-lisp
   (push `("t" "Tutoring" entry
             (file ,(concat org-dir "tutoring.org"))
-            ,(concat "* %^{Name} - %^{Class}\n"
+            ,(concat "* %^{Name}\n"
                      ":PROPERTIES:\n"
+                     ":CLASS:     %^{Class}\n"
                      ":PROFESSOR: %^{Professor}\n"
                      ":PROBLEM:   %^{Problem Description}\n"
-                     ":END:")
-            :clock-in t)
+                     ":DATE:      %t\n"
+                     ":TIME:      %^{Time}\n"
+                     ":END:"))
           org-capture-templates)
 #+END_SRC
 
