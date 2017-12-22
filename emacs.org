@@ -179,6 +179,7 @@ practically instantly.
   + M-l - use avy to go to a line
 #+BEGIN_SRC emacs-lisp
   (use-package avy
+    :ensure t
     :bind
     (("M-s" . avy-goto-word-1)
      ("M-S-s" . avy-goto-char-2)
@@ -191,6 +192,7 @@ when you need to go looking for something but want to save your spot, or if you
 keep bouncing between a few spots in a file.
 #+BEGIN_SRC emacs-lisp
   (use-package bm ;;make bookmarks and cycle through them
+    :ensure t
     :config
     (global-set-key (kbd "M-T") 'bm-toggle)
     (global-set-key (kbd "M-N") 'bm-next)
@@ -203,6 +205,7 @@ functionality of Vim with its "change-in" commands.
 
 #+BEGIN_SRC emacs-lisp
   (use-package expand-region
+    :ensure t
     :config
     (global-set-key (kbd "M-i") 'er/expand-region))
 #+END_SRC
@@ -212,15 +215,17 @@ which can be quite the timesaver when refactoring things. Alongside narrowing
 buffers, this can be super powerful. Currently bound to =C-;=.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package iedit)
+  (use-package iedit
+    :ensure t)
 #+END_SRC
 *** helm
 #+BEGIN_SRC emacs-lisp
-      (use-package helm
-        :bind (("M-x" . helm-M-x)
-               ("C-x f" . helm-find-files)
-               ("C-x b" . helm-buffers-list)
-               ("C-s" . helm-occur)))
+  (use-package helm
+    :ensure t
+    :bind (("M-x" . helm-M-x)
+           ("C-x f" . helm-find-files)
+           ("C-x b" . helm-buffers-list)
+           ("C-s" . helm-occur)))
 #+END_SRC
 *** [[https://github.com/abo-abo/hydra][hydra]]
 This lovely package allows for improved use of chaining similar commands.
@@ -229,6 +234,7 @@ of evil-mode, but I'm sure I'll keep both installed for a while.
 
 #+BEGIN_SRC emacs-lisp
   (use-package hydra
+    :ensure t
     :config
     (defhydra hydra-motion (:body-pre (next-line))
       "motion"
@@ -245,6 +251,7 @@ that trigger an action when pressed in quick succession.
 
 #+BEGIN_SRC emacs-lisp
   (use-package key-chord
+    :ensure t
     :config
     (setq key-chord-one-key-delay 0.2)
     (setq key-chord-two-key-delay 0.2)
@@ -266,6 +273,7 @@ I just use this to jump straight to links when in things like EWW.
 
 #+BEGIN_SRC emacs-lisp
   (use-package link-hint
+    :ensure t
     :bind ("M-L" . link-hint-open-link)
     :config
     (define-key eww-mode-map (kbd "f") 'link-hint-open-link))
@@ -273,6 +281,8 @@ I just use this to jump straight to links when in things like EWW.
 *** [[https://github.com/magnars/multiple-cursors.el][multiple-cursors]]
 #+BEGIN_SRC emacs-lisp
   (use-package multiple-cursors
+    :disabled t
+    :ensure t
     :bind (("M-k" . mc/mark-next-like-this)
            ("M-S-k" . mc/edit-lines)))
 #+END_SRC
@@ -285,47 +295,28 @@ with different commands each.
 #+BEGIN_SRC emacs-lisp
   (use-package ryo-modal
     :disabled t
+    :ensure t
     :bind ("M-m" . ryo-modal-mode)
     :config
     (ryo-modal-keys
      ("m" ryo-modal-mode)
-     ("0" "M-0")
-     ("1" "M-1")
-     ("2" "M-2")
-     ("3" "M-3")
-     ("4" "M-4")
-     ("5" "M-5")
-     ("6" "M-6")
-     ("7" "M-7")
-     ("8" "M-8")
-     ("9" "M-9")
-     ("h" backward-char)
-     ("H" backward-word)
-     ("n" next-line)
-     ("e" previous-line)
-     ("i" forward-char)
-     ("I" forward-word)
-     ("l" avy-goto-line)
-     ("v" scroll-up-command)
-     ("V" scroll-down-command)
-     ("g" beginning-of-buffer)
-     ("G" end-of-buffer)
-     ("d" delete-char)
-     ("D" kill-word)
-     ("k" kill-line)
-     ("K" kill-whole-line)
-     ("y" yank)
-     ("Y" counsel-yank-pop)
-     ("z" zzz-up-to-char)
-     ("Z" zzz-to-char)
-     ("s" save-buffer)
-     ("S" swiper)))
+     ("a" "1")
+     ("r" "2")
+     ("s" "3")
+     ("t" "4")
+     ("d" "5")
+     ("h" "6")
+     ("n" "7")
+     ("e" "8")
+     ("i" "9")
+     ("o" "0")))
 #+END_SRC
 *** [[https://github.com/itome/smart-backspace][smart-backspace]]
 Deletes back a line to matching indentation.
 
 #+BEGIN_SRC emacs-lisp
   (use-package smart-backspace
+    :ensure t
     :config
     (global-set-key [C-backspace] 'smart-backspace))
 #+END_SRC
@@ -337,7 +328,7 @@ on kills.
 
 #+BEGIN_SRC emacs-lisp
   (use-package smart-yank
-    :disabled
+    :ensure t
     :config
     (smart-yank-mode 1))
 #+END_SRC
@@ -347,7 +338,8 @@ you’re searching for.
 
 #+BEGIN_SRC emacs-lisp
   (use-package swiper
-    :disabled
+    :ensure t
+    :disabled t
     :requires ivy
     :config
     (global-set-key (kbd "C-s") 'swiper))
@@ -360,6 +352,7 @@ an avy backend.
 
 #+BEGIN_SRC emacs-lisp
   (use-package zzz-to-char
+    :ensure t
     :bind
     (("M-z" . zzz-up-to-char)
      ("M-S-z" . zzz-to-char)))
@@ -390,7 +383,8 @@ as it automatically detects what the indentation size is and sets yours to
 match.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package dtrt-indent)
+  (use-package dtrt-indent
+    :ensure t)
 #+END_SRC
 *** [[https://github.com/lewang/fic-mode][fic-mode]]
 Another tiny yet remarkably helpful package that just highlights keywords like
@@ -400,6 +394,7 @@ this doesn't keep slowing down my boot up time.
 
 #+BEGIN_SRC emacs-lisp
   (use-package fic-mode
+    :ensure t
     :diminish fic-mode
     :config
     (add-hook 'prog-mode-hook 'fic-mode))
@@ -418,6 +413,7 @@ default for some reason. Triggered in any prog-mode.
     (setq-local flycheck-check-syntax-automatically nil))
 
   (use-package flycheck
+    :ensure t
     :config
     (flycheck-set-checker-executable 'c/c++-gcc "/usr/bin/gcc")
     (setq flycheck-gcc-args "-std=c++11")
@@ -455,20 +451,22 @@ definitions and usages of variables and functions.
   + M-g r - return to the last point jumped from
 
 #+BEGIN_SRC emacs-lisp
-(use-package ggtags
-  :diminish ggtags-mode
-  :config
-  (add-hook 'c-mode-hook #'ggtags-mode)
-  (add-hook 'c++-mode-hook #'ggtags-mode)
-  (add-hook 'cc-mode-hook #'ggtags-mode)
-  (add-hook 'java-mode-hook #'ggtags-mode)
-  (add-hook 'asm-mode-hook #'ggtags-mode)
-  (define-key ggtags-mode-map (kbd "M-g M-g") #'ggtags-find-tag-dwim)
-  (define-key ggtags-mode-map (kbd "M-g r") #'ggtags-prev-mark))
+  (use-package ggtags
+    :ensure t
+    :diminish ggtags-mode
+    :config
+    (add-hook 'c-mode-hook #'ggtags-mode)
+    (add-hook 'c++-mode-hook #'ggtags-mode)
+    (add-hook 'cc-mode-hook #'ggtags-mode)
+    (add-hook 'java-mode-hook #'ggtags-mode)
+    (add-hook 'asm-mode-hook #'ggtags-mode)
+    (define-key ggtags-mode-map (kbd "M-g M-g") #'ggtags-find-tag-dwim)
+    (define-key ggtags-mode-map (kbd "M-g r") #'ggtags-prev-mark))
 #+END_SRC
 *** geiser
 #+BEGIN_SRC emacs-lisp
   (use-package geiser
+    :ensure t
     :config
     (setq geiser-default-implementation 'chez))
 #+END_SRC
@@ -500,6 +498,7 @@ working, so I'll fiddle around with it.
 
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
+    :ensure t
     :diminish projectile-mode
     :requires ivy
     :init
@@ -553,6 +552,7 @@ Built into Emacs by default. Sets the refresh time and some keybinds.
 
 #+BEGIN_SRC emacs-lisp
   (use-package semantic
+    :ensure t
     :init
     (global-semanticdb-minor-mode 1)
     (global-semantic-idle-scheduler-mode 1)
@@ -565,6 +565,7 @@ Since I use StumpWM, this should come in handy.
 
 #+BEGIN_SRC emacs-lisp
   (use-package stumpwm-mode
+    :ensure t
     :init
     (add-to-list 'auto-mode-alist '(".stumpwmrc" . stumpwm-mode)))
     ;(define-key 'stumpwm-mode-map (kbd "C-x C-e") 'stumpwm-eval-last-sexp))
@@ -576,6 +577,7 @@ around in.
 
 #+BEGIN_SRC emacs-lisp
   (use-package alda-mode
+    :ensure t
     :config
     (setq set-alda-binary-location "/usr/local/bin/alda"))
 #+END_SRC
@@ -584,8 +586,9 @@ Provides quick shortcuts for lots of long latex symbols. For example, `a turns
 into =\alpha=.
 
 #+BEGIN_SRC emacs-lisp
-(use-package cdlatex
-  :diminish cdlatex-mode)
+  (use-package cdlatex
+    :ensure t
+    :diminish cdlatex-mode)
 #+END_SRC
 *** [[https://github.com/mrkkrp/char-menu][char-menu]]
 Allows you to build your own tree of special characters that can be accessed via
@@ -593,6 +596,7 @@ an avy-menu...menu.
 
 #+BEGIN_SRC emacs-lisp
   (use-package char-menu
+    :ensure t
     :init
     (setq char-menu '("’" "‘’" "“”" "…" "⌊⌋" "⋀" "⋁" "√"
                       ("script" "ℛ" "ℒ")
@@ -605,6 +609,7 @@ globally.
 
 #+BEGIN_SRC emacs-lisp
   (use-package company ;;TODO Speed up
+    :ensure t
     :diminish company-mode
     :config
     (global-company-mode))
@@ -614,6 +619,7 @@ globally.
 
 #+BEGIN_SRC emacs-lisp
   (use-package dad-joke
+    :ensure t
     :bind (("s-d" . dad-joke)))
 #+END_SRC
 *** [[https://github.com/myrjola/diminish.el][diminish]]
@@ -621,6 +627,7 @@ Allows you to stop showing the name of specific minor modes.
 
 #+BEGIN_SRC emacs-lisp
   (use-package diminish
+    :ensure t
     :config
     (diminish 'abbrev-mode))
 #+END_SRC
@@ -641,6 +648,7 @@ various Emacs sites.
 
 #+BEGIN_SRC emacs-lisp
   (use-package elfeed
+    :ensure t
     :config
     (global-set-key (kbd "s-l") 'elfeed))
 #+END_SRC
@@ -650,6 +658,7 @@ readable.
 
 #+BEGIN_SRC emacs-lisp
   (use-package elfeed-org
+    :ensure t
     :requires elfeed org
     :config
     (setq rmh-elfeed-org-files (list (concat org-dir "elfeed.org")))
@@ -659,6 +668,7 @@ readable.
 Someday…
 #+BEGIN_SRC emacs-lisp
   (use-package exwm
+    :ensure t
     :disabled t
     :config
     (require 'exwm-config)
@@ -690,6 +700,7 @@ spelling, I also probably want lines to wrap properly.
     (visual-line-mode))
 
   (use-package flyspell
+    :ensure t
     :init
     (global-set-key (kbd "C-x l") 'start-flyspell-and-visual)
     (add-hook 'org-mode-hook 'flyspell-mode))
@@ -700,6 +711,7 @@ if a line has been added, modified, or deleted.
 
 #+BEGIN_SRC emacs-lisp
   (use-package git-gutter-fringe
+    :ensure t
     :diminish git-gutter-mode
     :init
     (global-git-gutter-mode 1))
@@ -714,13 +726,15 @@ W = copy hash
 q = quit
 
 #+BEGIN_SRC emacs-lisp
-  (use-package git-timemachine)
+  (use-package git-timemachine
+    :ensure t)
 #+END_SRC
 *** [[https://github.com/wasamasa/nov.el][nov.el]]
 Honestly the only good way I've found to read =EPUB='s in Emacs.
 
 #+BEGIN_SRC emacs-lisp
   (use-package nov
+    :ensure t
     :config
     (push '("\\.epub\\'" . nov-mode) auto-mode-alist))
 #+END_SRC
@@ -729,6 +743,7 @@ The best way to use git with Emacs. Period.
 
 #+BEGIN_SRC emacs-lisp
   (use-package magit
+    :ensure t
     :init
     (setq magit-restore-window-configuration t)
     (setq magit-completing-read-function 'ivy-completing-read)
@@ -1045,11 +1060,14 @@ For easy log entries into my journal.
 A mode for converting Org-Mode files into presentations.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package ox-reveal)
+  (use-package ox-reveal
+    :ensure t)
 #+END_SRC
 *** TODO [[https://github.com/alphapapa/org-super-agenda][org-super-agenda]]
 #+BEGIN_SRC emacs-lisp
-  (use-package org-super-agenda)
+  (use-package org-super-agenda
+    :disabled t
+    :ensure t)
 #+END_SRC
 *** octave-mode
 #+BEGIN_SRC emacs-lisp
@@ -1059,7 +1077,8 @@ A mode for converting Org-Mode files into presentations.
 Allows for asynchronous installation of packages.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package paradox)
+  (use-package paradox
+    :ensure t)
 #+END_SRC
 *** [[https://github.com/skuro/plantuml-mode][plantuml-mode]]
 PlantUML is a nice way of making UML diagrams without futzing with drag and drop
@@ -1068,6 +1087,7 @@ jar file is, so you may have to change that.
 
 #+BEGIN_SRC emacs-lisp
   (use-package plantuml-mode
+    :ensure t
     :config
     (add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode))
     (add-to-list 'auto-mode-alist '("\\.puml\\'" . plantuml-mode))
@@ -1078,6 +1098,7 @@ Creates a new special mode where you can quickly resize any window using n-p-f-b
 
 #+BEGIN_SRC emacs-lisp
   (use-package resize-window
+    :ensure t
     :init
     (global-set-key (kbd "C-S-r") 'resize-window))
 #+END_SRC
@@ -1087,6 +1108,7 @@ Autobalances your parentheses as you type them. Great for Lisp programming.
 
 #+BEGIN_SRC emacs-lisp
   (use-package smartparens
+    :ensure t
     :init
     (add-hook 'prog-mode-hook '(lambda ()
                                  (smartparens-mode 1)))
@@ -1133,6 +1155,7 @@ and you're there.
 
 #+BEGIN_SRC emacs-lisp
   (use-package switch-window
+    :ensure t
     :config
     (global-set-key (kbd "s-o") 'switch-window))
 #+END_SRC
@@ -1141,6 +1164,7 @@ Shows a visual representation of your undo history as an easily navigable tree.
 
 #+BEGIN_SRC emacs-lisp
   (use-package undo-tree
+    :ensure t
     :diminish undo-tree-mode
     :config (global-undo-tree-mode))
 #+END_SRC
@@ -1150,6 +1174,7 @@ even looking out a window!
 
 #+BEGIN_SRC emacs-lisp
   (use-package wttrin
+    :ensure t
     :config
     (setq wttrin-default-cities '("St. Louis" "Terre Haute"))
     (global-set-key (kbd "s-f") 'wttrin))
@@ -1161,6 +1186,7 @@ start up.
 
 #+BEGIN_SRC emacs-lisp
   (use-package yasnippet
+    :ensure t
     :diminish yas-minor-mode
     :config
     (defvar yas-loaded 0)
@@ -1178,6 +1204,7 @@ notifications. I just need to set them up so they work right.
 
 #+BEGIN_SRC emacs-lisp
   (use-package alert
+    :ensure t
     :config
     (setq alert-default-style 'libnotify))
 #+END_SRC
@@ -1185,13 +1212,15 @@ notifications. I just need to set them up so they work right.
 Shows fancy looking icons on file names (looks really pretty).
 
 #+BEGIN_SRC emacs-lisp
-  (use-package all-the-icons)
+  (use-package all-the-icons
+    :ensure t)
 #+END_SRC
 *** [[https://github.com/ecraven/celestial-mode-line][celestial-mode-line]]
 Displays the time to sunrise/sunset and the moon phase.
 
 #+BEGIN_SRC emacs-lisp
   (use-package celestial-mode-line
+    :ensure t
     :config
     (setq calendar-latitude 39.466)
     (setq calendar-longitude -87.512)
@@ -1205,6 +1234,7 @@ checker to show that you spelled the variable correctly.
 
 #+BEGIN_SRC emacs-lisp
   (use-package color-identifiers-mode
+    :ensure t
     :diminish color-identifiers-mode
     :config
     (global-color-identifiers-mode))
@@ -1214,6 +1244,7 @@ Highlights texts that goes beyond a certain column. Very nice for coding.
 
 #+BEGIN_SRC emacs-lisp
   (use-package column-enforce-mode
+    :ensure t
     :config
     (add-hook 'c-mode-hook 'column-enforce-mode))
 #+END_SRC
@@ -1223,6 +1254,7 @@ The extra line is to keep the modeline small and not stupid looking.
 
 #+BEGIN_SRC emacs-lisp
   (use-package darkokai-theme
+    :ensure t
     :disabled t
     :require fic-mode
     :config
@@ -1233,7 +1265,8 @@ The extra line is to keep the modeline small and not stupid looking.
 Like linum mode, but much, /much/, _much_ more efficient.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package nlinum)
+  (use-package nlinum
+    :ensure t)
 #+END_SRC
 *** [[https://github.com/sabof/org-bullets][org-bullets]]
 Turn org-mode bullets into fancy utf-8 symbols that make them look so much prettier. Sorry if your browser can't see some
@@ -1241,6 +1274,7 @@ of the beautiful symbols. Take my word for it, they're just fancy bullets.
 
 #+BEGIN_SRC emacs-lisp
   (use-package org-bullets
+    :ensure t
     :init
     (setq org-bullets-bullet-list
           '("◉" "◎" "⚫" "○" "►" "◇"))
@@ -1254,10 +1288,12 @@ Built into Emacs by default. This essentially changes a few keywords into pretty
   (global-prettify-symbols-mode 1)
 #+END_SRC
 *** [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimeters]]
-This package recolors parentheses, braces, and brackets in matching pairs. This makes programming so much eaier and prettier.
+This package recolors parentheses, braces, and brackets in matching
+pairs. This makes programming so much easier and prettier.
 
 #+BEGIN_SRC emacs-lisp
   (use-package rainbow-delimiters
+    :ensure t
     :config
     (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 #+END_SRC
@@ -1267,6 +1303,7 @@ this temporarily highlights it to draw attention to it.
 
 #+BEGIN_SRC emacs-lisp
   (use-package volatile-highlights
+    :ensure t
     :diminish volatile-highlights-mode
     :config
     (volatile-highlights-mode t))
@@ -1649,6 +1686,7 @@ This is mostly just for a class that I’m currently taking that requires me to
 check my code with this linter.
 
 #+BEGIN_SRC emacs-lisp
+
   (defun check-cpplint ()
       "Run the currently opened file against cpplint."
       (interactive)
