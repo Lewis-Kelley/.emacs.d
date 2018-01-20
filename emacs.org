@@ -1297,6 +1297,11 @@ pairs. This makes programming so much easier and prettier.
     :config
     (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 #+END_SRC
+*** [[https://github.com/zk-phi/sky-color-clock][sky-color-clock]]
+#+BEGIN_SRC emacs-lisp
+  (require 'sky-color-clock)
+  (sky-color-clock-initialize 39)
+#+END_SRC
 *** [[https://github.com/k-talo/volatile-highlights.el][volatile-highlights]]
 Whenever you change a large block of text, like with an undo or a yank,
 this temporarily highlights it to draw attention to it.
@@ -1396,89 +1401,82 @@ Note that this requires the package all-the-icons.
        ((string-match "SVN-" vc-mode) (-custom-modeline-svn-vc))
        (t (format "%s" vc-mode)))))
 
+  (defun modeline-align (left right)
+    (let ((available-width (- (window-width) (length left) 2)))
+      (format (format " %%s %%%ds " available-width) left right)))
+
   (defun customize-modeline ()
     (interactive)
     (setq-default mode-line-format
                   '(concat " %e"
                            (:eval
-                            (concat
-                             (propertize (custom-modeline-modified)
-                                         'face
-                                         `(:foreground
-                                           "pink"
-                                           :height
-                                           ,mode-line-font-height))
-                             (propertize " %I"
-                                         'face
-                                         `(:foreground
-                                           "firebrick"
-                                           :height
-                                           ,mode-line-font-height))
-                             (propertize " %z | "
-                                         'face
-                                         `(:height ,mode-line-font-height))
-                             (propertize "%l"
-                                         'face
-                                         `(:foreground
-                                           "tomato"
-                                           :height
-                                           ,mode-line-font-height))
-                             (propertize ":"
-                                         'face
-                                         `(:height
-                                           ,mode-line-font-height))
-                             (propertize "%c"
-                                         'face
-                                         `(:foreground
-                                           "gold"
-                                           :height
-                                           ,mode-line-font-height))
-                             (propertize " %p"
-                                         'face
-                                         `(:foreground
-                                           "medium purple"
-                                           :height
-                                           ,mode-line-font-height))
-                             (if (not (equal (marker-buffer org-clock-marker)
-                                             nil))
-                                 (concat " | "
-                                         (org-clock-get-clock-string)))
-                             (propertize " |"
-                                         'face
-                                         `(:height
-                                           ,mode-line-font-height))
-                             (custom-modeline-mode-icon)
-                             " "
-                             (propertize (buffer-name)
-                                         'face
-                                         `(:foreground
-                                           "white"
-                                           :height
-                                           ,mode-line-font-height))
-                             " |"
-                             (let ((text (custom-modeline-icon-vc)))
-                               (if text
-                                   (concat
-                                    (propertize text
-                                                'face
-                                                `(:foreground
-                                                  "orange"
-                                                  :height
-                                                  ,mode-line-font-height))
-                                    " |")))
-                             (propertize celestial-mode-line-string
-                                         'face
-                                         `(:foreground
-                                           "CornflowerBlue"
-                                           :height
-                                           ,mode-line-font-height))
-                             (propertize " | "
-                                         'face
-                                         `(:foreground
-                                           "white"
-                                           :height
-                                           ,mode-line-font-height)))
-                           (:eval mode-line-modes)))))
+                            (modeline-align
+                             (concat
+                              (propertize (custom-modeline-modified)
+                                          'face
+                                          `(:foreground
+                                            "pink"
+                                            :height
+                                            ,mode-line-font-height))
+                              (propertize " %I"
+                                          'face
+                                          `(:foreground
+                                            "firebrick"
+                                            :height
+                                            ,mode-line-font-height))
+                              (propertize " %z | "
+                                          'face
+                                          `(:height ,mode-line-font-height))
+                              (propertize "%l"
+                                          'face
+                                          `(:foreground
+                                            "tomato"
+                                            :height
+                                            ,mode-line-font-height))
+                              (propertize ":"
+                                          'face
+                                          `(:height
+                                            ,mode-line-font-height))
+                              (propertize "%c"
+                                          'face
+                                          `(:foreground
+                                            "gold"
+                                            :height
+                                            ,mode-line-font-height))
+                              (propertize " %p"
+                                          'face
+                                          `(:foreground
+                                            "medium purple"
+                                            :height
+                                            ,mode-line-font-height))
+                              (if (not (equal (marker-buffer org-clock-marker)
+                                              nil))
+                                  (concat " | "
+                                          (org-clock-get-clock-string)))
+                              (propertize " |"
+                                          'face
+                                          `(:height
+                                            ,mode-line-font-height))
+                              (custom-modeline-mode-icon)
+                              " "
+                              (propertize (buffer-name)
+                                          'face
+                                          `(:foreground
+                                            "white"
+                                            :height
+                                            ,mode-line-font-height))
+                              " |"
+                              (let ((text (custom-modeline-icon-vc)))
+                                (if text
+                                    (concat
+                                     (propertize text
+                                                 'face
+                                                 `(:foreground
+                                                   "orange"
+                                                   :height
+                                                   ,mode-line-font-height))
+                                     " |"))))
+                             (sky-color-clock))))))
   (set-face-attribute 'org-mode-line-clock nil :inherit nil)
   (customize-modeline)
 #+END_SRC

@@ -64,7 +64,7 @@
  '(overflow-newline-into-fringe t)
  '(package-selected-packages
    (quote
-    (mu4e cargo flycheck-rust rust-mode haskell-mode celestial-mode-line ox-reveal pdf-tools smart-backspace gradle-mode yaml-mode clojure-mode-extra-font-locking cider scratch el-get hive pass exwm pig-mode slack spaceline-all-the-icons spaceline flappymacs pacmacs threes emstar org-super-agenda captain nov google-maps dad-joke helm ledger-mode org-mime meghanada jdee plantuml-mode org-gcal sx iedit link-hint darkokai-theme swiper ryo-modal geiser smex alda-mode fancy-battery elfeed-org elfeed aggressive-indent evil-magit c-eldoc cheatsheet markdown-mode char-menu srefactor zone-rainbow org-bullets evil-smartparens slime-company fireplace dired-filetype-face ess elisp--witness--lisp diredful resize-window elpy multi-line quickrun fic-mode graphene-meta-theme wgrep chess irony emacs-eclim switch-window sublimity rainbow-delimiters evil-easymotion company wsd-mode buffer-move multiple-cursors mulitple-cursors flx-ido multicolumn company-c-headers seethru projectile magit powerline-evil monokai function-args arduino-mode package-build shut-up epl git commander f dash s gnuplot flycheck monokai-theme use-package multi-term cdlatex)))
+    (sky-color-clock mu4e cargo flycheck-rust rust-mode haskell-mode celestial-mode-line ox-reveal pdf-tools smart-backspace gradle-mode yaml-mode clojure-mode-extra-font-locking cider scratch el-get hive pass pig-mode slack spaceline-all-the-icons spaceline flappymacs pacmacs threes emstar org-super-agenda captain nov google-maps dad-joke helm ledger-mode org-mime meghanada jdee plantuml-mode org-gcal sx iedit link-hint darkokai-theme swiper ryo-modal geiser smex alda-mode fancy-battery elfeed-org elfeed aggressive-indent evil-magit c-eldoc cheatsheet markdown-mode char-menu srefactor zone-rainbow org-bullets evil-smartparens slime-company fireplace dired-filetype-face ess elisp--witness--lisp diredful resize-window elpy multi-line quickrun fic-mode graphene-meta-theme wgrep chess irony emacs-eclim switch-window sublimity rainbow-delimiters evil-easymotion company wsd-mode buffer-move multiple-cursors mulitple-cursors flx-ido multicolumn company-c-headers seethru projectile magit powerline-evil monokai function-args arduino-mode package-build shut-up epl git commander f dash s gnuplot flycheck monokai-theme use-package multi-term cdlatex)))
  '(paradox-automatically-star t)
  '(paradox-github-token t)
  '(pos-tip-background-color "#E6DB74")
@@ -188,11 +188,11 @@
     (package-install 'use-package))
   (require 'use-package)
 
+  (add-to-list 'load-path "~/.emacs.d/plugins/yasnippet")
+  (add-to-list 'load-path "~/.emacs.d/manual-packages")
+
   ;; load up all literate org-mode files in this directory
   (org-babel-load-file "~/.emacs.d/emacs.org")
-
-  (add-to-list 'load-path "~/.emacs.d/plugins/yasnippet")
-  (add-to-list 'load-path "~/.emacs.d/elisp")
 
   ;; load one tex-utils package?
   (add-to-list 'load-path "/usr/share/emacs/site-lisp/tex-utils/")
