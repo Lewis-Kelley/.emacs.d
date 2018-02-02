@@ -1402,7 +1402,7 @@ Note that this requires the package all-the-icons.
        (t (format "%s" vc-mode)))))
 
   (defun modeline-align (left right)
-    (let ((available-width (- (window-width) (length left) 2)))
+    (let ((available-width (- (window-width) (length left) 3)))
       (format (format " %%s %%%ds " available-width) left right)))
 
   (defun customize-modeline ()
@@ -1418,7 +1418,7 @@ Note that this requires the package all-the-icons.
                                             "pink"
                                             :height
                                             ,mode-line-font-height))
-                              (propertize " %I"
+                              (propertize " %3I"
                                           'face
                                           `(:foreground
                                             "firebrick"
@@ -1427,7 +1427,7 @@ Note that this requires the package all-the-icons.
                               (propertize " %z | "
                                           'face
                                           `(:height ,mode-line-font-height))
-                              (propertize "%l"
+                              (propertize "%4l"
                                           'face
                                           `(:foreground
                                             "tomato"
@@ -1437,13 +1437,16 @@ Note that this requires the package all-the-icons.
                                           'face
                                           `(:height
                                             ,mode-line-font-height))
-                              (propertize "%c"
+                              (propertize "%2c"
                                           'face
                                           `(:foreground
                                             "gold"
                                             :height
                                             ,mode-line-font-height))
-                              (propertize " %p"
+                              (propertize (format "%3d%%%%"
+                                                  (/ (window-start)
+                                                     0.01
+                                                     (point-max)))
                                           'face
                                           `(:foreground
                                             "medium purple"
