@@ -1177,6 +1177,7 @@ even looking out a window!
     :ensure t
     :config
     (setq wttrin-default-cities '("St. Louis" "Terre Haute"))
+    (setq wttrin-default-accept-language '("Accept Language" . "en-US"))
     (global-set-key (kbd "s-f") 'wttrin))
 #+END_SRC
 *** [[https://github.com/capitaomorte/yasnippet][yasnippet]]
@@ -1300,7 +1301,7 @@ pairs. This makes programming so much easier and prettier.
 *** [[https://github.com/zk-phi/sky-color-clock][sky-color-clock]]
 #+BEGIN_SRC emacs-lisp
   (require 'sky-color-clock)
-  (sky-color-clock-initialize 39)
+  (sky-color-clock-initialize 39.4)
 #+END_SRC
 *** [[https://github.com/k-talo/volatile-highlights.el][volatile-highlights]]
 Whenever you change a large block of text, like with an undo or a yank,
