@@ -165,9 +165,9 @@ I can control with StumpWM. Taken from [[http://anderspapitto.com/posts/2016-11-
   ;;             (lambda (orig-fun &rest args) nil))
   ;; (setq frame-auto-hide-function 'delete-frame)
 #+END_SRC
-** Important Directories
+** Org Directory
 #+BEGIN_SRC emacs-lisp
-  (defvar org-dir "~/org-files/")
+  (setq org-directory "~/org-files/")
 #+END_SRC
 * Packages
 ** Control
@@ -661,7 +661,7 @@ readable.
     :ensure t
     :requires elfeed org
     :config
-    (setq rmh-elfeed-org-files (list (concat org-dir "elfeed.org")))
+    (setq rmh-elfeed-org-files (list (concat org-directory "elfeed.org")))
     (elfeed-org))
 #+END_SRC
 *** [[https://github.com/ch11ng/exwm][exwm]]
@@ -854,9 +854,9 @@ Some basic settings.
 #+BEGIN_SRC emacs-lisp
   (setq org-agenda-include-diary t
         org-agenda-start-on-weekday nil
-        org-agenda-files (list (concat org-dir "classes.org")
-                               (concat org-dir "planner.org")
-                               (concat org-dir "calendar.org")))
+        org-agenda-files (list (concat org-directory "classes.org")
+                               (concat org-directory "planner.org")
+                               (concat org-directory "calendar.org")))
 
   (global-set-key (kbd "C-c a") 'org-agenda)
   (add-hook 'org-agenda-mode-hook 'delete-other-windows)
@@ -953,10 +953,10 @@ makes the global keybindings very useful.
 Capturing is fun.
 
 #+BEGIN_SRC emacs-lisp
-  (setq org-default-notes-file (concat org-dir "planner.org"))
+  (setq org-default-notes-file (concat org-directory "planner.org"))
   (define-key global-map (kbd "C-c c") 'org-capture)
 
-  (let ((refile-files (mapcar (lambda (file) (concat org-dir file))
+  (let ((refile-files (mapcar (lambda (file) (concat org-directory file))
                               (list "classes.org"
                                     "planner.org"
                                     "tutoring.org"
@@ -969,7 +969,7 @@ Capturing is fun.
 Capture templates for my planner. I should probably add more categories…
 
 #+BEGIN_SRC emacs-lisp
-  (let ((planner-file (concat org-dir "planner.org")))
+  (let ((planner-file (concat org-directory "planner.org")))
     (push `("e" "Entertainment Event" entry
             (file ,planner-file)
             ,(concat "* %^{Title} :fun:\n"
@@ -994,7 +994,7 @@ it at once, though…
 
 #+BEGIN_SRC emacs-lisp
   (push `("t" "Tutoring" entry
-            (file ,(concat org-dir "tutoring.org"))
+            (file ,(concat org-directory "tutoring.org"))
             ,(concat "* %^{Name}\n"
                      ":PROPERTIES:\n"
                      ":CLASS:     %^{Class}\n"
@@ -1011,7 +1011,7 @@ everything.
 
 #+BEGIN_SRC emacs-lisp
   (push `("B" "Business" entry
-          (file ,(concat org-dir "jobs.org"))
+          (file ,(concat org-directory "jobs.org"))
           ,(concat "* [#%^{Priority}] %^{Name}\n"
                    ":PROPERTIES:\n"
                    ":industry:   %^{Industry}\n"
@@ -1026,7 +1026,7 @@ Various different categories of things I'd like to read/watch/play/do
 someday.
 
 #+BEGIN_SRC emacs-lisp
-  (let ((wishlist-file (concat org-dir "wishlist.org"))
+  (let ((wishlist-file (concat org-directory "wishlist.org"))
         (basic-template "* %^{Title}\n%?"))
     (push `("b" "Book" entry
             (file+headline ,wishlist-file "Books")
@@ -1052,7 +1052,7 @@ For easy log entries into my journal.
   (push `("D"
             "Chronicle Entry"
             entry
-            (file+datetree+prompt ,(concat org-dir "chronicle.org"))
+            (file+datetree+prompt ,(concat org-directory "chronicle.org"))
             "* %^{Title}\n%?")
           org-capture-templates)
 #+END_SRC
@@ -2894,7 +2894,7 @@ find the raw file lying around on the Org-Mode site. Hopefully things will work?
 My customizations to it:
 
 #+BEGIN_SRC emacs-lisp
-  (setq org-contacts-files (list (concat org-dir "contacts.org")))
+  (setq org-contacts-files (list (concat org-directory "contacts.org")))
   (setq mu4e-org-contacts-file (car org-contacts-files))
 
   (defun my-mu4e-action-add-org-contact (msg)
