@@ -180,15 +180,6 @@ buffers, this can be super powerful. Currently bound to =C-;=.
   (use-package iedit
     :ensure t)
 #+END_SRC
-*** helm
-#+BEGIN_SRC emacs-lisp
-  (use-package helm
-    :ensure t
-    :bind (("M-x" . helm-M-x)
-           ("C-x f" . helm-find-files)
-           ("C-x b" . helm-buffers-list)
-           ("C-s" . helm-occur)))
-#+END_SRC
 *** [[https://github.com/abo-abo/hydra][hydra]]
 This lovely package allows for improved use of chaining similar commands.
 I'll be trying to use it to wean myself off of some of the features
@@ -222,7 +213,7 @@ that trigger an action when pressed in quick succession.
     (key-chord-define global-map "-." "→")
     (key-chord-define-global ",-" "←")
     (key-chord-define-global "--" "_")
-    (key-chord-define-global "vf" 'helm-find-files)
+    (key-chord-define-global "vf" 'find-file)
     (key-chord-define-global "vu" 'undo)
     (key-chord-define-global "vs" 'save-buffer)
     (key-chord-define-global "vl" 'ispell-buffer)
@@ -239,39 +230,6 @@ I just use this to jump straight to links when in things like EWW.
     :bind ("M-L" . link-hint-open-link)
     :config
     (define-key eww-mode-map (kbd "f") 'link-hint-open-link))
-#+END_SRC
-*** [[https://github.com/magnars/multiple-cursors.el][multiple-cursors]]
-#+BEGIN_SRC emacs-lisp
-  (use-package multiple-cursors
-    :disabled t
-    :ensure t
-    :bind (("M-k" . mc/mark-next-like-this)
-           ("M-S-k" . mc/edit-lines)))
-#+END_SRC
-*** [[https://github.com/Kungsgeten/ryo-modal][ryo-modal]]
-A do-it-yourself modal control system which allows for the benefits of things
-like Evil while still preserving the base Emacs. I'll be building this up over
-time, and I really want to find a way to have multiple different types of modes
-with different commands each.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package ryo-modal
-    :disabled t
-    :ensure t
-    :bind ("M-m" . ryo-modal-mode)
-    :config
-    (ryo-modal-keys
-     ("m" ryo-modal-mode)
-     ("a" "1")
-     ("r" "2")
-     ("s" "3")
-     ("t" "4")
-     ("d" "5")
-     ("h" "6")
-     ("n" "7")
-     ("e" "8")
-     ("i" "9")
-     ("o" "0")))
 #+END_SRC
 *** [[https://github.com/itome/smart-backspace][smart-backspace]]
 Deletes back a line to matching indentation.
@@ -1017,32 +975,6 @@ For easy log entries into my journal.
             (file+datetree+prompt ,(concat org-directory "chronicle.org"))
             "* %^{Title}\n%?")
           org-capture-templates)
-#+END_SRC
-
-For apartments (temporary)
-
-#+BEGIN_SRC emacs-lisp
-  (push `("a"
-          "Apartment"
-          entry
-          (file ,(concat org-directory "apartments.org"))
-          ,(concat "* %^{Name}\n"
-                   ":PROPERTIES:\n"
-                   ":URL:         %^{URL}\n"
-                   ":ADDRESS:     %^{Address}\n"
-                   ":BEDS:        %^{Bedrooms}\n"
-                   ":BATH:        %^{Bathrooms}\n"
-                   ":RENT:        %^{Rent ($/mo.)}\n"
-                   ":SQFT:        %^{Area (sq. ft.)}\n"
-                   ":BC_DISTANCE: %^{Distance to Beckman Coulter (mi.)}\n"
-                   ":GG_DISTANCE: %^{Distance to Greenlight Guru (mi.)}\n"
-                   ":END:\n"
-                   "\n"
-                   "Amenities:\n"
-                   "\n"
-                   "Utilities:\n")
-          "* %^{Title}\n%?")
-        org-capture-templates)
 #+END_SRC
 *** [[https://github.com/yjwen/org-reveal][org-reveal]]
 A mode for converting Org-Mode files into presentations.
