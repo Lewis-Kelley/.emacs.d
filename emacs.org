@@ -320,40 +320,16 @@ this doesn't keep slowing down my boot up time.
     (add-hook 'prog-mode-hook 'fic-mode))
 #+END_SRC
 *** [[https://github.com/flycheck/flycheck][flycheck]]
-A magic little syntax checker for various languages like C. It sets a compiler
-flag for gnu11, since my computer doesn'tcompile for loops and the like by
-default for some reason. Triggered in any prog-mode.
+A magic little syntax checker for various languages like C. It sets a
+compiler flag for gnu11, since my computer doesn't compile =for= loops
+and the like by default for some reason. Triggered in any prog-mode.
 
 #+BEGIN_SRC emacs-lisp
-  (defun setup-flycheck-rtags ()
-    (interactive)
-    "Stolen from https://vxlabs.com/tag/rtags/."
-    (flycheck-select-checker 'rtags)
-    (setq-local flycheck-highlighting-mode nil)
-    (setq-local flycheck-check-syntax-automatically nil))
-
   (use-package flycheck
     :ensure t
     :config
     (flycheck-set-checker-executable 'c/c++-gcc "/usr/bin/gcc")
     (setq flycheck-gcc-args "-std=c++11")
-
-    ;; (when (require 'rtags nil :noerror)
-    ;;   (require 'company)
-    ;;   (define-key c-mode-base-map (kbd "s-n")
-    ;;     (function rtags-find-symbol-at-point))
-    ;;   (define-key c-mode-base-map (kbd "s-k")
-    ;;     (function rtags-find-references-at-point))
-    ;;   (rtags-enable-standard-keybindings)
-    ;;   (setq rtags-autostart-diagnostics t)
-    ;;   (rtags-diagnostics)
-    ;;   (setq rtags-completions-enabled t)
-    ;;   (push 'company-rtags company-backends)
-    ;;   (global-company-mode t)
-    ;;   (define-key c-mode-base-map (kbd "<C-tab>")
-    ;;     (function company-complete))
-    ;;   (require 'flycheck-rtags)
-    ;;   (add-hook 'c-mode-common-hook #'setup-flycheck-rtags))
 
     (add-hook 'prog-mode-hook 'flycheck-mode))
 #+END_SRC
@@ -405,27 +381,6 @@ just specifying .stumpwmrc should be in lisp mode.
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'auto-mode-alist '(".stumpwmrc" . lisp-mode))
 #+END_SRC
-*** [[https://www.emacswiki.org/emacs/MakefileMode][makefile-mode]]
-Built into Emacs by default. I'm just adding Doxyfiles to make them more
-readable.
-
-#+BEGIN_SRC emacs-lisp
-  (add-to-list 'auto-mode-alist '("Doxyfile" . makefile-mode))
-#+END_SRC
-*** [[https://github.com/bbatsov/projectile][projectile]]
-Helps finding files in a given project. I'm not entirely sure if or how this is
-working, so I'll fiddle around with it.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package projectile
-    :ensure t
-    :diminish projectile-mode
-    :requires ivy
-    :init
-    (projectile-global-mode)
-    (setq projectile-enable-caching t)
-    (setq projectile-completion-system 'ivy))
-#+END_SRC
 *** scheme-mode
 A lot of these settings are from the default config for my CSSE304 class.
 I am using petite chez as my interpereter, as it is required for the class.
@@ -466,29 +421,6 @@ I am using petite chez as my interpereter, as it is required for the class.
   (put 'fold-vector 'scheme-indent-function 2)
   (put 'fold-count 'scheme-indent-function 2)
   (put 'on-error 'scheme-indent-function 1)
-#+END_SRC
-*** [[http://www.gnu.org/software/emacs/manual/html_node/semantic/index.html][semantic]]
-Built into Emacs by default. Sets the refresh time and some keybinds.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package semantic
-    :ensure t
-    :init
-    (global-semanticdb-minor-mode 1)
-    (global-semantic-idle-scheduler-mode 1)
-    (add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode)
-    (global-set-key (kbd "M-g TAB") 'semantic-complete-analyze-inline)
-    (global-set-key (kbd "M-g g") 'semantic-complete-jump-local))
-#+END_SRC
-*** stumpwm-mode
-Since I use StumpWM, this should come in handy.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package stumpwm-mode
-    :ensure t
-    :init
-    (add-to-list 'auto-mode-alist '(".stumpwmrc" . stumpwm-mode)))
-    ;(define-key 'stumpwm-mode-map (kbd "C-x C-e") 'stumpwm-eval-last-sexp))
 #+END_SRC
 ** Usability
 *** [[https://github.com/jgkamat/alda-mode][alda-mode]]
@@ -542,70 +474,12 @@ globally.
     :ensure t
     :bind (("s-d" . dad-joke)))
 #+END_SRC
-*** [[https://github.com/myrjola/diminish.el][diminish]]
-Allows you to stop showing the name of specific minor modes.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package diminish
-    :ensure t
-    :config
-    (diminish 'abbrev-mode))
-#+END_SRC
 *** dired
 #+BEGIN_SRC emacs-lisp
   (setq dired-dwim-target t
         dired-recursive-copies 'top
         dired-recursive-deletes 'top
         dired-listing-switches "-alh")
-#+END_SRC
-*** [[https://github.com/skeeto/elfeed][elfeed]]
-An RSS reader that loads from elfeed.org. Basically I use it to check GitHub and
-various Emacs sites.
-- keybinds:
-  + g - (in elfeed mode) refresh the feed
-  + r - (in elfeed mode) mark as read
-  + u - (in elfeed mode) mark as unread
-
-#+BEGIN_SRC emacs-lisp
-  (use-package elfeed
-    :ensure t
-    :config
-    (global-set-key (kbd "s-l") 'elfeed))
-#+END_SRC
-*** [[https://github.com/remyhonig/elfeed-org][elfeed-org]]
-Allows you to define your RSS feeds in an org file, which makes it so much more
-readable.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package elfeed-org
-    :ensure t
-    :requires elfeed org
-    :config
-    (setq rmh-elfeed-org-files (list (concat org-directory "elfeed.org")))
-    (elfeed-org))
-#+END_SRC
-*** [[https://github.com/ch11ng/exwm][exwm]]
-Someday…
-#+BEGIN_SRC emacs-lisp
-  (use-package exwm
-    :ensure t
-    :disabled t
-    :config
-    (require 'exwm-config)
-    (exwm-config-default)
-
-    (require 'exwm-randr)
-    (setq exwm-randr-workspace-output-plist '(0 "VGA1"))
-    (add-hook 'exwm-randr-screen-change-hook
-              (lambda ()
-                (start-process-shell-command
-                 "xrandr" nil "xrandr --output VGA1 --left-of LVDS1 --auto")))
-    (exwm-randr-enable)
-    ;; (defun my/start-process-shell-command ()
-      ;; (interactive)
-      ;; (start-process-shell-command ))
-    ;; (global-set-key (kbd "s-SPC") 'start-process-shell-command)
-    )
 #+END_SRC
 *** [[https://www.emacswiki.org/emacs/FlySpell][flyspell]]
 Built into Emacs by default. I only take this opportunity to set a quick
@@ -781,48 +655,6 @@ Some basic settings.
   (global-set-key (kbd "C-c a") 'org-agenda)
   (add-hook 'org-agenda-mode-hook 'delete-other-windows)
 #+END_SRC
-
-This is some color coding that colors differently tagged items with
-pre-selected colors.
-#+BEGIN_SRC emacs-lisp
-  (defun colorged/create-agenda-face (color)
-    "Create a standard face using COLOR."
-    `(face (:foreground ,color)))
-
-  (defun colorged/set-text-face (start end color)
-    "Set the face of the text between START and END to COLOR."
-    (add-face-text-property start end (colorged/create-agenda-face color)))
-
-  (defun colorged/find-next-tag (tag-name)
-    "Move the point to the next instance of TAG-NAME if possible"
-    (re-search-forward (concat ":" tag-name ":") nil t))
-
-  (defun colorged/colorize-buffer (color-map)
-    "Color-code the org agenda.
-  Change instances of the tags in the car's of COLOR-MAP to have a
-  different face with the colors in the cdr's of COLOR-MAP."
-    (when color-map
-      (save-excursion
-        (goto-char (point-min))
-        (while (colorged/find-next-tag (caar color-map))
-          (colorged/set-text-face (point-at-bol) (point-at-eol) (cdar color-map))))
-      (colorged/colorize-buffer (cdr color-map))))
-
-  (setq org-agenda-colors
-        '(("architecture" . "Orangered1")
-          ("hadoop" . "green")
-          ("ai" . "Magenta")
-          ("senior_project" . "Deepskyblue1")
-          ("srt" . "Orange2")
-          ("comp_sec" . "MediumSpringGreen")
-          ("fun" . "GreenYellow")
-          ("mentor" . "Yellow3")))
-
-  (defun colorize-org-agenda ()
-    (interactive)
-    (colorged/colorize-buffer org-agenda-colors))
-
-  (add-hook 'org-finalize-agenda-hook 'colorize-org-agenda)
 #+END_SRC
 **** Org Babel
 For some reason, ox.el isn’t loading properly. That’s the file that tells org
@@ -926,22 +758,6 @@ it at once, though…
           org-capture-templates)
 #+END_SRC
 
-I'm currently looking for a job, and this helps me keep track of
-everything.
-
-#+BEGIN_SRC emacs-lisp
-  (push `("B" "Business" entry
-          (file ,(concat org-directory "jobs.org"))
-          ,(concat "* [#%^{Priority}] %^{Name}\n"
-                   ":PROPERTIES:\n"
-                   ":industry:   %^{Industry}\n"
-                   ":city:       %^{City}\n"
-                   ":state:      %^{State}\n"
-                   ":website:    %^{Website}\n"
-                   ":END:"))
-        org-capture-templates)
-#+END_SRC
-
 Various different categories of things I'd like to read/watch/play/do
 someday.
 
@@ -983,12 +799,6 @@ A mode for converting Org-Mode files into presentations.
   (use-package ox-reveal
     :ensure t)
 #+END_SRC
-*** TODO [[https://github.com/alphapapa/org-super-agenda][org-super-agenda]]
-#+BEGIN_SRC emacs-lisp
-  (use-package org-super-agenda
-    :disabled t
-    :ensure t)
-#+END_SRC
 *** octave-mode
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'auto-mode-alist '("\\.m" . octave-mode))
@@ -1022,7 +832,6 @@ Creates a new special mode where you can quickly resize any window using n-p-f-b
     :init
     (global-set-key (kbd "C-S-r") 'resize-window))
 #+END_SRC
-
 *** [[https://github.com/Fuco1/smartparens][smartparens]]
 Autobalances your parentheses as you type them. Great for Lisp programming.
 
@@ -1119,34 +928,12 @@ start up.
                        (yas-reload-all)))))
 #+END_SRC
 ** Visuals
-*** alert
-Used by a few other packages to pop up some convenient
-notifications. I just need to set them up so they work right.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package alert
-    :ensure t
-    :config
-    (setq alert-default-style 'libnotify))
-#+END_SRC
 *** [[https://github.com/domtronn/all-the-icons.el][all-the-icons]]
 Shows fancy looking icons on file names (looks really pretty).
 
 #+BEGIN_SRC emacs-lisp
   (use-package all-the-icons
     :ensure t)
-#+END_SRC
-*** [[https://github.com/ecraven/celestial-mode-line][celestial-mode-line]]
-Displays the time to sunrise/sunset and the moon phase.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package celestial-mode-line
-    :ensure t
-    :config
-    (setq calendar-latitude 39.466)
-    (setq calendar-longitude -87.512)
-    (setq calendar-location-name "Terre Haute")
-    (celestial-mode-line-start-timer))
 #+END_SRC
 *** [[https://github.com/ankurdave/color-identifiers-mode][color-identifiers-mode]]
 This makes programming files so much prettier and colorful, as it extrapolates colors from your current theme and color codes
@@ -1168,19 +955,6 @@ Highlights texts that goes beyond a certain column. Very nice for coding.
     :ensure t
     :config
     (add-hook 'c-mode-hook 'column-enforce-mode))
-#+END_SRC
-*** [[https://github.com/sjrmanning/darkokai][darkokai]]
-It's like monokai theme, but better in my opinion.
-The extra line is to keep the modeline small and not stupid looking.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package darkokai-theme
-    :ensure t
-    :disabled t
-    :require fic-mode
-    :config
-    (setq darkokai-mode-line-padding 1)
-    (load-theme 'darkokai t))
 #+END_SRC
 *** [[http://elpa.gnu.org/packages/nlinum.html][nlinum]]
 Like linum mode, but much, /much/, _much_ more efficient.
@@ -1235,15 +1009,6 @@ this temporarily highlights it to draw attention to it.
     (volatile-highlights-mode t))
 #+END_SRC
 * Custom Functions
-** Random Odds
-#+BEGIN_SRC emacs-lisp
-  (defun roll-random (possibilities successes)
-    (interactive (list (read-number "Possibilities: ")
-                       (read-number "Successes: ")))
-    (if (< (random possibilities) successes)
-        (message "Success!")
-      (message "Failure!")))
-#+END_SRC
 ** Modeline Customization
 Just making my modeline fancy.
 Note that this requires the package all-the-icons.
@@ -1503,16 +1268,6 @@ Taken from http://sriramkswamy.github.io/dotemacs/#orgheadline18
       (when (= orig-point (point))
         (move-beginning-of-line 1))))
 #+END_SRC
-** Select Current Line
-#+BEGIN_SRC emacs-lisp
-  (defun sk/select-current-line ()
-    "Select the current line.
-  Stolen from http://sriramkswamy.github.io/dotemacs/#orgheadline18."
-    (interactive)
-    (sk/smarter-move-beginning-of-line 1)
-    (set-mark (line-end-position))
-    (exchange-point-and-mark))
-#+END_SRC
 ** Auto-correct DOuble CAps
 Taken from http://sriramkswamy.github.io/dotemacs/#orgheadline18
 #+BEGIN_SRC emacs-lisp
@@ -1527,46 +1282,6 @@ Taken from http://sriramkswamy.github.io/dotemacs/#orgheadline18
                 (let (case-fold-search)
                   (looking-at "\\b[[:upper:]]\\{2\\}[[:lower:]]"))
                 (capitalize-word 1)))))
-#+END_SRC
-** Open in External Program
-Just open the current file in whatever the default program is for it’s type.
-This is mostly intended for opening HTML’s, PDF’s, and LibreOffice files, but
-there’s a chance it won’t terribly mess up with other types of files.
-
-#+BEGIN_SRC emacs-lisp
-  (defun open-external ()
-    "Open current file in default external program."
-    (interactive)
-    (when buffer-file-name
-      (shell-command (concat
-                      "xdg-open "
-                      (shell-quote-argument buffer-file-name)
-                      " &"))))
-
-  (global-set-key (kbd "C-c o") 'open-external)
-#+END_SRC
-** Save and Restore Scratch Buffer
-It’s kind of nice /not/ completely blowing away the scratch buffer whenever I
-kill Emacs. This code from [[https://github.com/dakrone/eos/blob/master/eos-core.org][here]] should save it every minute and whenever Emacs
-dies as well as reload it upon boot-up.
-
-#+BEGIN_SRC emacs-lisp
-  (defun save-persistent-scratch ()
-    "Write the contents of *scratch* to the file name
-  `persistent-scratch-file-name'."
-    (with-current-buffer (get-buffer-create "*scratch*")
-      (write-region (point-min) (point-max) "~/.emacs.d/persistent-scratch")))
-
-  (defun load-persistent-scratch ()
-    "Load the contents of `persistent-scratch-file-name' into the
-  scratch buffer, clearing its contents first."
-    (if (file-exists-p "~/.emacs.d/persistent-scratch")
-        (with-current-buffer (get-buffer "*scratch*")
-          (delete-region (point-min) (point-max))
-          (insert-file-contents "~/.emacs.d/persistent-scratch"))))
-
-  (add-hook 'after-init-hook 'load-persistent-scratch)
-  (add-hook 'kill-emacs-hook 'save-persistent-scratch)
 #+END_SRC
 * Custom Minor Modes
 ** Dubcaps Mode
@@ -1603,36 +1318,12 @@ My personal creation that just updates doxygen whenever you save the current fil
     :lighter " Doxygen"
     (add-hook 'after-save-hook 'update-doxygen))
 #+END_SRC
-** Cpplint Mode
-This is mostly just for a class that I’m currently taking that requires me to
-check my code with this linter.
-
-#+BEGIN_SRC emacs-lisp
-
-  (defun check-cpplint ()
-      "Run the currently opened file against cpplint."
-      (interactive)
-      (when cpplint-mode
-        (whitespace-cleanup)
-        (shell-command (concat "python2 ~/bin/cpplint.py " buffer-file-name))))
-
-  (define-minor-mode cpplint-mode
-    "Check the current file against cpplint upon saving."
-    :lighter " cpplint"
-    (add-hook 'after-save-hook 'check-cpplint))
-
-  (add-hook 'c-mode-hook
-            (lambda ()
-              (cond ((string-match "^/home/programs/os/" buffer-file-name)
-                                  (cpplint-mode 1)))))
-#+END_SRC
 * Custom Keybinds
 Note that there are plenty more scattered around, so this is more for built-in
 or custom functions.
 ** Motion and Formatting
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-a") 'sk/smarter-move-beginning-of-line)
-  (global-set-key (kbd "s-v") 'sk/select-current-line)
   (global-set-key (kbd "s-r") 'clean-buffer)
   (global-set-key (kbd "M-Q") 'auto-fill-mode)
 #+END_SRC
@@ -1644,8 +1335,6 @@ or custom functions.
 #+END_SRC
 ** Start Applications
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "s-t") 'ansi-term)
-  (global-set-key (kbd "s-b") 'eww)
   (global-set-key (kbd "s-c") 'calc)
 #+END_SRC
 ** Strengthen Escape
@@ -2914,3 +2603,4 @@ Task tracking in Emacs. Links with Github and Jira(?): [[https://github.com/Posi
 A more Emacs-exclusive Kanban board type thing…
 https://github.com/gizmomogwai/org-kanban
 Not sure how useful this is for collaboration
+** EXWM
