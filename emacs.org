@@ -86,26 +86,6 @@ succeeded or failed.
   (add-to-list 'display-buffer-alist
                '("*compilation*" . (display-buffer-no-window)))
 #+END_SRC
-** Make Magit Buffer Big
-When calling Magit status, usually the buffer only takes up half the screen,
-which isn't really pretty. This makes it so that doesn't happen.
-This is taken from [[http://www.lunaryorn.com/2016/04/28/fullscreen-magit-status.html][here]].
-
-#+BEGIN_SRC emacs-lisp
-  (defun my-display-buffer-fullframe (buffer alist)
-    "Display BUFFER in fullscreen.
-  ALIST is a 'display-buffer' ALIST."
-    (let ((window (or (display-buffer-use-some-window buffer alist)
-                      (display-buffer-pop-up-window buffer alist))))
-      (when window
-        (delete-other-windows window)
-        window)))
-
-  (add-to-list 'display-buffer-alist
-               `(,(rx "*magit: ")
-                 (my-display-buffer-fullframe)
-                 (reusable-frames . nil)))
-#+END_SRC
 ** Set Default Browser To EWW
 #+BEGIN_SRC emacs-lisp
   (setq browse-url-browser-function 'firefox)
@@ -146,24 +126,6 @@ with the no-op thunk.
 #+BEGIN_SRC emacs-lisp
   (defun thunk ())
   (setq ring-bell-function 'thunk)
-#+END_SRC
-** Window Management
-Basically, this makes Emacs /not/ split windows and instead create new frames
-I can control with StumpWM. Taken from [[http://anderspapitto.com/posts/2016-11-02-vanquishing-emacs-display-buffer.html][here]].
-
-#+BEGIN_SRC emacs-lisp
-  ;; (setq display-buffer-alist
-  ;;       '(("*shell*" (display-buffer-same-window) ())
-  ;;         (".*" (display-buffer-reuse-window
-  ;;                display-buffer-same-window
-  ;;                display-buffer-pop-up-frame)
-  ;;          (reusable-frames . t))))
-  ;; (advice-add 'display-buffer-pop-up-window :around
-  ;;             (lambda (orig-fun buffer alist)
-  ;;               (display-buffer-same-window buffer nil)))
-  ;; (advice-add 'set-window-dedicated-p :around
-  ;;             (lambda (orig-fun &rest args) nil))
-  ;; (setq frame-auto-hide-function 'delete-frame)
 #+END_SRC
 ** Org Directory
 #+BEGIN_SRC emacs-lisp
@@ -1055,6 +1017,32 @@ For easy log entries into my journal.
             (file+datetree+prompt ,(concat org-directory "chronicle.org"))
             "* %^{Title}\n%?")
           org-capture-templates)
+#+END_SRC
+
+For apartments (temporary)
+
+#+BEGIN_SRC emacs-lisp
+  (push `("a"
+          "Apartment"
+          entry
+          (file ,(concat org-directory "apartments.org"))
+          ,(concat "* %^{Name}\n"
+                   ":PROPERTIES:\n"
+                   ":URL:         %^{URL}\n"
+                   ":ADDRESS:     %^{Address}\n"
+                   ":BEDS:        %^{Bedrooms}\n"
+                   ":BATH:        %^{Bathrooms}\n"
+                   ":RENT:        %^{Rent ($/mo.)}\n"
+                   ":SQFT:        %^{Area (sq. ft.)}\n"
+                   ":BC_DISTANCE: %^{Distance to Beckman Coulter (mi.)}\n"
+                   ":GG_DISTANCE: %^{Distance to Greenlight Guru (mi.)}\n"
+                   ":END:\n"
+                   "\n"
+                   "Amenities:\n"
+                   "\n"
+                   "Utilities:\n")
+          "* %^{Title}\n%?")
+        org-capture-templates)
 #+END_SRC
 *** [[https://github.com/yjwen/org-reveal][org-reveal]]
 A mode for converting Org-Mode files into presentations.
