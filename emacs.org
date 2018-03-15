@@ -609,6 +609,46 @@ email setup. The interesting one, the html2text-command, is stolen from
                 (unless (yes-or-no-p "Sure you want to send this? ")
                   (signal 'quit nil)))))
 #+END_SRC
+*** [[https://github.com/Kungsgeten/org-brain][org-brain]]
+#+BEGIN_SRC emacs-lisp
+  (use-package org-brain
+    :ensure t
+    :config
+    (defun website-resource-icon (link)
+      "Return an icon representing a given webpage."
+      (cond ((string-match "wikipedia\\.org" link)
+             (all-the-icons-faicon "wikipedia-w"))
+            ((string-match "github\\.com" link)
+             (all-the-icons-octicon "mark-github"))
+            ((string-match "youtube\\.com" link)
+             (all-the-icons-faicon "youtube"))
+            (t
+             (all-the-icons-faicon "globe"))))
+
+    (defun org-brain-insert-resource-icon (link)
+      "Insert an icon, based on content of org-mode LINK."
+      (insert (format "%s "
+                      (cond ((string-prefix-p "http" link)
+                             (website-resource-icon link))
+                            ((string-prefix-p "brain:" link)
+                             (all-the-icons-fileicon "brain"))
+                            (t
+                             (all-the-icons-icon-for-file link))))))
+
+    (add-hook 'org-brain-after-resource-button-functions
+              #'org-brain-insert-resource-icon)
+    :custom
+    (org-id-track-globally t)
+    (org-id-locations-file "~/.emacs.d/.org-id-locations")
+    (org-brain-visualize-default-choices 'all)
+    (org-brain-title-max-length 12)
+    :bind
+    (("C-c b" . org-brain-visualize)
+     :map org-brain-visualize-mode-map
+     ("L" . link-hint-open-link))
+    :hook
+    (org-brain-after-visualize . aa2u-buffer))
+#+END_SRC
 *** [[http://orgmode.org/][org-mode]]
 **** General Org
 Built into Emacs by default, but I need to configure some of it, especially how
@@ -926,6 +966,17 @@ start up.
                        (yas-reload-all)))))
 #+END_SRC
 ** Visuals
+*** [[http://www.gnuvola.org/software/aa2u/][ascii-art-to-unicode]]
+Mostly used for =org-brain=.
+
+#+BEGIN_SRC emacs-lisp
+    (use-package ascii-art-to-unicode
+      :ensure t
+      :config
+      (defun aa2u-buffer ()
+        (interactive)
+        (aa2u (point-min) (point-max))))
+#+END_SRC
 *** [[https://github.com/domtronn/all-the-icons.el][all-the-icons]]
 Shows fancy looking icons on file names (looks really pretty).
 
