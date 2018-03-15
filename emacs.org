@@ -2988,3 +2988,9 @@ Someday, I'm going to be stuck with Windows, be that in the workplace
 or otherwise (I'm sure of it). When that day comes, I plan on trying
 to set up something like this:
 https://www.reddit.com/r/emacs/comments/7a63r4/emacs_in_win10linuxdockerxserver_combo/
+** Flower
+Task tracking in Emacs. Links with Github and Jira(?): [[https://github.com/PositiveTechnologies/flower/tree/0d7822931e389a8739367fa9d6b0ec785d47ef87][flower]].
+** Org-Kanban
+A more Emacs-exclusive Kanban board type thing…
+https://github.com/gizmomogwai/org-kanban
+Not sure how useful this is for collaboration
