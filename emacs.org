@@ -227,9 +227,7 @@ I just use this to jump straight to links when in things like EWW.
 #+BEGIN_SRC emacs-lisp
   (use-package link-hint
     :ensure t
-    :bind ("M-L" . link-hint-open-link)
-    :config
-    (define-key eww-mode-map (kbd "f") 'link-hint-open-link))
+    :bind ("M-L" . link-hint-open-link))
 #+END_SRC
 *** [[https://github.com/itome/smart-backspace][smart-backspace]]
 Deletes back a line to matching indentation.
