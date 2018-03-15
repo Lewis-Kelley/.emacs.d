@@ -600,7 +600,7 @@ an avy-menu...menu.
     :init
     (setq char-menu '("’" "‘’" "“”" "…" "⌊⌋" "⋀" "⋁" "√"
                       ("script" "ℛ" "ℒ")
-                      ("emoji" "😏" "😉" "😭" "😦" "😊" "🤔")))
+                      ("emoji" "😏" "😉" "😭" "😦" "😊" "🤔" "😢")))
     (global-set-key (kbd "M-o") 'char-menu))
 #+END_SRC
 *** [[https://github.com/company-mode/company-mode][company]]
