@@ -180,6 +180,14 @@ buffers, this can be super powerful. Currently bound to =C-;=.
   (use-package iedit
     :ensure t)
 #+END_SRC
+*** [[https://github.com/abo-abo/swiper][ivy]]
+Fuzzy searching.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ivy
+    :ensure t
+    :config (ivy-mode 1))
+#+END_SRC
 *** [[https://github.com/abo-abo/hydra][hydra]]
 This lovely package allows for improved use of chaining similar commands.
 I'll be trying to use it to wean myself off of some of the features
