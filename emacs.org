@@ -542,6 +542,14 @@ The best way to use git with Emacs. Period.
     (global-set-key (kbd "s-g") 'magit-status)
     (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup))
 #+END_SRC
+*** [[https://github.com/danielma/magit-org-todos.el][magit-org-todos]]
+Nicely handles =todo.org= files in the root of a =git= repository.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package magit-org-todos
+    :ensure t
+    :config (magit-org-todos-autoinsert))
+#+END_SRC
 *** mu4e
 The various =setq='s are all just personal settings for dealing with my specific
 email setup. The interesting one, the html2text-command, is stolen from
