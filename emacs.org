@@ -257,10 +257,7 @@ you’re searching for.
 #+BEGIN_SRC emacs-lisp
   (use-package swiper
     :ensure t
-    :disabled t
-    :requires ivy
-    :config
-    (global-set-key (kbd "C-s") 'swiper))
+    :config (global-set-key (kbd "C-s") 'swiper))
 #+END_SRC
 *** [[https://github.com/mrkkrp/zzz-to-char][zzz-to-char]]
 Visually kill a part of a line, forward or backward, to a given character.
