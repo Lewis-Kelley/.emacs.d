@@ -859,7 +859,8 @@ Allows for asynchronous installation of packages.
 
 #+BEGIN_SRC emacs-lisp
   (use-package paradox
-    :ensure t)
+    :ensure t
+    :bind ("s-p" . paradox-list-packages))
 #+END_SRC
 *** [[https://github.com/skuro/plantuml-mode][plantuml-mode]]
 PlantUML is a nice way of making UML diagrams without futzing with drag and drop
