@@ -689,7 +689,8 @@ the agenda works.
                       ':box '(:line-width 3 :color "PaleGreen" :style pressed-button))
 
   (setq org-export-with-toc nil
-        org-export-with-section-numbers nil)
+        org-export-with-section-numbers nil
+        org-latex-image-default-width nil)
 
   ;; Change the size of rendered LaTeX fragments
   (plist-put org-format-latex-options :scale 2.0)
