@@ -750,8 +750,7 @@ large notes file.
 
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((sh . t)
-     (plantuml . t)
+   '((plantuml . t)
      (C . t)
      (java . t)
      (octave . t)
