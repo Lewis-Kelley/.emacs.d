@@ -484,6 +484,18 @@ globally.
         dired-recursive-deletes 'top
         dired-listing-switches "-alh")
 #+END_SRC
+*** exwm
+#+BEGIN_SRC emacs-lisp
+  (use-package exwm
+    :init
+
+    (defun launch-exwm (arg)
+      (when (equalp arg "exwm")
+        (require 'exwm-config)
+        (exwm-config-default)))
+
+    (add-to-list 'command-switch-alist '("exwm" . launch-exwm)))
+#+END_SRC
 *** [[https://www.emacswiki.org/emacs/FlySpell][flyspell]]
 Built into Emacs by default. I only take this opportunity to set a quick
 keybind for both that and visual-line-mode (also built in). If I care about
