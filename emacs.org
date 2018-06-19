@@ -27,6 +27,7 @@ as-is, you need to look into getting the key to work properly on your OS.
   (add-quick-file ?p "~/org-files/planner.org")
   (add-quick-file ?n "~/org-files/notes.org")
   (add-quick-file ?c "~/org-files/classes.org")
+  (add-quick-file ?l "~/financial/ledger")
 
   (global-set-key (kbd "s-n") 'quick-open-file)
 #+END_SRC
