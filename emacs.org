@@ -601,12 +601,11 @@ email setup. The interesting one, the html2text-command, is stolen from
       (insert "#+OPTIONS: tex:imagemagick\n#+OPTIONS: toc:0\n\n"))
 
     (bind-key "C-c o" 'compose-org-message mu4e-compose-mode-map)
-
     (setq mu4e-maildir "~/Maildir"
-          mu4e-sent-folder "/Sent Items"
-          mu4e-drafts-folder "/Drafts"
-          mu4e-refile-folder "/Archive"
-          mu4e-trash-folder "/Deleted Items"
+          mu4e-sent-folder "/[Gmail].Sent Mail"
+          mu4e-drafts-folder "/[Gmail].Drafts"
+          mu4e-refile-folder "/[Gmail].All Mail"
+          mu4e-trash-folder "/[Gmail].Trash"
           mu4e-get-mail-command "offlineimap"
           mu4e-update-interval 300
           mu4e-compose-signature (concat "Lewis Kelley\n"
@@ -616,16 +615,18 @@ email setup. The interesting one, the html2text-command, is stolen from
                                          "Percopo Classroom: Tue 8:00-11:00")
           mu4e-view-prefer-html t
           message-send-mail-function 'smtpmail-send-it
-          smtpmail-smtp-server "exchange.rose-hulman.edu"
-          smtpmail-local-domain "rose-hulman.edu"
-          user-mail-address "kelleyld@rose-hulman.edu"
+          starttls-use-gnutls t
+          smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
+          smtpmail-auth-credentials '(("smtp.gmail.com" 587 "rosetintedbilliken@gmail.com" nil))
+          smtpmail-default-smtp-server "smtp.gmail.com"
+          smtpmail-smtp-server "smtp.gmail.com"
+          smtpmail-smtp-service 587
+          user-mail-address "rosetintedbilliken@gmail.com"
           user-full-name "Lewis Kelley"
           mu4e-maildir-shortcuts '(("/INBOX" . ?i)
-                                   ("/Sent Items" . ?s)
-                                   ("/Deleted Items" . ?d)
-                                   ("/Archive" . ?a)))
-
-
+                                   ("/[Gmail].Sent Mail" . ?s)
+                                   ("/[Gmail].Drafts" . ?d)
+                                   ("/[Gmail].All Mail" . ?a)))
 
     (add-to-list 'mu4e-view-actions
                  '("xViewXWidget" . mu4e-action-view-with-xwidget) t)
