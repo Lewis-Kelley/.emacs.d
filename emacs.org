@@ -491,7 +491,7 @@ globally.
     :init
 
     (defun launch-exwm (arg)
-      (when (equalp arg "exwm")
+      (when (equal arg "exwm")
         (require 'exwm-config)
         (exwm-config-default)))
 
