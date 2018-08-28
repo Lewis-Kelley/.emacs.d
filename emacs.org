@@ -1087,8 +1087,9 @@ pairs. This makes programming so much easier and prettier.
 #+END_SRC
 *** [[https://github.com/zk-phi/sky-color-clock][sky-color-clock]]
 #+BEGIN_SRC emacs-lisp
-  (require 'sky-color-clock)
-  (sky-color-clock-initialize 39.4)
+  (use-package sky-color-clock
+    :custom (sky-color-clock-enable-emoji-icon nil)
+    :config (sky-color-clock-initialize 39.9))
 #+END_SRC
 *** [[https://github.com/k-talo/volatile-highlights.el][volatile-highlights]]
 Whenever you change a large block of text, like with an undo or a yank,
