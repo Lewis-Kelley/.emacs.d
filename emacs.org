@@ -482,6 +482,13 @@ globally.
     :ensure t
     :bind (("s-d" . dad-joke)))
 #+END_SRC
+*** desktop-environment
+#+BEGIN_SRC emacs-lisp
+  (use-package desktop-environment
+    :ensure t
+    :init
+    (desktop-environment-mode))
+#+END_SRC
 *** dired
 #+BEGIN_SRC emacs-lisp
   (setq dired-dwim-target t
