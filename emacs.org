@@ -132,6 +132,10 @@ with the no-op thunk.
 #+BEGIN_SRC emacs-lisp
   (setq org-directory "~/org-files/")
 #+END_SRC
+** Async Shell Buffer
+#+BEGIN_SRC emacs-lisp
+  (setq async-shell-command-buffer 'new-buffer)
+#+END_SRC
 * Packages
 ** Control
 *** [[https://github.com/abo-abo/avy][avy]]
