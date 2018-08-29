@@ -504,12 +504,35 @@ globally.
 *** exwm
 #+BEGIN_SRC emacs-lisp
   (use-package exwm
+    :custom (exwm-workspace-number 9)
+    :bind
+    ("M-&" . (lambda (command)
+               (interactive (list (read-shell-command "$ ")))
+               (start-process-shell-command command nil command)))
+    :hook
+    (exwm-update-class . simplify-exwm-class)
+    ;; (exwm-update-title . simplify-exwm-title)
     :init
+    (defun preserved-exwm-instance-namep (exwm-instance-name)
+      (or (string-prefix-p "sun-awt-X11-" exwm-instance-name)
+          (string= "gimp" exwm-instance-name)))
+
+    (defun simplify-exwm-class ()
+      (unless (preserved-exwm-instance-namep exwm-instance-name)
+        (exwm-workspace-rename-buffer exwm-class-name)))
+
+    (defun simplify-exwm-title ()
+      (unless (preserved-exwm-instance-namep exwm-instance-name)
+        (exwm-workspace-rename-buffer "Title")))
 
     (defun launch-exwm (arg)
       (when (equal arg "exwm")
         (require 'exwm-config)
-        (exwm-config-default)))
+        (exwm-input-set-key (kbd "s-r") #'exwm-reset)
+        (exwm-input-set-key (kbd "s-w") #'exwm-workspace-switch)
+        (exwm-enable)
+        ;; Because the workspaces each need scroll-bar-mode turned off
+        (scroll-bar-mode -1)))
 
     (add-to-list 'command-switch-alist '("exwm" . launch-exwm)))
 #+END_SRC
