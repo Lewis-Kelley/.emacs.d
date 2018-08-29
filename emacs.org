@@ -137,9 +137,27 @@ with the no-op thunk.
   (setq async-shell-command-buffer 'new-buffer)
 #+END_SRC
 ** Display Battery Mode
+Thanks to a missing feature in =battery.el=, the battery function I
+use, =battery-linux-sysfs= doesn't include the =%b= option for no
+discernible reason. I've gone ahead and added some advice to fix the
+issue.
+
 #+BEGIN_SRC emacs-lisp
   (display-battery-mode 1)
   (setq battery-mode-line-format "%b%t")
+
+  (defun sysfs-add-summary (data)
+    (let* ((percentage (string-to-number (cdr (assoc ?p data))))
+           (verbose-status (downcase (cdr (assoc ?B data))))
+           (status-symbol
+            (cond
+             ((string= verbose-status "charging") "+")
+             ((< percentage battery-load-critical) "!")
+             ((< percentage battery-load-low) "-")
+             (t ""))))
+      (cons (cons ?b status-symbol) data)))
+
+  (advice-add 'battery-linux-sysfs :filter-return 'sysfs-add-summary)
 #+END_SRC
 * Packages
 ** Control
