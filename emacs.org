@@ -501,6 +501,14 @@ globally.
         dired-recursive-deletes 'top
         dired-listing-switches "-alh")
 #+END_SRC
+*** exec-path-from-shell
+Used to keep Emacs's idea of PATH in line with my =.bashrc= settings.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package exec-path-from-shell
+    :ensure t
+    :init (exec-path-from-shell-initialize))
+#+END_SRC
 *** exwm
 #+BEGIN_SRC emacs-lisp
   (use-package exwm
