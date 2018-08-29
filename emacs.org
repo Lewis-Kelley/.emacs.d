@@ -136,6 +136,11 @@ with the no-op thunk.
 #+BEGIN_SRC emacs-lisp
   (setq async-shell-command-buffer 'new-buffer)
 #+END_SRC
+** Display Battery Mode
+#+BEGIN_SRC emacs-lisp
+  (display-battery-mode 1)
+  (setq battery-mode-line-format "%b%t")
+#+END_SRC
 * Packages
 ** Control
 *** [[https://github.com/abo-abo/avy][avy]]
@@ -1170,6 +1175,21 @@ Note that this requires the package all-the-icons.
        ((string-match "SVN-" vc-mode) (-custom-modeline-svn-vc))
        (t (format "%s" vc-mode)))))
 
+  (defun custom-modeline-battery ()
+    (let* ((battery-status (substring battery-mode-line-string 0 1))
+           (battery-string (if (member battery-status '("+" "-" "!"))
+                               (substring battery-mode-line-string 1)
+                             battery-mode-line-string)))
+      (propertize battery-string
+                  'face `(:foreground
+                          "black"
+                          :background
+                          ,(cond
+                            ((equal battery-status "+") "dark turquoise")
+                            ((equal battery-status "-") "orange")
+                            ((equal battery-status "!") "red")
+                            (t "gray"))))))
+
   (defun modeline-align (left right)
     (let ((available-width (- (window-width) (length left) 3)))
       (format (format " %%s %%%ds " available-width) left right)))
@@ -1248,7 +1268,11 @@ Note that this requires the package all-the-icons.
                                                    :height
                                                    ,mode-line-font-height))
                                      " |"))))
-                             (sky-color-clock))))))
+                             (concat
+                              (sky-color-clock)
+                              " | "
+                              (custom-modeline-battery)))))))
+
   (set-face-attribute 'org-mode-line-clock nil :inherit nil)
   (customize-modeline)
 #+END_SRC
